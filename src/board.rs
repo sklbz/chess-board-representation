@@ -1,4 +1,5 @@
-use crate::bitboard::BitBoard;
+use crate::bitboard::*;
+use crate::moves::*;
 
 pub(crate) struct Board {
     // Pawns
@@ -22,7 +23,7 @@ pub(crate) struct Board {
 }
 
 impl Board {
-    fn init() -> Board {
+    pub fn init() -> Board {
         let pawn_pattern: u64 = 0xff00;
         let knight_pattern: u64 = 0x42;
         let bishop_pattern: u64 = 0x24;
@@ -43,6 +44,66 @@ impl Board {
             black_queens: queen_pattern.bitwise_reverse(),
             white_king: king_pattern,
             black_king: king_pattern.bitwise_reverse(),
+        }
+    }
+
+    pub fn get_piece(&self, square: &Square) -> Piece {
+        Piece {
+            self.get_piece_type(square),
+            self.get_piece_color(square),
+        }
+    }
+
+    fn get_piece_color(&self, square: &Square) -> Color {
+
+        let white = self.white_pawns | self.white_knights | self.white_bishops | self.white_rooks | self.white_queens | self.white_king;
+
+        if (white << square) & 1 == 1 {
+            Color::White
+        }
+
+        let black = self.black_pawns | self.black_knights | self.black_bishops | self.black_rooks | self.black_queens | self.black_king;
+
+        if (black << square) & 1 == 1 {
+            Color::Black
+        }
+    }
+
+    fn get_piece_type(&self, square: &Square) -> Type {
+        let pawns = self.white_pawns | self.black_pawns;
+
+        if (pawns << square) & 1 == 1 {
+            Type::Pawn
+        }
+
+        let knights = self.white_knights | self.black_knights;
+
+        if (knights << square) & 1 == 1 {
+            Type::Knight
+        }
+
+        let bishops = self.white_bishops | self.black_bishops;
+
+        if (bishops << square) & 1 == 1 {
+            Type::Bishop
+        }
+
+        let rooks = self.white_rooks | self.black_rooks;
+
+        if (rooks << square) & 1 == 1 {
+            Type::Rook
+        }
+
+        let queens = self.white_queens | self.black_queens;
+
+        if (queens << square) & 1 == 1 {
+            Type::Queen
+        }
+
+        let kings = self.white_king | self.black_king;
+
+        if (kings << square) & 1 == 1 {
+            Type::King
         }
     }
 }

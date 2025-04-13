@@ -7,6 +7,6 @@ use crate::moves::is_possible;
 
 fn main() {
     let board = Board::init();
-    is_possible(board, &(0, 0));
+    let possible = is_possible(&board, &(0, 0));
     println!("Hello, world!");
 }
