@@ -47,6 +47,24 @@ impl Board {
         }
     }
 
+    pub fn get_bitboard(&self, color: Color, piece: Type) -> BitBoard {
+        match (color, piece) {
+            (Color::White, Type::Pawn) => self.white_pawns,
+            (Color::White, Type::Knight) => self.white_knights,
+            (Color::White, Type::Bishop) => self.white_bishops,
+            (Color::White, Type::Rook) => self.white_rooks,
+            (Color::White, Type::Queen) => self.white_queens,
+            (Color::White, Type::King) => self.white_king,
+            (Color::Black, Type::Pawn) => self.black_pawns,
+            (Color::Black, Type::Knight) => self.black_knights,
+            (Color::Black, Type::Bishop) => self.black_bishops,
+            (Color::Black, Type::Rook) => self.black_rooks,
+            (Color::Black, Type::Queen) => self.black_queens,
+            (Color::Black, Type::King) => self.black_king,
+            _ => 0,
+        }
+    }
+
     pub fn get_piece(&self, square: &Square) -> Piece {
         Piece {
             r#type: self.get_piece_type(square),
@@ -62,7 +80,7 @@ impl Board {
             | self.white_queens
             | self.white_king;
 
-        if (white << square) & 1 == 1 {
+        if (white >> square) & 1 == 1 {
             return Color::White;
         }
 
@@ -73,7 +91,7 @@ impl Board {
             | self.black_queens
             | self.black_king;
 
-        if (black << square) & 1 == 1 {
+        if (black >> square) & 1 == 1 {
             return Color::Black;
         }
 
@@ -83,37 +101,37 @@ impl Board {
     fn get_piece_type(&self, square: &Square) -> Type {
         let pawns = self.white_pawns | self.black_pawns;
 
-        if (pawns << square) & 1 == 1 {
+        if (pawns >> square) & 1 == 1 {
             return Type::Pawn;
         }
 
         let knights = self.white_knights | self.black_knights;
 
-        if (knights << square) & 1 == 1 {
+        if (knights >> square) & 1 == 1 {
             return Type::Knight;
         }
 
         let bishops = self.white_bishops | self.black_bishops;
 
-        if (bishops << square) & 1 == 1 {
+        if (bishops >> square) & 1 == 1 {
             return Type::Bishop;
         }
 
         let rooks = self.white_rooks | self.black_rooks;
 
-        if (rooks << square) & 1 == 1 {
+        if (rooks >> square) & 1 == 1 {
             return Type::Rook;
         }
 
         let queens = self.white_queens | self.black_queens;
 
-        if (queens << square) & 1 == 1 {
+        if (queens >> square) & 1 == 1 {
             return Type::Queen;
         }
 
         let kings = self.white_king | self.black_king;
 
-        if (kings << square) & 1 == 1 {
+        if (kings >> square) & 1 == 1 {
             return Type::King;
         }
 
