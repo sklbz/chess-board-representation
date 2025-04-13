@@ -6,7 +6,12 @@ use crate::board::Board;
 use crate::moves::is_possible;
 
 fn main() {
-    let board = Board::init();
-    let possible = is_possible(&board, &(0, 0));
     println!("Hello, world!");
+
+    let board = Board::init();
+
+    for i in 0..64 {
+        print!("{} ", i);
+        is_possible(&board, &(i, 0));
+    }
 }

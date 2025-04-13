@@ -5,7 +5,7 @@ pub(crate) trait BitBoardOperations {
 }
 
 impl BitBoardOperations for BitBoard {
-    pub(crate) fn bitwise_reverse(&self) -> BitBoard {
+    fn bitwise_reverse(&self) -> BitBoard {
         let mut reverse =
             ((self >> 1) & 0x5555_5555_5555_5555) | ((self & 0x5555_5555_5555_5555) << 1);
         reverse =
