@@ -28,7 +28,7 @@ fn main() {
         };
         print!("{}{}\t", letter, i / 8 + 1);
         is_possible(&board, &(i, 0));
-        thread::sleep(Duration::from_millis(250));
+        thread::sleep(Duration::from_millis(200));
     }
 
     println!("{:b}", &board.get_bitboard(Color::White, Type::Rook));
