@@ -209,12 +209,17 @@ impl Board {
         let hline = "-------------------------------";
         let mut board = String::new();
 
-        let mut row = "\t ".to_string();
+        let mut row = "".to_string();
 
         for i in 0..64 {
             if i % 8 == 0 {
-                board = format!("\t│{hline}│\n{}\n{}", row, board);
-                row = "\t│ ".to_string();
+                let line = if i == 0 {
+                    format!("\t {hline}\n")
+                } else {
+                    format!("\t│{hline}│\n")
+                };
+                board = format!("{line}\t│ {}\n{}", row, board);
+                row = "".to_string();
             }
 
             let Piece { r#type, color } = self.get_piece(&i);
@@ -239,7 +244,7 @@ impl Board {
             row.push(' ');
         }
 
-        board = format!(" \t{hline}\n{}\n{}", row, board);
+        board = format!("\t {hline}\n\t│ {}\n{}", row, board);
 
         board.pop();
         board.pop();
