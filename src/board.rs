@@ -41,9 +41,9 @@ impl Board {
             white_rooks: rook_pattern,
             black_rooks: rook_pattern.bitwise_reverse(),
             white_queens: queen_pattern,
-            black_queens: queen_pattern.bitwise_reverse(),
+            black_queens: king_pattern.bitwise_reverse(),
             white_king: king_pattern,
-            black_king: king_pattern.bitwise_reverse(),
+            black_king: queen_pattern.bitwise_reverse(),
         }
     }
 
@@ -136,5 +136,34 @@ impl Board {
         }
 
         Type::None
+    }
+
+    pub fn display(&self) {
+        let mut board = String::new();
+
+        for i in 0..64 {
+            if i % 8 == 0 {
+                board.push('\n');
+            }
+
+            let Piece { r#type, color } = self.get_piece(&i);
+            match (color, r#type) {
+                (Color::White, Type::Pawn) => board.push(''),
+                (Color::Black, Type::Pawn) => board.push('♙'),
+                (Color::White, Type::Knight) => board.push(''),
+                (Color::Black, Type::Knight) => board.push(''),
+                (Color::White, Type::Bishop) => board.push('󰡜'),
+                (Color::Black, Type::Bishop) => board.push(''),
+                (Color::White, Type::Rook) => board.push('󰡛'),
+                (Color::Black, Type::Rook) => board.push(''),
+                (Color::White, Type::Queen) => board.push(''),
+                (Color::Black, Type::Queen) => board.push(''),
+                (Color::White, Type::King) => board.push('󰡗'),
+                (Color::Black, Type::King) => board.push(''),
+                _ => board.push(' '),
+            }
+        }
+
+        println!("{}", board);
     }
 }
