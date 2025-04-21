@@ -206,18 +206,15 @@ impl Board {
     }
 
     pub fn display(&self) {
+        let hline = "-------------------------------";
         let mut board = String::new();
 
-        let mut row = String::new();
+        let mut row = "\t ".to_string();
 
         for i in 0..64 {
-            row.push(' ');
-            row.push(' ');
-            row.push(' ');
-
             if i % 8 == 0 {
-                board = format!("{}\n\n{}", row, board);
-                row = String::new();
+                board = format!("\t│{hline}│\n{}\n{}", row, board);
+                row = "\t│ ".to_string();
             }
 
             let Piece { r#type, color } = self.get_piece(&i);
@@ -236,9 +233,13 @@ impl Board {
                 (Color::Black, Type::King) => row.push(''),
                 _ => row.push(' '),
             }
+
+            row.push(' ');
+            row.push('│');
+            row.push(' ');
         }
 
-        board = format!("\n\n{}\n\n{}", row, board);
+        board = format!(" \t{hline}\n{}\n{}", row, board);
 
         board.pop();
         board.pop();
