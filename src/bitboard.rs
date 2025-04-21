@@ -16,7 +16,32 @@ impl BitBoardOperations for BitBoard {
             ((reverse >> 8) & 0x00ff_00ff_00ff_00ff) | ((reverse & 0x00ff_00ff_00ff_00ff) << 8);
         reverse =
             ((reverse >> 16) & 0x0000_ffff_0000_ffff) | ((reverse & 0x0000_ffff_0000_ffff) << 16);
-        reverse = (reverse >> 32) | (reverse << 32);
+        reverse = reverse.rotate_left(32);
+
         reverse
+    }
+}
+
+pub trait Display {
+    fn display(&self);
+}
+impl Display for BitBoard {
+    fn display(&self) {
+        let board = self.bitwise_reverse();
+
+        let mut grid: String = String::new();
+        for i in 0..64 {
+            if i % 8 == 0 {
+                grid.push('\n');
+            }
+
+            if board >> i & 1 == 1 {
+                grid.push('■')
+            } else {
+                grid.push('□')
+            }
+        }
+
+        println!("{}", grid);
     }
 }

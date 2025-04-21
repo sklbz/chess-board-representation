@@ -3,7 +3,8 @@ mod board;
 mod r#move;
 mod moves;
 
-use crate::board::Board;
+use crate::bitboard::*;
+use crate::board::*;
 use crate::moves::*;
 
 use std::thread;
@@ -31,5 +32,5 @@ fn main() {
         thread::sleep(Duration::from_millis(200));
     }
 
-    println!("{:b}", &board.get_bitboard(Color::White, Type::Rook));
+    board.get_bitboard(Color::White, Type::Rook).display();
 }

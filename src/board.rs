@@ -1,5 +1,4 @@
 use crate::bitboard::*;
-use crate::r#move::pawn::*;
 use crate::moves::*;
 
 pub(crate) struct Board {
@@ -33,9 +32,9 @@ impl Board {
         let king_pattern: u64 = 0x8;
 
         Board {
-            white_pawns: 0,
+            white_pawns: pawn_pattern,
             black_pawns: pawn_pattern.bitwise_reverse(),
-            white_knights: pawn_attack(&knight_pattern, &pawn_pattern),
+            white_knights: knight_pattern,
             black_knights: knight_pattern.bitwise_reverse(),
             white_bishops: bishop_pattern,
             black_bishops: bishop_pattern.bitwise_reverse(),
