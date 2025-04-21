@@ -141,31 +141,44 @@ impl Board {
     pub fn display(&self) {
         let mut board = String::new();
 
+        let mut row = String::new();
+
         for i in 0..64 {
             if i % 8 == 0 {
-                board.push('\n');
-                board.push('\n');
+                row = row.chars().rev().collect();
+                board = format!("{}\n\n{}", row, board);
+                row = String::new();
             }
 
             let Piece { r#type, color } = self.get_piece(&i);
             match (color, r#type) {
-                (Color::White, Type::Pawn) => board.push(''),
-                (Color::Black, Type::Pawn) => board.push('♙'),
-                (Color::White, Type::Knight) => board.push(''),
-                (Color::Black, Type::Knight) => board.push(''),
-                (Color::White, Type::Bishop) => board.push('󰡜'),
-                (Color::Black, Type::Bishop) => board.push(''),
-                (Color::White, Type::Rook) => board.push('󰡛'),
-                (Color::Black, Type::Rook) => board.push(''),
-                (Color::White, Type::Queen) => board.push(''),
-                (Color::Black, Type::Queen) => board.push(''),
-                (Color::White, Type::King) => board.push('󰡗'),
-                (Color::Black, Type::King) => board.push(''),
-                _ => board.push(' '),
+                (Color::White, Type::Pawn) => row.push('󰡙'),
+                (Color::Black, Type::Pawn) => row.push('♙'),
+                (Color::White, Type::Knight) => row.push('󰡘'),
+                (Color::Black, Type::Knight) => row.push(''),
+                (Color::White, Type::Bishop) => row.push('󰡜'),
+                (Color::Black, Type::Bishop) => row.push(''),
+                (Color::White, Type::Rook) => row.push('󰡛'),
+                (Color::Black, Type::Rook) => row.push(''),
+                (Color::White, Type::Queen) => row.push('󰡚'),
+                (Color::Black, Type::Queen) => row.push(''),
+                (Color::White, Type::King) => row.push('󰡗'),
+                (Color::Black, Type::King) => row.push(''),
+                _ => row.push(' '),
             }
 
-            board.push(' ');
+            row.push(' ');
+            row.push(' ');
+            row.push(' ');
         }
+
+        row = row.chars().rev().collect();
+        board = format!("\n\n{}\n\n{}", row, board);
+
+        board.pop();
+        board.pop();
+        board.pop();
+        board.pop();
 
         println!("{}", board);
     }
