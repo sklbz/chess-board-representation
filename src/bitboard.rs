@@ -25,6 +25,7 @@ impl BitBoardOperations for BitBoard {
 pub trait Display {
     fn display(&self);
 }
+
 impl Display for BitBoard {
     fn display(&self) {
         let board = self.bitwise_reverse();

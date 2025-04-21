@@ -1,4 +1,5 @@
 mod bitboard;
+mod bitmask;
 mod board;
 mod r#move;
 mod moves;
@@ -6,6 +7,7 @@ mod utils;
 
 use std::io::stdin;
 
+use bitmask::mask_up;
 use utils::string_to_square;
 
 use crate::board::*;
@@ -52,6 +54,19 @@ fn main() {
         }
 
         if input == "\n" {
+            break;
+        }
+
+        if &input[0..7] == "mask up" {
+            let square: u64 = input[7..]
+                .split_whitespace()
+                .map(string_to_square)
+                .collect::<Vec<u64>>()[0];
+
+            let test = Board::from_mask(mask_up(square));
+
+            test.display();
+
             break;
         }
 
