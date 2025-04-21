@@ -39,9 +39,7 @@ fn main() {
     }
 
     loop {
-        if false {
-            break;
-        }
+        print!("{esc}[2J", esc = 27 as char);
         board.display();
 
         let mut input = String::new();
@@ -53,6 +51,10 @@ fn main() {
             break;
         }
 
+        if input == "\n" {
+            continue;
+        }
+
         let squares: Vec<u64> = input
             .split_whitespace()
             .map(string_to_square)
@@ -61,7 +63,5 @@ fn main() {
         println!("{} {}", squares[0], squares[1]);
 
         board.play_move(&(squares[0], squares[1]));
-
-        print!("{esc}[2J", esc = 27 as char);
     }
 }
