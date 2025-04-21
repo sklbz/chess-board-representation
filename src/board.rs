@@ -144,6 +144,7 @@ impl Board {
         for i in 0..64 {
             if i % 8 == 0 {
                 board.push('\n');
+                board.push('\n');
             }
 
             let Piece { r#type, color } = self.get_piece(&i);
@@ -162,6 +163,8 @@ impl Board {
                 (Color::Black, Type::King) => board.push(''),
                 _ => board.push(' '),
             }
+
+            board.push(' ');
         }
 
         println!("{}", board);
