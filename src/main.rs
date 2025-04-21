@@ -52,7 +52,7 @@ fn main() {
         }
 
         if input == "\n" {
-            continue;
+            break;
         }
 
         let squares: Vec<u64> = input
