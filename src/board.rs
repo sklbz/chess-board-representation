@@ -28,8 +28,8 @@ impl Board {
         let knight_pattern: u64 = 0x42;
         let bishop_pattern: u64 = 0x24;
         let rook_pattern: u64 = 0x81;
-        let queen_pattern: u64 = 0x10;
-        let king_pattern: u64 = 0x8;
+        let queen_pattern: u64 = 0x8;
+        let king_pattern: u64 = 0x10;
 
         Board {
             white_pawns: pawn_pattern,
@@ -44,6 +44,56 @@ impl Board {
             black_queens: king_pattern.bitwise_reverse(),
             white_king: king_pattern,
             black_king: queen_pattern.bitwise_reverse(),
+        }
+    }
+
+    pub fn play_move(&mut self, r#move: &Move) {
+        let start: Square = r#move.0;
+
+        let piece = self.get_piece(&start);
+        self.remove_piece(&start);
+
+        let end: Square = r#move.1;
+
+        self.remove_piece(&end);
+
+        self.add_piece(&end, piece);
+    }
+
+    fn remove_piece(&mut self, square: &Square) {
+        let mask = 1 << square;
+
+        self.white_pawns &= !mask;
+        self.black_pawns &= !mask;
+        self.white_knights &= !mask;
+        self.black_knights &= !mask;
+        self.white_bishops &= !mask;
+        self.black_bishops &= !mask;
+        self.white_rooks &= !mask;
+        self.black_rooks &= !mask;
+        self.white_queens &= !mask;
+        self.black_queens &= !mask;
+        self.white_king &= !mask;
+        self.black_king &= !mask;
+    }
+
+    fn add_piece(&mut self, square: &Square, piece: Piece) {
+        let mask = 1 << square;
+
+        match (piece.color, piece.r#type) {
+            (Color::White, Type::Pawn) => self.white_pawns |= mask,
+            (Color::Black, Type::Pawn) => self.black_pawns |= mask,
+            (Color::White, Type::Knight) => self.white_knights |= mask,
+            (Color::Black, Type::Knight) => self.black_knights |= mask,
+            (Color::White, Type::Bishop) => self.white_bishops |= mask,
+            (Color::Black, Type::Bishop) => self.black_bishops |= mask,
+            (Color::White, Type::Rook) => self.white_rooks |= mask,
+            (Color::Black, Type::Rook) => self.black_rooks |= mask,
+            (Color::White, Type::Queen) => self.white_queens |= mask,
+            (Color::Black, Type::Queen) => self.black_queens |= mask,
+            (Color::White, Type::King) => self.white_king |= mask,
+            (Color::Black, Type::King) => self.black_king |= mask,
+            _ => (),
         }
     }
 
@@ -144,8 +194,11 @@ impl Board {
         let mut row = String::new();
 
         for i in 0..64 {
+            row.push(' ');
+            row.push(' ');
+            row.push(' ');
+
             if i % 8 == 0 {
-                row = row.chars().rev().collect();
                 board = format!("{}\n\n{}", row, board);
                 row = String::new();
             }
@@ -166,13 +219,8 @@ impl Board {
                 (Color::Black, Type::King) => row.push(''),
                 _ => row.push(' '),
             }
-
-            row.push(' ');
-            row.push(' ');
-            row.push(' ');
         }
 
-        row = row.chars().rev().collect();
         board = format!("\n\n{}\n\n{}", row, board);
 
         board.pop();

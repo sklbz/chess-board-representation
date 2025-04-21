@@ -2,8 +2,12 @@ mod bitboard;
 mod board;
 mod r#move;
 mod moves;
+mod utils;
 
-use crate::bitboard::*;
+use std::io::stdin;
+
+use utils::string_to_square;
+
 use crate::board::*;
 use crate::moves::*;
 
@@ -11,7 +15,7 @@ use std::thread;
 use std::time::Duration;
 
 fn main() {
-    let board = Board::init();
+    let mut board = Board::init();
 
     let square_by_square_check: bool = false;
 
@@ -33,5 +37,27 @@ fn main() {
             thread::sleep(Duration::from_millis(50));
         }
     }
-    board.display();
+
+    loop {
+        if false {
+            break;
+        }
+        board.display();
+
+        let mut input = String::new();
+        stdin()
+            .read_line(&mut input)
+            .expect("error: unable to read user input");
+
+        let squares: Vec<u64> = input
+            .split_whitespace()
+            .map(string_to_square)
+            .collect::<Vec<u64>>();
+
+        println!("{} {}", squares[0], squares[1]);
+
+        board.play_move(&(squares[0], squares[1]));
+
+        print!("{esc}[2J", esc = 27 as char);
+    }
 }
