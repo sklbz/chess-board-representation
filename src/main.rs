@@ -49,6 +49,10 @@ fn main() {
             .read_line(&mut input)
             .expect("error: unable to read user input");
 
+        if input == "quit\n" {
+            break;
+        }
+
         let squares: Vec<u64> = input
             .split_whitespace()
             .map(string_to_square)
