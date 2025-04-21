@@ -1,4 +1,5 @@
 use crate::bitboard::*;
+use crate::r#move::pawn::pawn_motion;
 use crate::moves::*;
 
 pub(crate) struct Board {
@@ -32,7 +33,7 @@ impl Board {
         let king_pattern: u64 = 0x8;
 
         Board {
-            white_pawns: pawn_pattern,
+            white_pawns: pawn_motion(&pawn_pattern, &knight_pattern),
             black_pawns: pawn_pattern.bitwise_reverse(),
             white_knights: knight_pattern,
             black_knights: knight_pattern.bitwise_reverse(),
@@ -95,7 +96,7 @@ impl Board {
             return Color::Black;
         }
 
-        Color::None
+        Color::Null
     }
 
     fn get_piece_type(&self, square: &Square) -> Type {

@@ -1,5 +1,6 @@
 mod bitboard;
 mod board;
+mod r#move;
 mod moves;
 
 use crate::board::Board;

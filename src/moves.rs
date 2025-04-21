@@ -15,7 +15,7 @@ pub(crate) enum Type {
 pub(crate) enum Color {
     White,
     Black,
-    None,
+    Null,
 }
 
 pub(crate) struct Piece {
@@ -39,7 +39,7 @@ pub(crate) fn is_possible(board: &Board, r#move: &Move) -> bool {
     }
 
     match (piece.r#type, piece.color) {
-        (Type::None, _) | (_, Color::None) => return false,
+        (Type::None, _) | (_, Color::Null) => return false,
         _ => (),
     }
 
