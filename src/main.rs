@@ -6,7 +6,7 @@ mod r#move;
 mod moves;
 mod utils;
 
-use game::run;
+use game::game_loop::run;
 use utils::squarewise_display;
 
 use crate::board::*;

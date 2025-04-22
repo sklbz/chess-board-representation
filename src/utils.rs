@@ -66,9 +66,24 @@ pub fn extract_square(input: String, index: usize) -> Square {
 
 pub fn extract_move(input: String, index: usize) -> (Square, Square) {
     let squares: Vec<u64> = input
+        .get(index..)
+        .expect("Failed to extract move")
         .split_whitespace()
         .map(string_to_square)
         .collect::<Vec<u64>>();
 
     (squares[0], squares[1])
+}
+
+use std::io::stdin;
+pub fn user_input() -> String {
+    let mut input = String::new();
+
+    stdin()
+        .read_line(&mut input)
+        .expect("error: unable to read user input");
+
+    input.pop();
+
+    input.trim().to_string()
 }

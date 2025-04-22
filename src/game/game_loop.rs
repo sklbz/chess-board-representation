@@ -1,23 +1,15 @@
 use crate::{
     Board,
     bitmask::{down_mask, left_mask, right_mask, top_left_mask, up_mask},
-    utils::{extract_move, extract_square, min},
+    utils::{extract_move, extract_square, min, user_input},
 };
-
-use std::io::stdin;
 
 pub fn run(board: &mut Board) {
     loop {
         print!("{esc}[2J", esc = 27 as char);
         board.display();
 
-        let mut input = String::new();
-        stdin()
-            .read_line(&mut input)
-            .expect("error: unable to read user input");
-
-        input.pop();
-        input = input.trim().to_string();
+        let input = user_input();
 
         if input == "exit" {
             break;
