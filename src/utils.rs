@@ -55,14 +55,14 @@ pub fn min(a: usize, b: usize) -> usize {
     if a < b { a } else { b }
 }
 
-pub fn extract_square(input: String) -> Square {
+pub fn extract_square(input: &String) -> Square {
     input
         .split_whitespace()
         .map(string_to_square)
         .collect::<Vec<u64>>()[0]
 }
 
-pub fn extract_move(input: String) -> (Square, Square) {
+pub fn extract_move(input: &String) -> (Square, Square) {
     let squares: Vec<u64> = input
         .split_whitespace()
         .map(string_to_square)
