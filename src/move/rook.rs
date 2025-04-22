@@ -1,9 +1,9 @@
 use crate::bitboard::*;
 
 pub fn rook_move(
-    rook_board: &BitBoard,
-    allies_board: &BitBoard,
-    ennemy_board: &BitBoard,
+    _rook_board: &BitBoard,
+    _allies_board: &BitBoard,
+    _ennemy_board: &BitBoard,
 ) -> BitBoard {
     0
 }
