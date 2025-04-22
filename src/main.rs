@@ -7,8 +7,10 @@ mod utils;
 
 use std::io::stdin;
 
-use bitmask::mask_down;
-use bitmask::mask_up;
+use bitmask::down_mask;
+use bitmask::left_mask;
+use bitmask::right_mask;
+use bitmask::up_mask;
 use utils::min;
 use utils::squarewise_display;
 use utils::string_to_square;
@@ -50,7 +52,7 @@ fn main() {
                 .map(string_to_square)
                 .collect::<Vec<u64>>()[0];
 
-            let test = Board::from_mask(mask_up(square));
+            let test = Board::from_mask(up_mask(square));
 
             test.display();
 
@@ -65,8 +67,35 @@ fn main() {
                 .map(string_to_square)
                 .collect::<Vec<u64>>()[0];
 
-            let test = Board::from_mask(mask_down(square));
+            let test = Board::from_mask(down_mask(square));
+            test.display();
 
+            break;
+        }
+
+        if &input[0..min(input.len(), 9)] == "mask left" {
+            let square: u64 = input
+                .get(9..)
+                .expect("Failed to extract square")
+                .split_whitespace()
+                .map(string_to_square)
+                .collect::<Vec<u64>>()[0];
+
+            let test = Board::from_mask(left_mask(square));
+            test.display();
+
+            break;
+        }
+
+        if &input[0..min(input.len(), 10)] == "mask right" {
+            let square: u64 = input
+                .get(10..)
+                .expect("Failed to extract square")
+                .split_whitespace()
+                .map(string_to_square)
+                .collect::<Vec<u64>>()[0];
+
+            let test = Board::from_mask(right_mask(square));
             test.display();
 
             break;
