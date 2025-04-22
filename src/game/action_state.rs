@@ -1,5 +1,7 @@
 use crate::utils::min;
 
+use super::algebraic_notation::is_square_notation;
+
 pub enum Action {
     Move,
     MaskUp,
@@ -26,8 +28,40 @@ pub fn get_action(input: &String) -> Action {
         return Action::Quit;
     }
 
-    if input[0..min(input.len(), 7)] == "mask up" {
+    if &input[0..min(input.len(), 7)] == "mask up" {
         return Action::MaskUp;
+    }
+
+    if &input[0..min(input.len(), 9)] == "mask down" {
+        return Action::MaskDown;
+    }
+
+    if &input[0..min(input.len(), 9)] == "mask left" {
+        return Action::MaskLeft;
+    }
+
+    if &input[0..min(input.len(), 10)] == "mask right" {
+        return Action::MaskRight;
+    }
+
+    if &input[0..min(input.len(), 13)] == "mask top left" {
+        return Action::MaskTopLeft;
+    }
+
+    if &input[0..min(input.len(), 14)] == "mask top right" {
+        return Action::MaskTopRight;
+    }
+
+    if &input[0..min(input.len(), 17)] == "mask bottom right" {
+        return Action::MaskBottomRight;
+    }
+
+    if &input[0..min(input.len(), 16)] == "mask bottom left" {
+        return Action::MaskBottomLeft;
+    }
+
+    if is_square_notation(input) {
+        return Action::Move;
     }
 
     Action::Quit
