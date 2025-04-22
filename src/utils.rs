@@ -55,19 +55,15 @@ pub fn min(a: usize, b: usize) -> usize {
     if a < b { a } else { b }
 }
 
-pub fn extract_square(input: String, index: usize) -> Square {
+pub fn extract_square(input: String) -> Square {
     input
-        .get(index..)
-        .expect("Failed to extract square")
         .split_whitespace()
         .map(string_to_square)
         .collect::<Vec<u64>>()[0]
 }
 
-pub fn extract_move(input: String, index: usize) -> (Square, Square) {
+pub fn extract_move(input: String) -> (Square, Square) {
     let squares: Vec<u64> = input
-        .get(index..)
-        .expect("Failed to extract move")
         .split_whitespace()
         .map(string_to_square)
         .collect::<Vec<u64>>();

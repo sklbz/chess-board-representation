@@ -3,7 +3,7 @@ use crate::{
     bitmask::{
         bottom_right_mask, down_mask, left_mask, right_mask, top_left_mask, top_right_mask, up_mask,
     },
-    game::action_state::{Action, get_action},
+    game::action_state::{Action, get_action, get_input},
     utils::{extract_move, extract_square, user_input},
 };
 
@@ -16,11 +16,13 @@ pub fn run(board: &mut Board) {
 
         let action: Action = get_action(&input);
 
+        let game_input = get_input(&input, &action);
+
         match action {
-            Action::Move => board.play_move(&extract_move(input, 0)),
+            Action::Move => board.play_move(&extract_move(game_input)),
 
             Action::MaskUp => {
-                let square: u64 = extract_square(input, 7);
+                let square: u64 = extract_square(game_input);
 
                 let test = Board::from_mask(up_mask(square));
 
@@ -30,7 +32,7 @@ pub fn run(board: &mut Board) {
             }
 
             Action::MaskDown => {
-                let square: u64 = extract_square(input, 9);
+                let square: u64 = extract_square(game_input);
 
                 let test = Board::from_mask(down_mask(square));
                 test.display();
@@ -39,7 +41,7 @@ pub fn run(board: &mut Board) {
             }
 
             Action::MaskLeft => {
-                let square: u64 = extract_square(input, 9);
+                let square: u64 = extract_square(game_input);
 
                 let test = Board::from_mask(left_mask(square));
                 test.display();
@@ -48,7 +50,7 @@ pub fn run(board: &mut Board) {
             }
 
             Action::MaskRight => {
-                let square: u64 = extract_square(input, 10);
+                let square: u64 = extract_square(game_input);
 
                 let test = Board::from_mask(right_mask(square));
                 test.display();
@@ -57,7 +59,7 @@ pub fn run(board: &mut Board) {
             }
 
             Action::MaskTopLeft => {
-                let square: u64 = extract_square(input, 13);
+                let square: u64 = extract_square(game_input);
 
                 let test = Board::from_mask(top_left_mask(square));
                 test.display();
@@ -66,7 +68,7 @@ pub fn run(board: &mut Board) {
             }
 
             Action::MaskTopRight => {
-                let square: u64 = extract_square(input, 14);
+                let square: u64 = extract_square(game_input);
 
                 let test = Board::from_mask(top_right_mask(square));
                 test.display();
@@ -75,7 +77,7 @@ pub fn run(board: &mut Board) {
             }
 
             Action::MaskBottomRight => {
-                let square: u64 = extract_square(input, 17);
+                let square: u64 = extract_square(game_input);
 
                 let test = Board::from_mask(bottom_right_mask(square));
                 test.display();
@@ -84,7 +86,7 @@ pub fn run(board: &mut Board) {
             }
 
             Action::MaskBottomLeft => {
-                let square: u64 = extract_square(input, 16);
+                let square: u64 = extract_square(game_input);
 
                 let test = Board::from_mask(bottom_right_mask(square));
                 test.display();
