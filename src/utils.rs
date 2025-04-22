@@ -1,4 +1,4 @@
-use crate::{Board, Square, board, is_possible};
+use crate::{Board, Square, is_possible};
 
 pub fn string_to_square(string: &str) -> Square {
     let letter = string.chars().next().expect("Unable to read letter");
@@ -53,4 +53,22 @@ pub fn squarewise_display(board: &Board) {
 
 pub fn min(a: usize, b: usize) -> usize {
     if a < b { a } else { b }
+}
+
+pub fn extract_square(input: String, index: usize) -> Square {
+    input
+        .get(index..)
+        .expect("Failed to extract square")
+        .split_whitespace()
+        .map(string_to_square)
+        .collect::<Vec<u64>>()[0]
+}
+
+pub fn extract_move(input: String, index: usize) -> (Square, Square) {
+    let squares: Vec<u64> = input
+        .split_whitespace()
+        .map(string_to_square)
+        .collect::<Vec<u64>>();
+
+    (squares[0], squares[1])
 }

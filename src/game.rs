@@ -1,7 +1,7 @@
 use crate::{
     Board,
-    bitmask::{down_mask, left_mask, right_mask, up_mask},
-    utils::{min, string_to_square},
+    bitmask::{down_mask, left_mask, right_mask, top_left_mask, up_mask},
+    utils::{extract_move, extract_square, min},
 };
 
 use std::io::stdin;
@@ -16,21 +16,23 @@ pub fn run(board: &mut Board) {
             .read_line(&mut input)
             .expect("error: unable to read user input");
 
-        if input == "quit\n" {
+        input.pop();
+        input = input.trim().to_string();
+
+        if input == "exit" {
             break;
         }
 
-        if input == "\n" {
+        if input == "quit" {
+            break;
+        }
+
+        if input.is_empty() {
             break;
         }
 
         if &input[0..min(input.len(), 7)] == "mask up" {
-            let square: u64 = input
-                .get(7..)
-                .expect("Failed to extract square")
-                .split_whitespace()
-                .map(string_to_square)
-                .collect::<Vec<u64>>()[0];
+            let square: u64 = extract_square(input, 7);
 
             let test = Board::from_mask(up_mask(square));
 
@@ -40,12 +42,7 @@ pub fn run(board: &mut Board) {
         }
 
         if &input[0..min(input.len(), 9)] == "mask down" {
-            let square: u64 = input
-                .get(9..)
-                .expect("Failed to extract square")
-                .split_whitespace()
-                .map(string_to_square)
-                .collect::<Vec<u64>>()[0];
+            let square: u64 = extract_square(input, 9);
 
             let test = Board::from_mask(down_mask(square));
             test.display();
@@ -54,12 +51,7 @@ pub fn run(board: &mut Board) {
         }
 
         if &input[0..min(input.len(), 9)] == "mask left" {
-            let square: u64 = input
-                .get(9..)
-                .expect("Failed to extract square")
-                .split_whitespace()
-                .map(string_to_square)
-                .collect::<Vec<u64>>()[0];
+            let square: u64 = extract_square(input, 9);
 
             let test = Board::from_mask(left_mask(square));
             test.display();
@@ -68,12 +60,7 @@ pub fn run(board: &mut Board) {
         }
 
         if &input[0..min(input.len(), 10)] == "mask right" {
-            let square: u64 = input
-                .get(10..)
-                .expect("Failed to extract square")
-                .split_whitespace()
-                .map(string_to_square)
-                .collect::<Vec<u64>>()[0];
+            let square: u64 = extract_square(input, 10);
 
             let test = Board::from_mask(right_mask(square));
             test.display();
@@ -81,11 +68,15 @@ pub fn run(board: &mut Board) {
             break;
         }
 
-        let squares: Vec<u64> = input
-            .split_whitespace()
-            .map(string_to_square)
-            .collect::<Vec<u64>>();
+        if &input[0..min(input.len(), 13)] == "mask top left" {
+            let square: u64 = extract_square(input, 13);
 
-        board.play_move(&(squares[0], squares[1]));
+            let test = Board::from_mask(top_left_mask(square));
+            test.display();
+
+            break;
+        }
+
+        board.play_move(&extract_move(input, 0));
     }
 }
