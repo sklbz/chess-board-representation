@@ -3,7 +3,7 @@ use std::ops::Not;
 
 pub(crate) type Square = u8;
 pub(crate) type Move = (Square, Square);
-#[derive(PartialEq)]
+#[derive(PartialEq, Debug)]
 pub(crate) enum Type {
     Pawn,
     Knight,
@@ -14,17 +14,22 @@ pub(crate) enum Type {
     None,
 }
 
-#[derive(PartialEq)]
+#[derive(PartialEq, Debug)]
 pub(crate) enum Color {
     White,
     Black,
     Null,
 }
 
-#[derive(PartialEq)]
-pub(crate) struct Piece {
-    pub(crate) r#type: Type,
-    pub(crate) color: Color,
+#[derive(PartialEq, Debug)]
+pub struct Piece {
+    pub r#type: Type,
+    pub color: Color,
+}
+impl Piece {
+    pub(crate) fn new(r#type: Type, color: Color) -> Self {
+        Self { r#type, color }
+    }
 }
 
 pub(crate) fn is_possible(board: &Board, r#move: &Move) -> bool {

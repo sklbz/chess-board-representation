@@ -19,7 +19,7 @@ mod tests {
 
     #[test]
     fn test_rook_moves() {
-        let board = Board::from_mask(1 << 0, Piece(Type::Rook, Color::White)); // White rook at a1
+        let board = Board::from_mask(1 << 0, Piece::new(Type::Rook, Color::White)); // White rook at a1
 
         // Valid rook moves
         assert!(is_possible(&board, &(0, 7))); // Horizontal

@@ -71,6 +71,26 @@ impl Board {
         } = piece;
 
         match (piece_type, color) {
+            (Type::Pawn, Color::White) => {
+                let mut board = Board::empty();
+                board.white_pawns = mask;
+                board
+            }
+            (Type::Pawn, Color::Black) => {
+                let mut board = Board::empty();
+                board.black_pawns = mask;
+                board
+            }
+            (Type::Knight, Color::White) => {
+                let mut board = Board::empty();
+                board.white_knights = mask;
+                board
+            }
+            (Type::Knight, Color::Black) => {
+                let mut board = Board::empty();
+                board.black_knights = mask;
+                board
+            }
             (Type::Bishop, Color::White) => {
                 let mut board = Board::empty();
                 board.white_bishops = mask;

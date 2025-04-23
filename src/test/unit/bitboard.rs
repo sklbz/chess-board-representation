@@ -5,7 +5,7 @@ mod tests {
 
     #[test]
     fn test_to_bitboard() {
-        assert_eq!(0.to_bitboard(), 0);
+        assert_eq!(0.to_bitboard(), 0b1);
         assert_eq!(1.to_bitboard(), 0b10);
         assert_eq!(63.to_bitboard(), 1 << 63);
     }

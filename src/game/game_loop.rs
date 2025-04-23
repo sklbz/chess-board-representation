@@ -29,7 +29,7 @@ pub fn run(board: &mut Board) {
                 let square = extract_square(&game_input);
                 let mask = get_mask(&action);
 
-                let test = Board::from_mask(mask(square), Piece(Type::Pawn, Color::White));
+                let test = Board::from_mask(mask(square), Piece::new(Type::Pawn, Color::White));
 
                 test.display();
 
