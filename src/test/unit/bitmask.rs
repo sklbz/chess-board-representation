@@ -126,4 +126,50 @@ mod tests {
             }
         }
     }
+
+    #[test]
+    fn test_bishop_movement() {
+        // Place white bishop at c3 (18)
+        let bishop_square = 18;
+
+        // Get all possible moves
+        let moves = diagonal_cross_mask(bishop_square);
+
+        // Should include these squares
+        assert!(moves & (1 << 0) != 0); // a1
+        assert!(moves & (1 << 9) != 0); // b2
+        assert!(moves & (1 << 27) != 0); // d4
+        assert!(moves & (1 << 36) != 0); // e5
+    }
+
+    use proptest::prelude::*;
+
+    proptest! {
+        #[test]
+        fn test_diagonal_masks_contain_origin(square in 0..64u8) {
+            let right = right_diagonal_mask(square);
+            let left = left_diagonal_mask(square);
+            assert!(right & (1 << square) != 0);
+            assert!(left & (1 << square) != 0);
+        }
+
+        #[test]
+        fn test_diagonal_masks_symmetric(square in 0..64u8) {
+            let right = right_diagonal_mask(square);
+            let left = left_diagonal_mask(square);
+            // For non-edge squares, both diagonals should exist
+            if square % 8 != square / 8 && square % 8 + square / 8 != 7 {
+                assert!(right.count_ones() > 1);
+                assert!(left.count_ones() > 1);
+            }
+        }
+
+        #[test]
+        fn test_diagonal_cross_contains_both(square in 0..64u8) {
+            let cross = diagonal_cross_mask(square);
+            let right = right_diagonal_mask(square);
+            let left = left_diagonal_mask(square);
+            assert_eq!(cross, right | left);
+        }
+    }
 }

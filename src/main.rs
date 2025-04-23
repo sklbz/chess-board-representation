@@ -7,6 +7,8 @@ mod moves;
 mod test;
 mod utils;
 
+use bitboard::Display;
+use bitmask::up_mask;
 use game::game_loop::run;
 use utils::squarewise_display;
 
