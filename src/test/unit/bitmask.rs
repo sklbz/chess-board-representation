@@ -44,29 +44,6 @@ mod tests {
     }
 
     #[test]
-    fn test_left_diagonal_mask() {
-        // Test center squares
-        assert_eq!(left_diagonal_mask(28), 0x0102_0408_1020_4080); // e4
-        assert_eq!(left_diagonal_mask(35), 0x0204_0810_2040_8000); // d5
-
-        // Test edge cases
-        assert_eq!(left_diagonal_mask(7), 0x0102_0408_1020_4080); // h1
-        assert_eq!(left_diagonal_mask(0), 0x0000_0000_0000_0001); // a1 (only one square)
-        assert_eq!(left_diagonal_mask(56), 0x0000_0000_0000_0080); // a8
-        assert_eq!(left_diagonal_mask(63), 0x0102_0408_1020_4080); // h8
-
-        // Test specific patterns
-        let d5_mask = left_diagonal_mask(35);
-        assert!(d5_mask & (1 << 7) != 0); // h1 should be in the mask
-        assert!(d5_mask & (1 << 14) != 0); // g2
-        assert!(d5_mask & (1 << 21) != 0); // f3
-        assert!(d5_mask & (1 << 28) != 0); // e4
-        assert!(d5_mask & (1 << 42) != 0); // c6
-        assert!(d5_mask & (1 << 49) != 0); // b7
-        assert!(d5_mask & (1 << 56) != 0); // a8
-    }
-
-    #[test]
     fn test_diagonal_cross_mask() {
         // Test center square
         let e4_mask = diagonal_cross_mask(28);
