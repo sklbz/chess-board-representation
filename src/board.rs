@@ -1,6 +1,7 @@
 use crate::bitboard::*;
 use crate::moves::*;
 
+#[derive(Debug)]
 pub(crate) struct Board {
     // Pawns
     white_pawns: BitBoard,
@@ -61,6 +62,36 @@ impl Board {
             black_queens: 0,
             white_king: 0,
             black_king: 0,
+        }
+    }
+
+    pub fn new(
+        white_pawns: BitBoard,
+        black_pawns: BitBoard,
+        white_knights: BitBoard,
+        black_knights: BitBoard,
+        white_bishops: BitBoard,
+        black_bishops: BitBoard,
+        white_rooks: BitBoard,
+        black_rooks: BitBoard,
+        white_queens: BitBoard,
+        black_queens: BitBoard,
+        white_king: BitBoard,
+        black_king: BitBoard,
+    ) -> Board {
+        Board {
+            white_pawns,
+            black_pawns,
+            white_knights,
+            black_knights,
+            white_bishops,
+            black_bishops,
+            white_rooks,
+            black_rooks,
+            white_queens,
+            black_queens,
+            white_king,
+            black_king,
         }
     }
 

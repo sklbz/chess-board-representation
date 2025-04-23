@@ -1,7 +1,7 @@
-use crate::{Square, ToBitBoard as _, bitboard::BitBoard};
+use crate::{Square, ToBitBoard as _, bitboard::BitBoard, utils::min};
 
 pub fn up_mask(square: Square) -> BitBoard {
-    let offset = square - (square % 8) + 8;
+    let offset = min((square - (square % 8) + 8).into(), 63);
     u64::MAX << offset
 }
 

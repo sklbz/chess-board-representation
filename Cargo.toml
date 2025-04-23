@@ -3,4 +3,7 @@ name = "chess-board-representation"
 version = "0.1.0"
 edition = "2024"
 
+[dev-dependencies]
+proptest = "1.6.0" # For property-based testing
+
 [dependencies]
