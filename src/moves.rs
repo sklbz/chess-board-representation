@@ -25,7 +25,7 @@ pub(crate) struct Piece {
 }
 
 pub(crate) fn is_possible(board: &Board, r#move: &Move) -> bool {
-    let start: Square = r#move.0;
+    let (start, end): (Square, Square) = *r#move;
 
     let piece = board.get_piece(&start);
 
@@ -37,7 +37,7 @@ pub(crate) fn is_possible(board: &Board, r#move: &Move) -> bool {
         Type::Knight => println!("Knight"),
         Type::Pawn => println!("Pawn"),
         Type::None => println!("None"),
-    }
+    };
 
     match (piece.r#type, piece.color) {
         (Type::None, _) | (_, Color::Null) => return false,
@@ -48,7 +48,7 @@ pub(crate) fn is_possible(board: &Board, r#move: &Move) -> bool {
                 &board.get_bitboard(&!color, &Type::None),
             );
 
-            if start.to_bitboard() & move_mask == 0 {
+            if end.to_bitboard() & move_mask == 0 {
                 return false;
             }
 

@@ -142,8 +142,6 @@ impl Board {
                     | self.get_bitboard(&color, &Type::Queen)
                     | self.get_bitboard(&color, &Type::King)
             }
-
-            _ => 0,
         }
     }
 

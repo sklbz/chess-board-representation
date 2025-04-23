@@ -6,6 +6,10 @@ pub fn up_mask(square: Square) -> BitBoard {
 }
 
 pub fn down_mask(square: Square) -> BitBoard {
+    if square < 8 {
+        return 0;
+    }
+
     let offset = square - 8;
     !up_mask(offset)
 }

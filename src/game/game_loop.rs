@@ -1,6 +1,7 @@
 use crate::{
     Board,
     game::action_state::{Action, get_action, get_input, get_mask},
+    is_possible,
     utils::{extract_move, extract_square, user_input},
 };
 
@@ -19,7 +20,9 @@ pub fn run(board: &mut Board) {
             Action::Move => {
                 let move_to_play = extract_move(&game_input);
 
-                board.play_move(&move_to_play)
+                if is_possible(board, &move_to_play) {
+                    board.play_move(&move_to_play)
+                }
             }
 
             Action::Mask(_) => {
