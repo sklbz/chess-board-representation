@@ -1,5 +1,5 @@
 use crate::bitboard::BitBoardOperations;
-use crate::{Square, ToBitBoard as _, bitboard::BitBoard, utils::min};
+use crate::{Square, bitboard::BitBoard, utils::min};
 
 pub fn up_mask(square: Square) -> BitBoard {
     if square >= 64 - 8 {
@@ -81,20 +81,22 @@ pub fn right_diagonal_mask(square: Square) -> BitBoard {
     let diag_shift = (square / 8).wrapping_sub(square % 8);
 
     if diag_shift < 8 {
-        (main_diag >> (8 * diag_shift)).bitwise_reverse()
+        main_diag >> (8 * diag_shift)
     } else {
-        (main_diag << (8 * (diag_shift.wrapping_neg()))).bitwise_reverse()
+        main_diag << (8 * diag_shift.wrapping_neg())
     }
+    .bitwise_reverse()
 }
 
 // ╲
 pub fn left_diagonal_mask(square: Square) -> BitBoard {
     let main_diag = 0x0102_0408_1020_4080;
-    let diag_shift = (square / 8) + (square % 8);
+    let diag_shift = (square / 8).wrapping_sub(1 + square % 8);
 
     if diag_shift < 8 {
         main_diag >> (8 * diag_shift)
     } else {
-        main_diag << (8 * (diag_shift - 7))
+        main_diag << (8 * diag_shift.wrapping_neg())
     }
+    .bitwise_reverse()
 }
