@@ -1,6 +1,5 @@
 use crate::{
-    Board, Color, Type,
-    bitboard::Display,
+    Board,
     game::action_state::{Action, get_action, get_input, get_mask},
     utils::{extract_move, extract_square, user_input},
 };
@@ -16,14 +15,17 @@ pub fn run(board: &mut Board) {
 
         let game_input = get_input(&input, &action);
 
-        let square = extract_square(&game_input);
-
-        let mask = get_mask(&action);
-
         match action {
-            Action::Move => board.play_move(&extract_move(&game_input)),
+            Action::Move => {
+                let move_to_play = extract_move(&game_input);
+
+                board.play_move(&move_to_play)
+            }
 
             Action::Mask(_) => {
+                let square = extract_square(&game_input);
+                let mask = get_mask(&action);
+
                 let test = Board::from_mask(mask(square));
 
                 test.display();
