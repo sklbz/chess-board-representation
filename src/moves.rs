@@ -1,7 +1,10 @@
 use crate::{
     bitboard::BitBoard,
     board::Board,
-    r#move::{pawn::pawn_move, rook::rook_move_bitmask},
+    r#move::{
+        pawn::{pawn_move_black, pawn_move_white},
+        rook::rook_move_bitmask,
+    },
 };
 use std::ops::Not;
 
@@ -54,15 +57,19 @@ pub(crate) fn is_possible(board: &Board, r#move: &Move) -> bool {
     match (piece.r#type, piece.color) {
         (Type::None, _) | (_, Color::Null) => return false,
         (Type::Pawn, color) => {
+            let pawn_move: &dyn Fn(&Square, &BitBoard, &BitBoard) -> BitBoard = match color {
+                Color::White => &pawn_move_white,
+                Color::Black => &pawn_move_black,
+                _ => &|_, _, _| 0,
+            };
+
             let move_mask = pawn_move(
                 &start,
                 &board.get_bitboard(&color, &Type::None),
                 &board.get_bitboard(&!color, &Type::None),
             );
 
-            if end.to_bitboard() & move_mask == 0 {
-                return false;
-            }
+            return end.to_bitboard() & move_mask != 0;
         }
         (Type::Rook, color) => {
             let move_mask = rook_move_bitmask(
