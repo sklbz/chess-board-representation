@@ -1,4 +1,4 @@
-use crate::{Square, bitboard::BitBoard};
+use crate::{Square, ToBitBoard as _, bitboard::BitBoard};
 
 pub fn up_mask(square: Square) -> BitBoard {
     let offset = square - (square % 8) + 8;
@@ -64,4 +64,32 @@ fn corners_mask(square: Square) -> BitBoard {
         | top_right_mask(square)
         | bottom_right_mask(square)
         | bottom_left_mask(square)
+}
+
+pub fn diagonal_cross_mask(square: Square) -> BitBoard {
+    todo!()
+}
+
+// ╱
+pub fn right_diagonal_mask(square: Square) -> BitBoard {
+    let mut mask = square.to_bitboard();
+
+    [1, 3, 6].iter().for_each(|i| {
+        mask |= mask << (9 * i);
+        mask |= mask >> (9 * (i + 1));
+    });
+
+    mask
+}
+
+// ╲
+pub fn left_diagonal_mask(square: Square) -> BitBoard {
+    let mut mask = square.to_bitboard();
+
+    [1, 3, 6].iter().for_each(|i| {
+        mask |= mask << (7 * i);
+        mask |= mask >> (7 * (i + 1));
+    });
+
+    mask
 }

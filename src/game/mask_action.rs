@@ -2,8 +2,8 @@ use crate::{
     Square,
     bitboard::BitBoard,
     bitmask::{
-        bottom_left_mask, bottom_right_mask, down_mask, left_mask, right_mask, top_left_mask,
-        top_right_mask, up_mask,
+        bottom_left_mask, bottom_right_mask, down_mask, left_mask, right_diagonal_mask, right_mask,
+        top_left_mask, top_right_mask, up_mask,
     },
 };
 
@@ -16,6 +16,7 @@ pub enum MaskAction {
     TopRight,
     BottomRight,
     BottomLeft,
+    RightDiagonal,
 }
 
 impl MaskAction {
@@ -29,6 +30,7 @@ impl MaskAction {
             MaskAction::TopRight => Box::new(top_right_mask),
             MaskAction::BottomRight => Box::new(bottom_right_mask),
             MaskAction::BottomLeft => Box::new(bottom_left_mask),
+            MaskAction::RightDiagonal => Box::new(right_diagonal_mask),
         }
     }
 }

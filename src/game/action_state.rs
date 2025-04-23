@@ -7,6 +7,14 @@ pub enum Action {
     Mask(MaskAction),
     Quit,
 }
+impl Action {
+    pub fn get_mask_action(&self) -> Option<&MaskAction> {
+        match self {
+            Action::Mask(maskAction) => Some(maskAction),
+            _ => None,
+        }
+    }
+}
 
 pub fn get_action(input: &String) -> Action {
     if input.is_empty() {
@@ -53,6 +61,10 @@ pub fn get_action(input: &String) -> Action {
         return Action::Mask(MaskAction::BottomLeft);
     }
 
+    if &input[0..min(input.len(), 10)] == "diag right" {
+        return Action::Mask(MaskAction::RightDiagonal);
+    }
+
     if is_square_notation(input) {
         return Action::Move;
     }
@@ -62,16 +74,26 @@ pub fn get_action(input: &String) -> Action {
 
 pub fn get_input(input: &String, action: &Action) -> String {
     match action {
-        Action::Move => input.to_string(),
-        Action::Mask(MaskAction::Up) => input[7..].to_string(),
-        Action::Mask(MaskAction::Down) => input[9..].to_string(),
-        Action::Mask(MaskAction::Left) => input[9..].to_string(),
-        Action::Mask(MaskAction::Right) => input[10..].to_string(),
-        Action::Mask(MaskAction::TopLeft) => input[13..].to_string(),
-        Action::Mask(MaskAction::TopRight) => input[14..].to_string(),
-        Action::Mask(MaskAction::BottomRight) => input[17..].to_string(),
-        Action::Mask(MaskAction::BottomLeft) => input[16..].to_string(),
-        Action::Quit => input.to_string(),
+        Action::Move => return input.to_string(),
+        Action::Quit => return input.to_string(),
+        _ => (),
+    };
+
+    let mask: &MaskAction = match action.get_mask_action() {
+        Some(mask) => mask,
+        _ => return input.to_string(),
+    };
+
+    match mask {
+        MaskAction::Up => input[7..].to_string(),
+        MaskAction::Down => input[9..].to_string(),
+        MaskAction::Left => input[9..].to_string(),
+        MaskAction::Right => input[10..].to_string(),
+        MaskAction::TopLeft => input[13..].to_string(),
+        MaskAction::TopRight => input[14..].to_string(),
+        MaskAction::BottomRight => input[17..].to_string(),
+        MaskAction::BottomLeft => input[16..].to_string(),
+        MaskAction::RightDiagonal => input[10..].to_string(),
     }
 }
 
