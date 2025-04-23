@@ -3,6 +3,7 @@ use std::ops::Not;
 
 pub(crate) type Square = u8;
 pub(crate) type Move = (Square, Square);
+#[derive(PartialEq)]
 pub(crate) enum Type {
     Pawn,
     Knight,
@@ -13,12 +14,14 @@ pub(crate) enum Type {
     None,
 }
 
+#[derive(PartialEq)]
 pub(crate) enum Color {
     White,
     Black,
     Null,
 }
 
+#[derive(PartialEq)]
 pub(crate) struct Piece {
     pub(crate) r#type: Type,
     pub(crate) color: Color,

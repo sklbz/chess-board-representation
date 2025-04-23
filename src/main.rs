@@ -4,6 +4,7 @@ mod board;
 mod game;
 mod r#move;
 mod moves;
+mod test;
 mod utils;
 
 use game::game_loop::run;

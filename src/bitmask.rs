@@ -67,7 +67,7 @@ fn corners_mask(square: Square) -> BitBoard {
 }
 
 pub fn diagonal_cross_mask(square: Square) -> BitBoard {
-    todo!()
+    right_diagonal_mask(square) | left_diagonal_mask(square)
 }
 
 // ╱

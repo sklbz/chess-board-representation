@@ -10,7 +10,7 @@ pub enum Action {
 impl Action {
     pub fn get_mask_action(&self) -> Option<&MaskAction> {
         match self {
-            Action::Mask(maskAction) => Some(maskAction),
+            Action::Mask(mask_action) => Some(mask_action),
             _ => None,
         }
     }
@@ -61,6 +61,10 @@ pub fn get_action(input: &String) -> Action {
         return Action::Mask(MaskAction::BottomLeft);
     }
 
+    if &input[0..min(input.len(), 9)] == "diag left" {
+        return Action::Mask(MaskAction::LeftDiagonal);
+    }
+
     if &input[0..min(input.len(), 10)] == "diag right" {
         return Action::Mask(MaskAction::RightDiagonal);
     }
@@ -80,7 +84,7 @@ pub fn get_input(input: &String, action: &Action) -> String {
     };
 
     let mask: &MaskAction = match action.get_mask_action() {
-        Some(mask) => mask,
+        Some(action) => action,
         _ => return input.to_string(),
     };
 
@@ -93,6 +97,7 @@ pub fn get_input(input: &String, action: &Action) -> String {
         MaskAction::TopRight => input[14..].to_string(),
         MaskAction::BottomRight => input[17..].to_string(),
         MaskAction::BottomLeft => input[16..].to_string(),
+        MaskAction::LeftDiagonal => input[9..].to_string(),
         MaskAction::RightDiagonal => input[10..].to_string(),
     }
 }

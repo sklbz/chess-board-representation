@@ -1,5 +1,5 @@
 use crate::{
-    Board,
+    Board, Color, Piece, Type,
     game::action_state::{Action, get_action, get_input, get_mask},
     is_possible,
     utils::{extract_move, extract_square, user_input},
@@ -29,7 +29,7 @@ pub fn run(board: &mut Board) {
                 let square = extract_square(&game_input);
                 let mask = get_mask(&action);
 
-                let test = Board::from_mask(mask(square));
+                let test = Board::from_mask(mask(square), Piece(Type::Pawn, Color::White));
 
                 test.display();
 

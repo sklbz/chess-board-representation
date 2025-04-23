@@ -47,9 +47,9 @@ impl Board {
         }
     }
 
-    pub fn from_mask(mask: BitBoard) -> Board {
+    pub fn empty() -> Board {
         Board {
-            white_pawns: mask,
+            white_pawns: 0,
             black_pawns: 0,
             white_knights: 0,
             black_knights: 0,
@@ -61,6 +61,57 @@ impl Board {
             black_queens: 0,
             white_king: 0,
             black_king: 0,
+        }
+    }
+
+    pub fn from_mask(mask: BitBoard, piece: Piece) -> Board {
+        let Piece {
+            r#type: piece_type,
+            color,
+        } = piece;
+
+        match (piece_type, color) {
+            (Type::Bishop, Color::White) => {
+                let mut board = Board::empty();
+                board.white_bishops = mask;
+                board
+            }
+            (Type::Bishop, Color::Black) => {
+                let mut board = Board::empty();
+                board.black_bishops = mask;
+                board
+            }
+            (Type::Rook, Color::White) => {
+                let mut board = Board::empty();
+                board.white_rooks = mask;
+                board
+            }
+            (Type::Rook, Color::Black) => {
+                let mut board = Board::empty();
+                board.black_rooks = mask;
+                board
+            }
+            (Type::Queen, Color::White) => {
+                let mut board = Board::empty();
+                board.white_queens = mask;
+                board
+            }
+            (Type::Queen, Color::Black) => {
+                let mut board = Board::empty();
+                board.black_queens = mask;
+                board
+            }
+            (Type::King, Color::White) => {
+                let mut board = Board::empty();
+                board.white_king = mask;
+                board
+            }
+            (Type::King, Color::Black) => {
+                let mut board = Board::empty();
+                board.black_king = mask;
+                board
+            }
+            _ => panic!("Piece not found!"),
         }
     }
 
