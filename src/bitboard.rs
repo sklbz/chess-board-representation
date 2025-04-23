@@ -1,4 +1,50 @@
+use crate::Square;
+
 pub(crate) type BitBoard = u64;
+
+pub(crate) trait BitBoardGetter {
+    fn get_occupied_squares(&self) -> Vec<Square>;
+}
+
+impl BitBoardGetter for BitBoard {
+    fn get_occupied_squares(&self) -> Vec<Square> {
+        /*
+        // Recursive way
+        fn reccursive_get_squares(board: BitBoard, squares: &mut Vec<Square>) -> [Square] {
+            if board == 0 {
+                return squares.into_boxed_slice();
+            }
+
+            let square_offset = board.trailing_zeros() as u8;
+
+            let square = match squares.len() {
+                0 => square_offset,
+                _ => square_offset + squares[0],
+            };
+
+            let mut updated_squares: Vec<Square> = squares.splice(0..0, [square]).collect();
+
+            reccursive_get_squares(board >> square_offset, &mut updated_squares)
+        }
+
+        let mut init: Vec<Square> = Vec::new();
+
+        let squares: [Square] = reccursive_get_squares(*self, &mut init);
+
+        */
+        // Iterative way
+
+        let mut occupied_squares: Vec<Square> = Vec::new();
+
+        for i in 0..64 {
+            if self & (1 << i) != 0 {
+                occupied_squares.push(i as Square);
+            }
+        }
+
+        occupied_squares
+    }
+}
 
 pub(crate) trait BitBoardOperations {
     fn bitwise_reverse(&self) -> BitBoard;
@@ -22,7 +68,7 @@ impl BitBoardOperations for BitBoard {
     }
 }
 
-pub trait Display {
+pub(crate) trait Display {
     fn display(&self);
 }
 

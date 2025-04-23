@@ -1,10 +1,10 @@
-pub fn is_square_notation(input: &String) -> bool {
+pub fn is_square_notation(input: &str) -> bool {
     let parsed = input.split_whitespace().collect::<Vec<&str>>();
 
     input.split_whitespace().all(is_square) && parsed.len() == 2
 }
 
-pub fn is_standard_notation(_input: &String) -> bool {
+pub fn is_standard_notation(_input: &str) -> bool {
     todo!("Standard notation")
 }
 

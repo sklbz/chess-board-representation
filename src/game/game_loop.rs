@@ -1,5 +1,6 @@
 use crate::{
-    Board,
+    Board, Color, Type,
+    bitboard::Display,
     game::action_state::{Action, get_action, get_input, get_mask},
     utils::{extract_move, extract_square, user_input},
 };

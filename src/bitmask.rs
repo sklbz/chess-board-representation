@@ -50,3 +50,14 @@ pub fn bottom_right_mask(square: Square) -> BitBoard {
 pub fn bottom_left_mask(square: Square) -> BitBoard {
     down_mask(square) & left_mask(square)
 }
+
+pub fn cross_mask(square: Square) -> BitBoard {
+    !corners_mask(square)
+}
+
+fn corners_mask(square: Square) -> BitBoard {
+    top_left_mask(square)
+        | top_right_mask(square)
+        | bottom_right_mask(square)
+        | bottom_left_mask(square)
+}

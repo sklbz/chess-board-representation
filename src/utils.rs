@@ -59,14 +59,14 @@ pub fn extract_square(input: &String) -> Square {
     input
         .split_whitespace()
         .map(string_to_square)
-        .collect::<Vec<u64>>()[0]
+        .collect::<Vec<u8>>()[0]
 }
 
 pub fn extract_move(input: &String) -> (Square, Square) {
-    let squares: Vec<u64> = input
+    let squares: Vec<u8> = input
         .split_whitespace()
         .map(string_to_square)
-        .collect::<Vec<u64>>();
+        .collect::<Vec<u8>>();
 
     (squares[0], squares[1])
 }
