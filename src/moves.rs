@@ -2,6 +2,7 @@ use crate::{
     bitboard::BitBoard,
     board::Board,
     r#move::{
+        bishop::bishop_move_bitmask,
         pawn::{pawn_move_black, pawn_move_white},
         rook::rook_move_bitmask,
     },
@@ -76,6 +77,19 @@ pub(crate) fn is_possible(board: &Board, r#move: &Move) -> bool {
                 &start,
                 &board.get_bitboard(&color, &Type::None),
                 &board.get_bitboard(&!color, &Type::None),
+            );
+
+            if end.to_bitboard() & move_mask == 0 {
+                return false;
+            }
+
+            return true;
+        }
+        (Type::Bishop, color) => {
+            let move_mask = bishop_move_bitmask(
+                &start,
+                &board.get_bitboard(&color, &Type::None),
+                &board.get_bitboard(&color, &Type::None),
             );
 
             if end.to_bitboard() & move_mask == 0 {
