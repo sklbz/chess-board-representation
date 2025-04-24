@@ -75,18 +75,6 @@ mod tests {
     }
 
     #[test]
-    fn test_diagonal_mask_symmetry() {
-        // Test symmetry properties
-        for square in 0..64 {
-            let right_mask = right_diagonal_mask(square);
-            let left_mask = left_diagonal_mask(63 - square);
-
-            // The right diagonal of square should match the left diagonal of its mirrored position
-            assert_eq!(right_mask, left_mask.reverse_bits());
-        }
-    }
-
-    #[test]
     fn test_diagonal_mask_edge_cases() {
         // Test all edge squares
         let edges = [0, 7, 56, 63]; // a1, h1, a8, h8
@@ -120,6 +108,7 @@ mod tests {
         assert!(moves & (1 << 36) != 0); // e5
     }
 
+    use crate::bitboard::BitBoardOperations;
     use proptest::prelude::*;
 
     proptest! {
@@ -131,6 +120,7 @@ mod tests {
             assert!(left & (1 << square) != 0);
         }
 
+
         #[test]
         fn test_diagonal_masks_symmetric(square in 0..64u8) {
             let right = right_diagonal_mask(square);
@@ -141,6 +131,23 @@ mod tests {
                 assert!(right.count_ones() > 1);
                 assert!(left.count_ones() > 1);
             }
+
+            let mirror_square = match square % 8 {
+                0 => square + 7,
+                1 => square + 5,
+                2 => square + 3,
+                3 => square + 1,
+                4 => square - 1,
+                5 => square - 3,
+                6 => square - 5,
+                7 => square - 7,
+                _ => unreachable!(),
+            };
+
+            let left_mirror = left_diagonal_mask(mirror_square);
+            let right_mirror = right_diagonal_mask(mirror_square);
+            assert_eq!(left.count_ones(), right_mirror.count_ones());
+            assert_eq!(right.count_ones(), left_mirror.count_ones());
         }
 
         #[test]

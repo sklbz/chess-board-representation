@@ -1,0 +1,8 @@
+use crate::{Square, bitboard::BitBoard};
+
+pub fn bishop_move_bitmask(
+    square: &Square,
+    allies_board: &BitBoard,
+    ennemy_board: &BitBoard,
+) -> BitBoard {
+}
