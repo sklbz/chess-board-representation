@@ -10,7 +10,7 @@ use crate::{
 
 pub fn run(board: &mut Board) {
     loop {
-        // print!("{esc}[2J", esc = 27 as char);
+        print!("{esc}[2J", esc = 27 as char);
         board.display();
 
         let input = user_input();
