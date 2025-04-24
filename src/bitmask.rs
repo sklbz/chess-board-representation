@@ -90,13 +90,13 @@ pub fn right_diagonal_mask(square: Square) -> BitBoard {
 
 // ╲
 pub fn left_diagonal_mask(square: Square) -> BitBoard {
-    let main_diag = 0x0102_0408_1020_4080;
-    let diag_shift = (square / 8).wrapping_sub(1 + square % 8);
+    let main_diag = 0x0102_0408_1020_4080; // h1-a8 diagonal
+    let diag_shift = (7 - square % 8) as i32 - (square / 8) as i32;
 
-    if diag_shift < 8 {
-        main_diag >> (8 * diag_shift)
+    if diag_shift < 0 {
+        main_diag >> (8 * diag_shift.unsigned_abs())
     } else {
-        main_diag << (8 * diag_shift.wrapping_neg())
+        main_diag << (8 * diag_shift as u32)
     }
     .bitwise_reverse()
 }

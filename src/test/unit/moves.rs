@@ -5,7 +5,7 @@ mod tests {
 
     #[test]
     fn test_pawn_moves() {
-        let board = Board::init();
+        let mut board = Board::init();
 
         // Test initial white pawn moves
         let e2 = 12;
@@ -13,8 +13,18 @@ mod tests {
         assert!(is_possible(&board, &(e2, e2 + 16))); // Double push
 
         // Test invalid pawn moves
+        let h2 = 15;
         assert!(!is_possible(&board, &(e2, e2 + 7))); // No capture
         assert!(!is_possible(&board, &(e2, e2 + 9))); // No capture
+
+        let a7 = 8 * 7;
+        let a5 = 8 * 5;
+        let a4 = 8 * 4;
+        let a3 = 8 * 3;
+        board.play_move(&(a7, a5));
+        board.play_move(&(a5, a4));
+        board.play_move(&(a4, a3));
+        assert!(!is_possible(&board, &(h2, a3))); // Take around border
     }
 
     #[test]
