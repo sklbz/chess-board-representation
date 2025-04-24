@@ -1,5 +1,5 @@
 
-running 26 tests
+running 28 tests
 test test::unit::bitboard::tests::test_bitwise_reverse ... ok
 test test::unit::bitboard::tests::test_get_occupied_squares ... ok
 test test::unit::bitboard::tests::test_to_bitboard ... ok
@@ -8,52 +8,150 @@ test test::unit::bitmask::tests::test_cross_mask ... ok
 test test::unit::bitmask::tests::test_diagonal_cross_mask ... ok
 test test::unit::bitmask::tests::test_diagonal_mask_edge_cases ... ok
 test test::unit::bitmask::tests::test_diagonal_masks_no_overlap ... ok
-test test::unit::moves::tests::test_queen_moves ... FAILED
-test test::unit::moves::tests::test_pawn_moves ... ok
-test test::unit::moves::tests::test_pawn_capture_wrap_around_border ... FAILED
 test test::unit::bitmask::tests::test_down_mask ... ok
 test test::unit::bitmask::tests::test_right_diagonal_mask ... ok
 test test::unit::bitmask::tests::test_up_mask ... ok
-test test::unit::moves::tests::test_rook_moves ... ok
 test test::unit::board::tests::test_board_init ... ok
 test test::unit::board::tests::test_capture_logic ... ok
 test test::unit::board::tests::test_move_execution ... ok
-test test::unit::moves::tests::test_bishop_moves ... FAILED
+test test::unit::moves::tests::test_rook_moves ... ok
+test test::unit::moves::tests::test_pawn_moves ... ok
+test test::unit::moves::tests::test_bishop_moves ... ok
+test test::unit::moves::tests::test_pawn_capture_wrap_around_border ... FAILED
+test test::unit::moves::tests::test_blockers_bishop_rook ... FAILED
+test test::unit::cross_mask::test_cross_mask_square_amount ... FAILED
 test test::unit::moves::tests::test_color_negation ... ok
-test test::unit::bitmask::tests::test_diagonal_cross_contains_both ... ok
-test test::unit::bitmask::tests::test_diagonal_masks_symmetric ... ok
-test test::unit::bitmask::tests::test_diagonal_masks_contain_origin ... ok
+test test::unit::moves::tests::test_queen_moves ... FAILED
 test test::unit::board::proptests::test_bitboard_roundtrip ... ok
-test test::unit::board::proptests::test_move_validation ... ok
+test test::unit::bitmask::tests::test_diagonal_cross_contains_both ... ok
+test test::unit::bitmask::tests::test_diagonal_masks_contain_origin ... ok
+test test::unit::bitmask::tests::test_diagonal_masks_symmetric ... ok
 test test::unit::moves::tests::test_starting_pawn_move ... ok
+test test::unit::board::proptests::test_move_validation ... ok
 
 failures:
 
----- test::unit::moves::tests::test_queen_moves stdout ----
+---- test::unit::moves::tests::test_pawn_capture_wrap_around_border stdout ----
+Pawn
 
-thread 'test::unit::moves::tests::test_queen_moves' panicked at src/test/unit/moves.rs:112:5:
-Test failed: assertion failed: queen.count_ones() > 21.
+thread 'test::unit::moves::tests::test_pawn_capture_wrap_around_border' panicked at src/test/unit/moves.rs:32:9:
+assertion failed: !is_possible(&board, &(h2, a3))
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+---- test::unit::moves::tests::test_blockers_bishop_rook stdout ----
+Rook
+
+thread 'test::unit::moves::tests::test_blockers_bishop_rook' panicked at src/test/unit/moves.rs:98:9:
+assertion failed: !is_possible(&board, &(0, 1))
+
+---- test::unit::cross_mask::test_cross_mask_square_amount stdout ----
+
+thread 'test::unit::cross_mask::test_cross_mask_square_amount' panicked at src/test/unit/cross_mask.rs:7:9:
+assertion `left == right` failed
+  left: 8
+ right: 15
+
+thread 'test::unit::cross_mask::test_cross_mask_square_amount' panicked at src/test/unit/cross_mask.rs:7:9:
+assertion `left == right` failed
+  left: 8
+ right: 15
+
+thread 'test::unit::cross_mask::test_cross_mask_square_amount' panicked at src/test/unit/cross_mask.rs:7:9:
+assertion `left == right` failed
+  left: 8
+ right: 15
+
+thread 'test::unit::cross_mask::test_cross_mask_square_amount' panicked at src/test/unit/cross_mask.rs:4:1:
+Test failed: assertion `left == right` failed
+  left: 8
+ right: 15.
 minimal failing input: square = 7
 	successes: 0
 	local rejects: 0
 	global rejects: 0
 
 
----- test::unit::moves::tests::test_pawn_capture_wrap_around_border stdout ----
+---- test::unit::moves::tests::test_queen_moves stdout ----
 
-thread 'test::unit::moves::tests::test_pawn_capture_wrap_around_border' panicked at src/test/unit/moves.rs:32:9:
-assertion failed: !is_possible(&board, &(h2, a3))
+□■■■■■■■
+□□□□□□□□
+□□□□□□□□
+□□□□□□□□
+□□□□□□□□
+□□□□□□□□
+□□□□□□□□
+□□□□□□□□
+Queen: 15 Rook: 7 Bishop: 8
 
----- test::unit::moves::tests::test_bishop_moves stdout ----
+thread 'test::unit::moves::tests::test_queen_moves' panicked at src/test/unit/moves.rs:135:13:
+assertion failed: queen.count_ones() > 20
 
-thread 'test::unit::moves::tests::test_bishop_moves' panicked at src/test/unit/moves.rs:90:9:
-assertion failed: !is_possible(&board_alt, &(d5, a1))
+□□□□□□□□
+□□□□□□□□
+□□□□□□□□
+□□□□□□□□
+□■■■■■■■
+□□□□□□□□
+□□□□□□□□
+□□□□□□□□
+Queen: 15 Rook: 7 Bishop: 8
+
+thread 'test::unit::moves::tests::test_queen_moves' panicked at src/test/unit/moves.rs:135:13:
+assertion failed: queen.count_ones() > 20
+
+□□□□□□□□
+□□□□□□□□
+□□□□□□□□
+□□□□□□□□
+□□□□□□□□
+□□□□□□□□
+□■■■■■■■
+□□□□□□□□
+Queen: 15 Rook: 7 Bishop: 8
+
+thread 'test::unit::moves::tests::test_queen_moves' panicked at src/test/unit/moves.rs:135:13:
+assertion failed: queen.count_ones() > 20
+
+□□□□□□□□
+□□□□□□□□
+□□□□□□□□
+□□□□□□□□
+□□□□□□□□
+□□□□□□□□
+□□□□□□□□
+□■■■■■■■
+Queen: 15 Rook: 7 Bishop: 8
+
+thread 'test::unit::moves::tests::test_queen_moves' panicked at src/test/unit/moves.rs:135:13:
+assertion failed: queen.count_ones() > 20
+
+□□□□□□□□
+□□□□□□□□
+□□□□□□□□
+□□□□□□□□
+□□□□□□□□
+□□□□□□□□
+□□□□□□□□
+□■■■■■■■
+Queen: 15 Rook: 7 Bishop: 8
+
+thread 'test::unit::moves::tests::test_queen_moves' panicked at src/test/unit/moves.rs:135:13:
+assertion failed: queen.count_ones() > 20
+
+thread 'test::unit::moves::tests::test_queen_moves' panicked at src/test/unit/moves.rs:113:5:
+Test failed: assertion failed: queen.count_ones() > 20.
+minimal failing input: square = 7
+	successes: 0
+	local rejects: 0
+	global rejects: 0
+
 
 
 failures:
-    test::unit::moves::tests::test_bishop_moves
+    test::unit::cross_mask::test_cross_mask_square_amount
+    test::unit::moves::tests::test_blockers_bishop_rook
     test::unit::moves::tests::test_pawn_capture_wrap_around_border
     test::unit::moves::tests::test_queen_moves
 
-test result: FAILED. 23 passed; 3 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+test result: FAILED. 24 passed; 4 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
 

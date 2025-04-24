@@ -40,6 +40,10 @@ pub fn left_mask(square: Square) -> BitBoard {
 }
 
 pub fn right_mask(square: Square) -> BitBoard {
+    if square % 8 == 7 {
+        return 0;
+    }
+
     let offset = square + 1;
     !left_mask(offset)
 }

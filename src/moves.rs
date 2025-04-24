@@ -4,6 +4,7 @@ use crate::{
     r#move::{
         bishop::bishop_move_bitmask,
         pawn::{pawn_move_black, pawn_move_white},
+        queen::queen_move_bitmask,
         rook::rook_move_bitmask,
     },
 };
@@ -55,48 +56,43 @@ pub(crate) fn is_possible(board: &Board, r#move: &Move) -> bool {
         Type::None => println!("None"),
     };
 
-    match (piece.r#type, piece.color) {
-        (Type::None, _) | (_, Color::Null) => return false,
-        (Type::Pawn, color) => {
-            let pawn_move: &dyn Fn(&Square, &BitBoard, &BitBoard) -> BitBoard = match color {
-                Color::White => &pawn_move_white,
-                Color::Black => &pawn_move_black,
-                _ => &|_, _, _| 0,
-            };
+    if piece.r#type == Type::None || piece.color == Color::Null {
+        return false;
+    }
 
-            let move_mask = pawn_move(
-                &start,
-                &board.get_bitboard(&color, &Type::None),
-                &board.get_bitboard(&!color, &Type::None),
-            );
+    let pawn_move: &dyn Fn(&Square, &BitBoard, &BitBoard) -> BitBoard = match &piece.color {
+        Color::White => &pawn_move_white,
+        Color::Black => &pawn_move_black,
+        _ => &|_, _, _| 0,
+    };
 
-            return end.to_bitboard() & move_mask != 0;
+    let allies: &BitBoard = &board.get_bitboard(&piece.color, &Type::None);
+    let enemies: &BitBoard = &board.get_bitboard(&!piece.color, &Type::None);
+
+    match piece.r#type {
+        Type::Pawn => {
+            let move_mask = pawn_move(&start, allies, enemies);
+
+            let move_in_mask = end.to_bitboard() & move_mask != 0;
+            return move_in_mask;
         }
-        (Type::Rook, color) => {
-            let move_mask = rook_move_bitmask(
-                &start,
-                &board.get_bitboard(&color, &Type::None),
-                &board.get_bitboard(&!color, &Type::None),
-            );
+        Type::Rook => {
+            let move_mask = rook_move_bitmask(&start, allies, enemies);
 
-            if end.to_bitboard() & move_mask == 0 {
-                return false;
-            }
-
-            return true;
+            let move_in_mask = end.to_bitboard() & move_mask != 0;
+            return move_in_mask;
         }
-        (Type::Bishop, color) => {
-            let move_mask = bishop_move_bitmask(
-                &start,
-                &board.get_bitboard(&color, &Type::None),
-                &board.get_bitboard(&color, &Type::None),
-            );
+        Type::Bishop => {
+            let move_mask = bishop_move_bitmask(&start, allies, enemies);
 
-            if end.to_bitboard() & move_mask == 0 {
-                return false;
-            }
+            let move_in_mask = end.to_bitboard() & move_mask != 0;
+            return move_in_mask;
+        }
+        Type::Queen => {
+            let move_mask = queen_move_bitmask(&start, allies, enemies);
 
-            return true;
+            let move_in_mask = end.to_bitboard() & move_mask != 0;
+            return move_in_mask;
         }
         _ => (),
     }

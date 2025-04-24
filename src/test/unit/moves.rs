@@ -1,7 +1,7 @@
 #[cfg(test)]
 mod tests {
     use crate::board::Board;
-    use crate::moves::*;
+    use crate::{Display, moves::*};
 
     #[test]
     fn test_pawn_moves() {
@@ -91,10 +91,15 @@ mod tests {
         assert!(!is_possible(&board_alt, &(d5, b2)));
     }
 
-    pub fn test_blockers_bishop_rook() {
+    #[test]
+    pub fn test_blockers_rook() {
         let board = Board::init();
-
         assert!(!is_possible(&board, &(0, 1)));
+    }
+
+    #[test]
+    pub fn test_blockers_bishop() {
+        let board = Board::init();
         assert!(!is_possible(&board, &(3, 10)));
     }
 
@@ -125,7 +130,8 @@ mod tests {
             let queen = queen_move_bitmask(&square, &0, &0);
             let rook = rook_move_bitmask(&square, &0, &0);
             let bishop = bishop_move_bitmask(&square, &0, &0);
-            assert!(queen.count_ones() > 21);
+
+            assert!(queen.count_ones() > 20);
             assert_eq!(bishop & rook, 0);
             assert_eq!(queen, bishop | rook);
             assert_eq!(queen.count_ones(), bishop.count_ones() + rook.count_ones());
