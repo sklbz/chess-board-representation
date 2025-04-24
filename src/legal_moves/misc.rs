@@ -54,3 +54,17 @@ impl ToBitBoard for Square {
         1 << self
     }
 }
+
+pub trait Coord {
+    fn rank(&self) -> u8;
+    fn file(&self) -> u8;
+}
+
+impl Coord for Square {
+    fn rank(&self) -> u8 {
+        self / 8
+    }
+    fn file(&self) -> u8 {
+        self % 8
+    }
+}

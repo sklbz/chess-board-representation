@@ -1,16 +1,46 @@
-use crate::{bitboard::BitBoard, legal_moves::misc::Square};
+use crate::{
+    bitboard::BitBoard,
+    legal_moves::misc::{Coord, Square, ToBitBoard},
+};
 
 pub fn knight_move_bitmask(knight_square: &Square, allies: &BitBoard) -> BitBoard {
-    let horse_pattern: BitBoard =
-        0b0000_0000_0000_0010_1000_0100_0100_0000_0000_0000_0100_0100_0010_1000_0000_0000; // movement
-    // pattern for an e4 knight
+    let mut mask: BitBoard = 0;
 
-    let e4: Square = 28;
-    let offset: i8 = *knight_square as i8 - e4 as i8;
-
-    if offset < 0 {
-        return (horse_pattern << offset.unsigned_abs()) & !allies;
+    if knight_square.file() > 1 {
+        mask |= knight_square.to_bitboard() << (7 + 8);
+        mask |= knight_square.to_bitboard() >> (9 + 8);
+    }
+    if knight_square.file() > 2 {
+        mask |= knight_square.to_bitboard() << (8 - 2);
+        mask |= knight_square.to_bitboard() >> (8 + 2);
     }
 
-    (horse_pattern >> offset.unsigned_abs()) & !allies
+    if knight_square.file() < 6 {
+        mask |= knight_square.to_bitboard() << (9 + 8);
+        mask |= knight_square.to_bitboard() >> (7 + 8);
+    }
+    if knight_square.file() < 5 {
+        mask |= knight_square.to_bitboard() << (8 + 2);
+        mask |= knight_square.to_bitboard() >> (8 - 2);
+    }
+
+    if knight_square.rank() < 1 {
+        mask &= !(knight_square.to_bitboard() >> (8 + 2));
+        mask &= !(knight_square.to_bitboard() >> (8 - 2));
+    }
+    if knight_square.rank() < 2 {
+        mask &= !(knight_square.to_bitboard() >> (7 + 8));
+        mask &= !(knight_square.to_bitboard() >> (9 + 8));
+    }
+
+    if knight_square.rank() > 5 {
+        mask &= !(knight_square.to_bitboard() << (7 + 8));
+        mask &= !(knight_square.to_bitboard() << (9 + 8));
+    }
+    if knight_square.rank() < 7 {
+        mask &= !(knight_square.to_bitboard() << (8 + 2));
+        mask &= !(knight_square.to_bitboard() << (8 - 2));
+    }
+
+    mask & !allies
 }
