@@ -1,6 +1,5 @@
-use crate::Square;
-use crate::ToBitBoard;
 use crate::bitboard::*;
+use crate::legal_moves::misc::*;
 
 pub fn pawn_move_white(
     pawn: &Square,

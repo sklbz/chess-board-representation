@@ -2,18 +2,15 @@ mod bitboard;
 mod bitmask;
 mod board;
 mod game;
+mod legal_moves;
 mod r#move;
-mod moves;
 mod test;
 mod utils;
 
-use bitboard::Display;
-use bitmask::up_mask;
 use game::game_loop::run;
 use utils::squarewise_display;
 
 use crate::board::*;
-use crate::moves::*;
 
 fn main() {
     let mut board = Board::init();

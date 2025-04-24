@@ -1,4 +1,4 @@
-use crate::Square;
+use crate::legal_moves::misc::Square;
 
 pub(crate) type BitBoard = u64;
 

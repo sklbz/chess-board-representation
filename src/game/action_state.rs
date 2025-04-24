@@ -1,6 +1,6 @@
-use crate::{Square, bitboard::BitBoard, utils::min};
-
 use super::{algebraic_notation::is_square_notation, mask_action::MaskAction};
+use crate::legal_moves::misc::*;
+use crate::{bitboard::BitBoard, utils::min};
 
 pub enum Action {
     Move,

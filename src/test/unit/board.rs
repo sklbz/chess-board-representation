@@ -1,7 +1,7 @@
 #[cfg(test)]
 mod tests {
     use crate::board::*;
-    use crate::moves::*;
+    use crate::legal_moves::misc::{Color, Type};
 
     #[test]
     fn test_board_init() {
@@ -64,13 +64,11 @@ mod tests {
 
 #[cfg(test)]
 mod proptests {
-    use crate::bitboard::BitBoard;
-    use crate::bitboard::BitBoardGetter;
-    use crate::board::*;
-    use crate::moves::*;
-    use proptest::collection::vec;
+    use crate::{
+        bitboard::{BitBoard, BitBoardGetter},
+        board::*,
+    };
     use proptest::prelude::*;
-    use proptest::sample::select;
 
     impl Arbitrary for Board {
         type Parameters = ();
@@ -122,6 +120,8 @@ mod proptests {
         }
     }
 
+    use crate::legal_moves::is_move_possible::is_possible;
+    use crate::legal_moves::misc::*;
     proptest! {
         #[test]
         fn test_bitboard_roundtrip(square in 0..64u8) {

@@ -1,7 +1,10 @@
 use crate::{
-    Board, Color, Piece, Type,
+    Board,
     game::action_state::{Action, get_action, get_input, get_mask},
-    is_possible,
+    legal_moves::{
+        is_move_possible::*,
+        misc::{Color, Piece, Type},
+    },
     utils::{extract_move, extract_square, user_input},
 };
 

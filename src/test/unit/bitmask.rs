@@ -108,7 +108,6 @@ mod tests {
         assert!(moves & (1 << 36) != 0); // e5
     }
 
-    use crate::bitboard::BitBoardOperations;
     use proptest::prelude::*;
 
     proptest! {

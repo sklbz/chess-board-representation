@@ -1,4 +1,4 @@
-use crate::{Square, bitboard::BitBoard};
+use crate::{bitboard::BitBoard, legal_moves::misc::Square};
 
 use super::{bishop::bishop_move_bitmask, rook::rook_move_bitmask};
 

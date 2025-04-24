@@ -1,5 +1,7 @@
-use crate::bitboard::*;
-use crate::moves::*;
+use crate::{
+    bitboard::*,
+    legal_moves::misc::{Color, Move, Piece, Square, Type},
+};
 
 #[derive(Debug)]
 pub(crate) struct Board {
@@ -218,31 +220,30 @@ impl Board {
 
     pub fn get_bitboard(&self, color: &Color, piece: &Type) -> BitBoard {
         match (color, piece) {
-            (&Color::White, &Type::Pawn) => self.white_pawns,
-            (&Color::White, &Type::Knight) => self.white_knights,
-            (&Color::White, &Type::Bishop) => self.white_bishops,
-            (&Color::White, &Type::Rook) => self.white_rooks,
-            (&Color::White, &Type::Queen) => self.white_queens,
-            (&Color::White, &Type::King) => self.white_king,
+            (Color::White, Type::Pawn) => self.white_pawns,
+            (Color::White, Type::Knight) => self.white_knights,
+            (Color::White, Type::Bishop) => self.white_bishops,
+            (Color::White, Type::Rook) => self.white_rooks,
+            (Color::White, Type::Queen) => self.white_queens,
+            (Color::White, Type::King) => self.white_king,
 
-            (&Color::Black, &Type::Pawn) => self.black_pawns,
-            (&Color::Black, &Type::Knight) => self.black_knights,
-            (&Color::Black, &Type::Bishop) => self.black_bishops,
-            (&Color::Black, &Type::Rook) => self.black_rooks,
-            (&Color::Black, &Type::Queen) => self.black_queens,
-            (&Color::Black, &Type::King) => self.black_king,
+            (Color::Black, Type::Pawn) => self.black_pawns,
+            (Color::Black, Type::Knight) => self.black_knights,
+            (Color::Black, Type::Bishop) => self.black_bishops,
+            (Color::Black, Type::Rook) => self.black_rooks,
+            (Color::Black, Type::Queen) => self.black_queens,
+            (Color::Black, Type::King) => self.black_king,
 
-            (&Color::Null, r#type) => {
-                self.get_bitboard(&Color::White, &r#type)
-                    | self.get_bitboard(&Color::Black, &r#type)
+            (Color::Null, r#type) => {
+                self.get_bitboard(&Color::White, r#type) | self.get_bitboard(&Color::Black, r#type)
             }
-            (color, &Type::None) => {
-                self.get_bitboard(&color, &Type::Pawn)
-                    | self.get_bitboard(&color, &Type::Knight)
-                    | self.get_bitboard(&color, &Type::Bishop)
-                    | self.get_bitboard(&color, &Type::Rook)
-                    | self.get_bitboard(&color, &Type::Queen)
-                    | self.get_bitboard(&color, &Type::King)
+            (color, Type::None) => {
+                self.get_bitboard(color, &Type::Pawn)
+                    | self.get_bitboard(color, &Type::Knight)
+                    | self.get_bitboard(color, &Type::Bishop)
+                    | self.get_bitboard(color, &Type::Rook)
+                    | self.get_bitboard(color, &Type::Queen)
+                    | self.get_bitboard(color, &Type::King)
             }
         }
     }

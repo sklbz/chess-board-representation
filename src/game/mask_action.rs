@@ -1,10 +1,10 @@
 use crate::{
-    Square,
     bitboard::BitBoard,
     bitmask::{
         bottom_left_mask, bottom_right_mask, down_mask, left_diagonal_mask, left_mask,
         right_diagonal_mask, right_mask, top_left_mask, top_right_mask, up_mask,
     },
+    legal_moves::misc::*,
 };
 
 pub enum MaskAction {

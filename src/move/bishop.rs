@@ -1,9 +1,9 @@
 use crate::{
-    Square, ToBitBoard,
     bitboard::{BitBoard, BitBoardGetter},
     bitmask::{
         bottom_left_mask, bottom_right_mask, diagonal_cross_mask, top_left_mask, top_right_mask,
     },
+    legal_moves::misc::*,
 };
 
 pub fn bishop_move_bitmask(

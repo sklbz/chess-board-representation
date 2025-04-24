@@ -1,7 +1,7 @@
 #[cfg(test)]
 mod tests {
     use crate::board::Board;
-    use crate::{Display, moves::*};
+    use crate::legal_moves::is_move_possible::*;
 
     #[test]
     fn test_pawn_moves() {
@@ -63,6 +63,7 @@ mod tests {
         let g2 = 14;
         let h1 = 7;
 
+        use crate::legal_moves::misc::*;
         let board = Board::from_mask(e5.to_bitboard(), Piece::new(Type::Bishop, Color::White)); // White bishop at e5
         // Light squared bishop
 
@@ -110,6 +111,7 @@ mod tests {
         assert_eq!(!Color::Null, Color::Null);
     }
 
+    use crate::legal_moves::misc::{Color, Piece, Type};
     use crate::r#move::bishop::bishop_move_bitmask;
     use crate::r#move::queen::queen_move_bitmask;
     use crate::r#move::rook::rook_move_bitmask;

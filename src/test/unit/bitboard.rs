@@ -1,7 +1,7 @@
 #[cfg(test)]
 mod tests {
-    use crate::ToBitBoard;
     use crate::bitboard::*;
+    use crate::legal_moves::misc::*;
 
     #[test]
     fn test_to_bitboard() {

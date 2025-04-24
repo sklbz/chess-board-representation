@@ -11,17 +11,11 @@ pub fn is_standard_notation(_input: &str) -> bool {
 fn is_square(input: &str) -> bool {
     let letter = input.chars().next().expect("Unreadable letter");
 
-    let columns = match letter {
-        'a' | 'b' | 'c' | 'd' | 'e' | 'f' | 'g' | 'h' => true,
-        _ => false,
-    };
+    let columns = matches!(letter, 'a' | 'b' | 'c' | 'd' | 'e' | 'f' | 'g' | 'h');
 
     let number = input.chars().last().expect("Unreadable number");
 
-    let rows = match number {
-        '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' => true,
-        _ => false,
-    };
+    let rows = matches!(number, '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8');
 
     columns && rows
 }

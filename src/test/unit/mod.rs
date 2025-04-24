@@ -4,3 +4,5 @@ pub mod board;
 #[cfg(test)]
 pub mod cross_mask;
 pub mod moves;
+#[cfg(test)]
+pub mod perft;

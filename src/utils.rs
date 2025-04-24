@@ -1,4 +1,42 @@
-use crate::{Board, Square, is_possible};
+use crate::Board;
+use crate::bitboard::{BitBoard, BitBoardGetter};
+use crate::legal_moves::is_move_possible::is_possible;
+use crate::legal_moves::misc::{Move, Square};
+
+pub fn move_to_string((start, end): &Move) -> String {
+    let start = square_to_string(*start);
+    let end = square_to_string(*end);
+
+    format!("{}{}", start, end)
+}
+
+fn square_to_string(square: Square) -> String {
+    let letter = match square % 8 {
+        0 => 'a',
+        1 => 'b',
+        2 => 'c',
+        3 => 'd',
+        4 => 'e',
+        5 => 'f',
+        6 => 'g',
+        7 => 'h',
+        _ => panic!("Invalid square : {}", square),
+    };
+
+    let number = match square / 8 {
+        0 => '1',
+        1 => '2',
+        2 => '3',
+        3 => '4',
+        4 => '5',
+        5 => '6',
+        6 => '7',
+        7 => '8',
+        _ => panic!("Invalid square : {}", square),
+    };
+
+    format!("{}{}", letter, number)
+}
 
 pub fn string_to_square(string: &str) -> Square {
     let letter = string.chars().next().expect("Unable to read letter");
@@ -55,14 +93,14 @@ pub fn min(a: usize, b: usize) -> usize {
     if a < b { a } else { b }
 }
 
-pub fn extract_square(input: &String) -> Square {
+pub fn extract_square(input: &str) -> Square {
     input
         .split_whitespace()
         .map(string_to_square)
         .collect::<Vec<u8>>()[0]
 }
 
-pub fn extract_move(input: &String) -> (Square, Square) {
+pub fn extract_move(input: &str) -> (Square, Square) {
     let squares: Vec<u8> = input
         .split_whitespace()
         .map(string_to_square)
@@ -82,4 +120,11 @@ pub fn user_input() -> String {
     input.pop();
 
     input.trim().to_string()
+}
+
+pub fn mask_to_moves(mask: BitBoard, start: &Square) -> Vec<Move> {
+    mask.get_occupied_squares()
+        .iter()
+        .map(|square| (*start, *square))
+        .collect::<Vec<Move>>()
 }

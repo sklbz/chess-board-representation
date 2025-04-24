@@ -1,5 +1,6 @@
 use crate::bitboard::BitBoardOperations;
-use crate::{Square, bitboard::BitBoard, utils::min};
+use crate::legal_moves::misc::Square;
+use crate::{bitboard::BitBoard, utils::min};
 
 pub fn up_mask(square: Square) -> BitBoard {
     if square >= 64 - 8 {
