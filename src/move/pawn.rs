@@ -31,7 +31,7 @@ pub fn pawn_move_black(
 }
 
 pub fn pawn_motion_black(pawn: &Square, ennemy_board: &BitBoard) -> BitBoard {
-    if pawn >= &56
+    if pawn >= &48
     /* a7 */
     {
         return (pawn.to_bitboard() >> 8 | pawn.to_bitboard() >> 16) & !ennemy_board;

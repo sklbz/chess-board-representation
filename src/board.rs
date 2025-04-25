@@ -3,7 +3,7 @@ use crate::{
     legal_moves::misc::{Color, Move, Piece, Square, Type},
 };
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub(crate) struct Board {
     // Pawns
     white_pawns: BitBoard,

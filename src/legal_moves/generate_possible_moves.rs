@@ -1,8 +1,9 @@
 use crate::{
     Board,
-    bitboard::{BitBoard, BitBoardGetter, Display},
+    bitboard::{BitBoard, BitBoardGetter},
     r#move::{
         bishop::bishop_move_bitmask,
+        king::king_move_mask,
         knight::knight_move_bitmask,
         pawn::{pawn_move_black, pawn_move_white},
         queen::queen_move_bitmask,
@@ -51,6 +52,7 @@ pub fn generate_move_mask(board: &Board, start: &Square) -> BitBoard {
         Type::Bishop => bishop_move_bitmask(start, allies, enemies),
         Type::Queen => queen_move_bitmask(start, allies, enemies),
         Type::Knight => knight_move_bitmask(start, allies),
+        Type::King => king_move_mask(start, enemies, allies),
         _ => 0,
     }
 }

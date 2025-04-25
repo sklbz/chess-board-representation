@@ -10,7 +10,14 @@ pub fn move_to_string((start, end): &Move) -> String {
     format!("{}{}", start, end)
 }
 
-fn square_to_string(square: Square) -> String {
+pub fn string_to_move(string: &str) -> Move {
+    let start = string_to_square(&string[0..2]);
+    let end = string_to_square(&string[2..4]);
+
+    (start, end)
+}
+
+pub fn square_to_string(square: Square) -> String {
     let letter = match square % 8 {
         0 => 'a',
         1 => 'b',

@@ -6,5 +6,3 @@ pub mod cross_mask;
 #[cfg(test)]
 pub mod knight;
 pub mod moves;
-#[cfg(test)]
-pub mod perft;

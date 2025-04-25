@@ -1,2 +1,4 @@
 #[cfg(test)]
 pub mod perft;
+#[cfg(test)]
+pub mod test_games;
