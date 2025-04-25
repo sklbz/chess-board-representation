@@ -2,10 +2,10 @@ use std::ops::Not;
 
 use crate::bitboard::BitBoard;
 
-pub(crate) type Square = u8;
-pub(crate) type Move = (Square, Square);
+pub type Square = u8;
+pub type Move = (Square, Square);
 #[derive(PartialEq, Debug)]
-pub(crate) enum Type {
+pub enum Type {
     Pawn,
     Knight,
     Bishop,
@@ -16,7 +16,7 @@ pub(crate) enum Type {
 }
 
 #[derive(PartialEq, Debug)]
-pub(crate) enum Color {
+pub enum Color {
     White,
     Black,
     Null,
@@ -28,7 +28,7 @@ pub struct Piece {
     pub color: Color,
 }
 impl Piece {
-    pub(crate) fn new(r#type: Type, color: Color) -> Self {
+    pub fn new(r#type: Type, color: Color) -> Self {
         Self { r#type, color }
     }
 }
@@ -45,7 +45,7 @@ impl Not for Color {
     }
 }
 
-pub(crate) trait ToBitBoard {
+pub trait ToBitBoard {
     fn to_bitboard(&self) -> BitBoard;
 }
 

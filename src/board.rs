@@ -4,7 +4,7 @@ use crate::{
 };
 
 #[derive(Debug, Clone)]
-pub(crate) struct Board {
+pub struct Board {
     // Pawns
     white_pawns: BitBoard,
     black_pawns: BitBoard,

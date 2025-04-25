@@ -6,7 +6,7 @@ use super::{
     misc::{Move, Square, ToBitBoard},
 };
 
-pub(crate) fn is_possible(board: &Board, r#move: &Move) -> bool {
+pub fn is_possible(board: &Board, r#move: &Move) -> bool {
     let (start, end): (Square, Square) = *r#move;
 
     let move_mask: BitBoard = generate_move_mask(board, &start);

@@ -1,8 +1,8 @@
 use crate::legal_moves::misc::Square;
 
-pub(crate) type BitBoard = u64;
+pub type BitBoard = u64;
 
-pub(crate) trait BitBoardGetter {
+pub trait BitBoardGetter {
     fn get_occupied_squares(&self) -> Vec<Square>;
 }
 
@@ -46,7 +46,7 @@ impl BitBoardGetter for BitBoard {
     }
 }
 
-pub(crate) trait BitBoardOperations {
+pub trait BitBoardOperations {
     fn bitwise_reverse(&self) -> BitBoard;
 }
 
@@ -68,7 +68,7 @@ impl BitBoardOperations for BitBoard {
     }
 }
 
-pub(crate) trait Display {
+pub trait Display {
     fn display(&self);
 }
 
