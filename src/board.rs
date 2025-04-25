@@ -1,6 +1,7 @@
 use crate::{
     bitboard::*,
     legal_moves::misc::{Color, Move, Piece, Square, Type},
+    utils::{square_to_string, string_to_move},
 };
 
 #[derive(Debug, Clone)]
@@ -165,6 +166,28 @@ impl Board {
                 board
             }
             _ => panic!("Piece not found!"),
+        }
+    }
+
+    pub fn castle(&mut self, code: &str, side: &Color) {
+        match (code, side) {
+            ("O-O", Color::White) => {
+                self.play_move(&string_to_move("e1g1"));
+                self.play_move(&string_to_move("h1f1"));
+            }
+            ("O-O", Color::Black) => {
+                self.play_move(&string_to_move("e8g8"));
+                self.play_move(&string_to_move("h8f8"));
+            }
+            ("O-O-O", Color::White) => {
+                self.play_move(&string_to_move("e1c1"));
+                self.play_move(&string_to_move("a1d1"));
+            }
+            ("O-O-O", Color::Black) => {
+                self.play_move(&string_to_move("e8c8"));
+                self.play_move(&string_to_move("a8d8"));
+            }
+            _ => panic!("Invalid castle code!"),
         }
     }
 
