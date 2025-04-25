@@ -1,5 +1,5 @@
-use crate::Board;
 use crate::bitboard::{BitBoard, BitBoardGetter};
+use crate::board::Board;
 use crate::legal_moves::is_move_possible::is_possible;
 use crate::legal_moves::misc::{Move, Square};
 

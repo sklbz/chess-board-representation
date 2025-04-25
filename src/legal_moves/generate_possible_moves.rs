@@ -1,6 +1,6 @@
 use crate::{
-    Board,
     bitboard::{BitBoard, BitBoardGetter},
+    board::Board,
     r#move::{
         bishop::bishop_move_bitmask,
         king::king_move_mask,
