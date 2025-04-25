@@ -51,10 +51,10 @@ fn full_game_no_castling_no_en_passant_no_promotion() {
         "e2e4", "c7c6", "d2d4", "d7d5", "b1c3", "d5e4", "c3e4", "g8f6", "e4f6", "e7f6", "c2c3",
         "c8f5", "g1e2", "g7g6", "e2g3", "f5e6", "f1d3", "b8d7", "f2f3", "d8c7", "e1f2", "c7d8",
         "h1e1", "d8c7", "f2g1", "f8d6", "d3c4", "d6g3", "h2g3", "c7g3", "c4e6", "f7e6", "e1e6",
-        "e8d8", "e6e8", "h8e8", "d1e1", "g3f3", "e1e8", "d8c7", "e8a7", "f3g2", "g1g2", "h7h5",
+        "e8d8", "e6e8", "h8e8", "d1e1", "g3f3", "e1e8", "d8c7", "e8a8", "f3g2", "g1g2", "h7h5",
         "g2g3", "h5h4", "g3g4", "h4h3", "a8a7", "h3h2", "a7b7", "c7d8", "b7c6", "d8e7", "c6e6",
         "e7e6", "c1g5", "f6g5", "g4g5", "d7b6", "a1h1", "b6c4", "h1h2", "c4b2", "h2h6", "b2a4",
-        "h6g6", "e6d5", "g6c6", "a4c3", "c6c3", "d6d5", "a2a3", "d4c3", "g5f4", "c3b2", "f4e3",
+        "h6g6", "e6d5", "g6c6", "a4c3", "c6c3", "d5d4", "a2a3", "d4c3", "g5f4", "c3b2", "f4e3",
         "b2a3",
     ]
     .iter()

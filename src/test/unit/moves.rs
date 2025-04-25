@@ -113,10 +113,55 @@ mod tests {
 
     use crate::legal_moves::misc::{Color, Piece, Type};
     use crate::r#move::bishop::bishop_move_bitmask;
+    use crate::r#move::king::king_move_mask;
+    use crate::r#move::pawn::{pawn_move_black, pawn_move_white};
     use crate::r#move::queen::queen_move_bitmask;
     use crate::r#move::rook::rook_move_bitmask;
     use proptest::prelude::*;
     proptest! {
+
+        #[test]
+        fn knight_start_not_included_in_mask(square in 0..64u8) {
+            let knight = king_move_mask(&square, &0, &0);
+            assert_eq!(knight & (1 << square), 0, "Knight starting square included in mask");
+        }
+
+
+        #[test]
+        fn pawn_start_not_included_in_mask(square in 0..64u8) {
+            let pawn = pawn_move_white(&square, &0, &0) | pawn_move_black(&square, &0, &0);
+            assert_eq!(pawn & (1 << square), 0, "Pawn starting square included in mask");
+        }
+
+
+        #[test]
+        fn king_start_not_included_in_mask(square in 0..64u8) {
+            let king = king_move_mask(&square, &0, &0);
+            assert_eq!(king & (1 << square), 0, "King starting square included in mask");
+        }
+
+
+        #[test]
+        fn queen_start_not_included_in_mask(square in 0..64u8) {
+            let queen = queen_move_bitmask(&square, &0, &0);
+            assert_eq!(queen & (1 << square), 0, "Queen starting square included in mask");
+        }
+
+
+        #[test]
+        fn rook_start_not_included_in_mask(square in 0..64u8) {
+            let rook = rook_move_bitmask(&square, &0, &0);
+            assert_eq!(rook & (1 << square), 0, "Rook starting square included in mask");
+        }
+
+
+        #[test]
+        fn bishop_start_not_included_in_mask(square in 0..64u8) {
+            let bishop = bishop_move_bitmask(&square, &0, &0);
+            assert_eq!(bishop & (1 << square), 0, "Bishop starting square included in mask");
+        }
+
+
         #[test]
         fn test_starting_pawn_move(pawn in 8..16u8) {
             let board = Board::init();
@@ -135,7 +180,7 @@ mod tests {
 
             assert!(queen.count_ones() > 20);
             assert_eq!(bishop & rook, 0);
-            assert_eq!(queen, bishop | rook);
+            assert_eq!(queen, (bishop | rook) & !(1 << square));
             assert_eq!(queen.count_ones(), bishop.count_ones() + rook.count_ones());
         }
     }

@@ -35,5 +35,5 @@ pub fn bishop_move_bitmask(
             top_right_mask(*blocker_square)
         })
         .fold(*allies_board, |acc: BitBoard, mask: BitBoard| acc | mask);
-    diagonal_cross_mask(*square) & !block_mask
+    diagonal_cross_mask(*square) & !block_mask & !square.to_bitboard()
 }
