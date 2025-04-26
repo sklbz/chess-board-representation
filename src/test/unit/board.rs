@@ -64,11 +64,10 @@ mod tests {
 
 #[cfg(test)]
 mod proptests {
-    use crate::{
-        bitboard::{BitBoard, BitBoardGetter},
-        board::*,
-    };
+    use crate::{bitboard::BitBoard, bitboard::BitBoardGetter, board::*};
+    use proptest::arbitrary::Arbitrary;
     use proptest::prelude::*;
+    use proptest::strategy::BoxedStrategy;
 
     impl Arbitrary for Board {
         type Parameters = ();

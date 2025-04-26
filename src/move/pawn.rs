@@ -19,7 +19,13 @@ pub fn pawn_motion_white(pawn: &Square, ennemy_board: &BitBoard) -> BitBoard {
 }
 
 pub fn pawn_attack_white(pawn: &Square, ennemy_board: &BitBoard) -> BitBoard {
-    (pawn.to_bitboard() << 9 | pawn.to_bitboard() << 7) & ennemy_board
+    let attack_pattern = match pawn.file() {
+        0 => pawn.to_bitboard() << 9,
+        7 => pawn.to_bitboard() << 7,
+        _ => pawn.to_bitboard() << 9 | pawn.to_bitboard() << 7,
+    };
+
+    attack_pattern & ennemy_board
 }
 
 pub fn pawn_move_black(
