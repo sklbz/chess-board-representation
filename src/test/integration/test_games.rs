@@ -1,6 +1,7 @@
 use crate::board::Board;
 use crate::legal_moves::is_move_possible::*;
 use crate::legal_moves::misc::Move;
+use crate::utils::move_to_string;
 use crate::utils::{string_to_move, string_to_square};
 
 #[test]
@@ -62,7 +63,11 @@ fn full_game_no_castling_no_en_passant_no_promotion() {
     .collect();
 
     for (move_, i) in game.iter().zip(1..) {
-        assert!(is_possible(&board, move_), "Failed at move {i}");
+        assert!(
+            is_possible(&board, move_),
+            "Failed at move {i}: {}",
+            move_to_string(move_)
+        );
         board.play_move(move_);
     }
 }
