@@ -39,7 +39,11 @@ pub fn generate_pseudo_move_mask(board: &Board, start: &Square) -> BitBoard {
         Type::Bishop => bishop_move_bitmask(start, allies, enemies),
         Type::Queen => queen_move_bitmask(start, allies, enemies),
         Type::Knight => knight_move_bitmask(start, allies),
-        Type::King => king_move_mask(start, &generate_attack_mask(board, &ennemy, start), allies),
+        Type::King => king_move_mask(
+            start,
+            &generate_attack_mask(board, &ennemy, start, &0),
+            allies,
+        ),
         _ => 0,
     }
 }
