@@ -56,15 +56,21 @@ pub fn generate_move_mask(board: &Board, start: &Square) -> BitBoard {
         return generate_pseudo_move_mask(board, start);
     }
 
-    let normal_attack = generate_attack_mask(board, &!board.get_piece(start).color, &king_square);
+    let normal_attack =
+        generate_attack_mask(board, &!board.get_piece(start).color, &king_square, &0);
 
-    if normal_attack & (1 << king_square) != 0 {
-        panic!("King is under attack");
-    }
+    let is_checked = normal_attack & (1 << king_square) != 0;
 
-    let attack_mask = generate_attack_mask(board, &!board.get_piece(start).color, start);
+    let attack_mask = generate_attack_mask(
+        board,
+        &!board.get_piece(start).color,
+        start,
+        &king_move_mask(&king_square, &0, &0),
+    );
 
-    if attack_mask & (1 << king_square) == 0 {
+    let is_pinned = attack_mask & (1 << king_square) != 0;
+
+    if !is_checked && !is_pinned {
         return generate_pseudo_move_mask(board, start);
     }
 
@@ -72,15 +78,23 @@ pub fn generate_move_mask(board: &Board, start: &Square) -> BitBoard {
 
     let direction = get_direction(offset);
 
-    let protection_mask: BitBoard = match direction {
-        1 => !(up_mask(*start) | down_mask(*start)),
-        7 => left_diagonal_mask(*start),
-        8 => !(left_mask(*start) | right_mask(*start)),
-        9 => right_diagonal_mask(*start),
-        _ => unreachable!(),
+    let protection_mask: BitBoard = match is_pinned {
+        true => 0,
+        false => match direction {
+            1 => !(up_mask(*start) | down_mask(*start)),
+            7 => left_diagonal_mask(*start),
+            8 => !(left_mask(*start) | right_mask(*start)),
+            9 => right_diagonal_mask(*start),
+            _ => unreachable!(),
+        },
     };
 
-    generate_pseudo_move_mask(board, start) & protection_mask
+    let deflection_mask = match is_checked {
+        true => protection_mask,
+        false => 0,
+    };
+
+    generate_pseudo_move_mask(board, start) & protection_mask & deflection_mask
 }
 
 fn get_direction(offset: i8) -> u8 {
@@ -103,17 +117,29 @@ fn get_direction(offset: i8) -> u8 {
     unreachable!()
 }
 
-pub fn generate_attack_mask(board: &Board, color: &Color, cleared_piece: &Square) -> BitBoard {
+pub fn generate_attack_mask(
+    board: &Board,
+    color: &Color,
+    cleared_piece: &Square,
+    added_blockers: &BitBoard,
+) -> BitBoard {
     let pieces: BitBoard = board.get_bitboard(color, &Type::None) & !(1 << cleared_piece);
 
     pieces
         .get_occupied_squares()
         .iter()
-        .map(|square| generate_attack_mask_single_square(board, square))
+        .map(|square| {
+            generate_attack_mask_single_square(board, square, cleared_piece, added_blockers)
+        })
         .fold(0, |acc, x| acc | x)
 }
 
-pub fn generate_attack_mask_single_square(board: &Board, start: &Square) -> BitBoard {
+pub fn generate_attack_mask_single_square(
+    board: &Board,
+    start: &Square,
+    cleared_piece: &Square,
+    added_blockers: &BitBoard,
+) -> BitBoard {
     let piece = board.get_piece(start);
 
     if piece.r#type == Type::None || piece.color == Color::Null {
@@ -126,7 +152,8 @@ pub fn generate_attack_mask_single_square(board: &Board, start: &Square) -> BitB
         _ => &|_, _| 0,
     };
 
-    let blockers = board.get_bitboard(&Color::Null, &Type::None);
+    let blockers =
+        (board.get_bitboard(&Color::Null, &Type::None) | added_blockers) & !(1 << cleared_piece);
 
     match piece.r#type {
         Type::Pawn => pawn_attack(start, &u64::MAX),

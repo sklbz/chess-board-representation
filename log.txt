@@ -1,0 +1,1405 @@
+test test::unit::bitboard::tests::test_bitwise_reverse ... ok
+test test::unit::bitboard::tests::test_get_occupied_squares ... ok
+test test::unit::bitmask::tests::test_bishop_movement ... ok
+test test::unit::bitboard::tests::test_to_bitboard ... ok
+test test::unit::bitmask::tests::test_cross_mask ... ok
+test test::integration::advanced_mechanics::pinning ... FAILED
+test test::unit::bitmask::tests::test_diagonal_cross_mask ... ok
+test test::integration::test_games::full_game_no_castling_no_en_passant_no_promotion ... FAILED
+test test::unit::bitmask::tests::test_diagonal_mask_edge_cases ... ok
+test test::unit::bitmask::tests::test_diagonal_masks_no_overlap ... ok
+test test::integration::test_games::opening ... ok
+test test::unit::bitmask::tests::test_right_diagonal_mask ... ok
+test test::unit::bitmask::tests::test_down_mask ... ok
+test test::unit::board::tests::test_capture_logic ... ok
+test test::unit::board::tests::test_board_init ... ok
+test test::unit::bitmask::tests::test_up_mask ... ok
+test test::unit::knight::test_knight_captures ... ok
+test test::unit::board::tests::test_move_execution ... ok
+test test::unit::bitmask::tests::test_diagonal_cross_contains_both ... ok
+test test::unit::knight::test_knight_moves_center ... ok
+test test::unit::knight::test_knight_moves_edge ... ok
+test test::unit::knight::test_knight_blocked_by_own_pieces ... ok
+test test::unit::cross_mask::test_cross_mask_square_amount ... ok
+test test::unit::moves::tests::test_bishop_moves ... ok
+test test::unit::moves::tests::test_blockers_rook ... ok
+test test::unit::moves::tests::test_blockers_bishop ... ok
+test test::unit::bitmask::tests::test_diagonal_masks_symmetric ... ok
+test test::unit::moves::tests::knight_start_not_included_in_mask ... ok
+test test::unit::moves::tests::test_pawn_moves ... ok
+test test::unit::moves::tests::test_pawn_capture_wrap_around_border ... ok
+test test::unit::moves::tests::test_rook_moves ... ok
+test test::unit::cross_mask::test_vertical_mask_square_amount ... ok
+test test::unit::moves::tests::queen_start_not_included_in_mask ... ok
+test test::unit::moves::tests::test_color_negation ... ok
+test test::unit::board::proptests::test_move_validation ... FAILED
+test test::unit::bitmask::tests::test_diagonal_masks_contain_origin ... ok
+test test::unit::board::proptests::test_bitboard_roundtrip ... ok
+test test::unit::moves::tests::pawn_start_not_included_in_mask ... ok
+test test::unit::moves::tests::bishop_start_not_included_in_mask ... ok
+test test::unit::moves::tests::king_start_not_included_in_mask ... ok
+test test::unit::moves::tests::test_queen_moves ... ok
+test test::unit::moves::tests::rook_start_not_included_in_mask ... ok
+test test::unit::moves::tests::test_starting_pawn_move ... ok
+test test::integration::perft::depth_3 ... FAILED
+
+failures:
+
+---- test::integration::advanced_mechanics::pinning stdout ----
+
+thread 'test::integration::advanced_mechanics::pinning' panicked at src/test/integration/advanced_mechanics.rs:27:5:
+Knight at e2 should be pinned to the king
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+---- test::integration::test_games::full_game_no_castling_no_en_passant_no_promotion stdout ----
+
+thread 'test::integration::test_games::full_game_no_castling_no_en_passant_no_promotion' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+---- test::unit::board::proptests::test_move_validation stdout ----
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/legal_moves/generate_possible_moves.rs:62:9:
+King is under attack
+
+thread 'test::unit::board::proptests::test_move_validation' panicked at src/test/unit/board.rs:124:5:
+Test failed: King is under attack.
+minimal failing input: board = Board {
+    white_pawns: 17592186044416,
+    black_pawns: 17592186044416,
+    white_knights: 0,
+    black_knights: 17592186044816,
+    white_bishops: 143,
+    black_bishops: 17592186044416,
+    white_rooks: 9223372036854775808,
+    black_rooks: 0,
+    white_queens: 0,
+    black_queens: 0,
+    white_king: 16384,
+    black_king: 1064992,
+}, from = 19, to = 0
+	successes: 0
+	local rejects: 0
+	global rejects: 0
+
+
+---- test::integration::perft::depth_3 stdout ----
+
+thread 'test::integration::perft::depth_3' panicked at src/test/integration/perft.rs:47:9:
+assertion `left == right` failed
+  left: 8982
+ right: 8902
+
+
+failures:
+    test::integration::advanced_mechanics::pinning
+    test::integration::perft::depth_3
+    test::integration::test_games::full_game_no_castling_no_en_passant_no_promotion
+    test::unit::board::proptests::test_move_validation
+
+test result: FAILED. 40 passed; 4 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.12s
+

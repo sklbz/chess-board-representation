@@ -5,3 +5,4 @@
 # It is recommended to check this file in to source control so that
 # everyone who runs the test benefits from these saved cases.
 cc 25afff4189dcfc8d5176fe7b4109c7bb50b9dd9c3cd0ab1bf93f2a430ba44182 # shrinks to board = Board { white_pawns: 74326986037657600, black_pawns: 0, white_knights: 74310081051623424, black_knights: 138519019520, white_bishops: 9223399112467023872, black_bishops: 74336470535536645, white_rooks: 0, black_rooks: 0, white_queens: 0, black_queens: 0, white_king: 0, black_king: 0 }, from = 0, to = 0
+cc 375b759bd52d3a26d93383dfac411f3df16da0856ab9c78f4efc53ed1a44b528 # shrinks to board = Board { white_pawns: 17592186044416, black_pawns: 17592186044416, white_knights: 0, black_knights: 17592186044816, white_bishops: 143, black_bishops: 17592186044416, white_rooks: 9223372036854775808, black_rooks: 0, white_queens: 0, black_queens: 0, white_king: 16384, black_king: 1064992 }, from = 19, to = 0
