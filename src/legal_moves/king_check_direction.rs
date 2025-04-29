@@ -24,8 +24,12 @@ pub fn get_check_direction(board: &Board, king: &Square, color: Color) -> u8 {
         .collect();
 
     for i in 0..direction_moves.len() {
-        let mask =
-            generate_attack_mask(board, &!color, &0, &(direction_mask & !direction_moves[i]));
+        let mask = generate_attack_mask(
+            board,
+            &!color,
+            &king,
+            &(direction_mask & !direction_moves[i]),
+        );
 
         if (1 << king) & mask != 0 {
             // DEBUG
