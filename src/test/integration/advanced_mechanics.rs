@@ -16,6 +16,7 @@ fn pinning() {
     .collect();
 
     for move_ in moves_to_play {
+        println!("move: {}", move_to_string(&move_));
         assert!(
             is_possible(&board, &move_),
             "Incorrect move : {}",

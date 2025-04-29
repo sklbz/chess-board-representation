@@ -1,7 +1,7 @@
 use crate::{
     bitboard::*,
     legal_moves::misc::{Color, Move, Piece, Square, Type},
-    utils::{square_to_string, string_to_move},
+    utils::string_to_move,
 };
 
 #[derive(Debug, Clone)]

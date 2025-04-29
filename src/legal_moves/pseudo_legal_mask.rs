@@ -1,3 +1,4 @@
+pub(crate) use crate::legal_moves::attack_mask::generate_attack_mask;
 use crate::{
     bitboard::BitBoard,
     board::Board,
@@ -11,10 +12,7 @@ use crate::{
     },
 };
 
-use super::{
-    generate_possible_moves::generate_attack_mask,
-    misc::{Color, Square, Type},
-};
+use super::misc::{Color, Square, Type};
 
 pub fn generate_pseudo_move_mask(board: &Board, start: &Square) -> BitBoard {
     let piece = board.get_piece(start);
