@@ -97,6 +97,16 @@ impl Board {
             black_king,
         }
     }
+    pub fn from_FEN(fen: &str) -> Board {
+        let mut board = Board::empty();
+
+let idx = 0;
+        fen.split('/').enumerate().for_each(|(rank, row)| {
+            row.chars().enumerate().for_each(|(file, square)| {
+})});
+
+            board
+    }
 
     pub fn from_mask(mask: BitBoard, piece: Piece) -> Board {
         let Piece {
