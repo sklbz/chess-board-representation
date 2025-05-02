@@ -102,7 +102,7 @@ impl Board {
         let mut pieces: Vec<(Piece, Square)> = Vec::new();
 
         let mut idx = 0;
-        fen.split('/').for_each(|row| {
+        fen.split('/').enumerate().for_each(|(file, row)| {
             row.chars().for_each(|char| {
                 if char.is_numeric() {
                     idx += char.to_string().parse::<u8>().unwrap();
@@ -161,9 +161,11 @@ impl Board {
                     _ => panic!("Invalid FEN"),
                 };
 
-                pieces.push((piece, idx));
+                pieces.push((piece, 8u8 * (7u8 - file as u8) + idx));
                 idx += 1;
-            })
+            });
+
+            idx = 0;
         });
 
         pieces.iter().for_each(|(piece, square)| {

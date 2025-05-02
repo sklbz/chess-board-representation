@@ -55,6 +55,7 @@ impl ToBitBoard for Square {
     }
 }
 
+#[allow(unused)]
 pub trait Coord {
     fn rank(&self) -> u8;
     fn file(&self) -> u8;

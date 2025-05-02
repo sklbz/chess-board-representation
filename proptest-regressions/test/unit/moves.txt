@@ -5,3 +5,4 @@
 # It is recommended to check this file in to source control so that
 # everyone who runs the test benefits from these saved cases.
 cc ed9b26a1e48f0add16247e7db13c178ce96b0954e6fc2887447a1a846e7f4538 # shrinks to square = 7
+cc 748bd7a99ef4374822e4d8c039e4f03e42c36bc91006ebfd1656e4f8ca090905 # shrinks to pawn = 11

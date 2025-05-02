@@ -47,3 +47,36 @@ fn depth_3() {
         assert_eq!(move_count[i], perft[i]);
     }
 }
+#[test]
+fn alternate_position() {
+    let mut board =
+        Board::from_FEN("r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq");
+
+    let moves = generate_move_vec(&board, Color::White);
+
+    let perft: Vec<usize> = vec![48, 2039, 97862, 4085603, 193690690, 8031647685];
+
+    let mut move_count: Vec<usize> = vec![moves.len(), 0, 0];
+
+    for played_move in moves {
+        board.play_move(&played_move);
+
+        let current_moves = generate_move_vec(&board, Color::Black);
+
+        move_count[1] += current_moves.len();
+
+        for move_ in current_moves {
+            let mut next_board = board.clone();
+            next_board.play_move(&move_);
+
+            let next_moves = generate_move_vec(&next_board, Color::White);
+            move_count[2] += next_moves.len();
+        }
+
+        board = Board::init();
+    }
+
+    for i in 0..move_count.len() {
+        assert_eq!(move_count[i], perft[i]);
+    }
+}
