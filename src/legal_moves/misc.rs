@@ -4,7 +4,7 @@ use crate::bitboard::BitBoard;
 
 pub type Square = u8;
 pub type Move = (Square, Square);
-#[derive(PartialEq, Debug)]
+#[derive(PartialEq, Debug, Copy, Clone)]
 pub enum Type {
     Pawn,
     Knight,
@@ -22,7 +22,7 @@ pub enum Color {
     Null,
 }
 
-#[derive(PartialEq, Debug)]
+#[derive(PartialEq, Debug, Copy, Clone)]
 pub struct Piece {
     pub r#type: Type,
     pub color: Color,
