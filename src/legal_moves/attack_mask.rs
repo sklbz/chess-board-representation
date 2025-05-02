@@ -34,7 +34,7 @@ pub fn generate_attack_mask(
 pub fn generate_attack_mask_single_square(
     board: &Board,
     start: &Square,
-    cleared_piece: &Square,
+    cleared_piece: &BitBoard,
     added_blockers: &BitBoard,
 ) -> BitBoard {
     let piece = board.get_piece(start);
@@ -50,7 +50,7 @@ pub fn generate_attack_mask_single_square(
     };
 
     let blockers =
-        (board.get_bitboard(&Color::Null, &Type::None) | added_blockers) & !(1 << cleared_piece);
+        (board.get_bitboard(&Color::Null, &Type::None) | added_blockers) & !cleared_piece;
 
     match piece.r#type {
         Type::Pawn => pawn_attack(start, &u64::MAX),

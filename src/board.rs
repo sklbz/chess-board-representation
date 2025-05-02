@@ -99,13 +99,78 @@ impl Board {
     }
     pub fn from_FEN(fen: &str) -> Board {
         let mut board = Board::empty();
+        let mut pieces: Vec<(Piece, Square)> = Vec::new();
 
-let idx = 0;
-        fen.split('/').enumerate().for_each(|(rank, row)| {
-            row.chars().enumerate().for_each(|(file, square)| {
-})});
+        let mut idx = 0;
+        fen.split('/').for_each(|row| {
+            row.chars().for_each(|char| {
+                if char.is_numeric() {
+                    idx += char.to_string().parse::<u8>().unwrap();
+                    return;
+                }
 
-            board
+                let piece = match char {
+                    'P' => Piece {
+                        r#type: Type::Pawn,
+                        color: Color::White,
+                    },
+                    'p' => Piece {
+                        r#type: Type::Pawn,
+                        color: Color::Black,
+                    },
+                    'N' => Piece {
+                        r#type: Type::Knight,
+                        color: Color::White,
+                    },
+                    'n' => Piece {
+                        r#type: Type::Knight,
+                        color: Color::Black,
+                    },
+                    'B' => Piece {
+                        r#type: Type::Bishop,
+                        color: Color::White,
+                    },
+                    'b' => Piece {
+                        r#type: Type::Bishop,
+                        color: Color::Black,
+                    },
+                    'R' => Piece {
+                        r#type: Type::Rook,
+                        color: Color::White,
+                    },
+                    'r' => Piece {
+                        r#type: Type::Rook,
+                        color: Color::Black,
+                    },
+                    'Q' => Piece {
+                        r#type: Type::Queen,
+                        color: Color::White,
+                    },
+                    'q' => Piece {
+                        r#type: Type::Queen,
+                        color: Color::Black,
+                    },
+                    'K' => Piece {
+                        r#type: Type::King,
+                        color: Color::White,
+                    },
+                    'k' => Piece {
+                        r#type: Type::King,
+                        color: Color::Black,
+                    },
+                    _ => panic!("Invalid FEN"),
+                };
+
+                pieces.push((piece, idx));
+                idx += 1;
+            })
+        });
+
+        pieces.iter().for_each(|(piece, square)| {
+            board.set(square, *piece);
+        });
+
+        board
     }
 
     pub fn from_mask(mask: BitBoard, piece: Piece) -> Board {
@@ -212,6 +277,11 @@ let idx = 0;
         self.remove_piece(&end);
 
         self.add_piece(&end, piece);
+    }
+
+    fn set(&mut self, square: &Square, piece: Piece) {
+        self.remove_piece(square);
+        self.add_piece(square, piece);
     }
 
     fn remove_piece(&mut self, square: &Square) {

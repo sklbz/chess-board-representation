@@ -9,6 +9,7 @@ use crate::{
 };
 
 use super::king_check_direction::get_check_direction;
+use super::misc::ToBitBoard;
 use super::{
     misc::{Color, Move, Square, Type},
     pseudo_legal_mask::generate_pseudo_move_mask,
@@ -53,15 +54,19 @@ pub fn generate_move_mask(board: &Board, start: &Square) -> BitBoard {
         return generate_pseudo_move_mask(board, start);
     }
 
-    let normal_attack =
-        generate_attack_mask(board, &!board.get_piece(start).color, &king_square, &0);
+    let normal_attack = generate_attack_mask(
+        board,
+        &!board.get_piece(start).color,
+        &king_square.to_bitboard(),
+        &0,
+    );
 
     let is_checked = normal_attack & (1 << king_square) != 0;
 
     let attack_mask = generate_attack_mask(
         board,
         &!board.get_piece(start).color,
-        start,
+        &start.to_bitboard(),
         &king_move_mask(&king_square, &0, &0),
     );
 

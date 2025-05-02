@@ -1,6 +1,7 @@
 use crate::{
     bitboard::{BitBoard, BitBoardGetter, Display},
     board::Board,
+    legal_moves::misc::ToBitBoard,
     r#move::king::king_move_mask,
 };
 
@@ -29,7 +30,7 @@ pub fn get_check_direction(board: &Board, king: &Square, color: Color) -> u8 {
         let mask = generate_attack_mask(
             board,
             &ennemy_color,
-            king,
+            &king.to_bitboard(),
             &(direction_mask & !direction_moves[i]),
         );
 
@@ -51,7 +52,7 @@ pub fn get_check_direction(board: &Board, king: &Square, color: Color) -> u8 {
 
     println!("King must move!");
     println!("Attack :");
-    generate_attack_mask(board, &!color, king, &0).display();
+    generate_attack_mask(board, &!color, &king.to_bitboard(), &0).display();
     board.display();
 
     0

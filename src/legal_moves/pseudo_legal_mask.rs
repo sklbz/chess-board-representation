@@ -12,7 +12,7 @@ use crate::{
     },
 };
 
-use super::misc::{Color, Square, Type};
+use super::misc::{Color, Square, ToBitBoard, Type};
 
 pub fn generate_pseudo_move_mask(board: &Board, start: &Square) -> BitBoard {
     let piece = board.get_piece(start);
@@ -39,7 +39,7 @@ pub fn generate_pseudo_move_mask(board: &Board, start: &Square) -> BitBoard {
         Type::Knight => knight_move_bitmask(start, allies),
         Type::King => king_move_mask(
             start,
-            &generate_attack_mask(board, &ennemy, start, &0),
+            &generate_attack_mask(board, &ennemy, &start.to_bitboard(), &0),
             allies,
         ),
         _ => 0,
