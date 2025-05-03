@@ -66,22 +66,3 @@ fn test_knight_blocked_by_own_pieces() {
         blocked_square
     );
 }
-
-#[test]
-fn test_knight_captures() {
-    /*
-        let mut board = Board::default();
-        let knight_square = 28; // e4
-        board.white_knights = 1 << knight_square;
-
-        // Place black pawn in one of the knight's attack squares
-        let capture_square = knight_square + 15;
-        board.black_pawns = 1 << capture_square;
-
-        assert!(
-            is_possible(&board, &(knight_square, capture_square)),
-            "Knight should be able to capture enemy piece at {}",
-            capture_square
-        );
-    */
-}

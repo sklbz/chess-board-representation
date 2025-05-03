@@ -89,6 +89,12 @@ mod proptests {
             )
                 .prop_map(
                     |(wp, wn, wb, wr, wq, w_king_square, bp, bn, bb, br, bq, b_king_square)| {
+                        let b_king_square = if w_king_square == b_king_square {
+                            (b_king_square + 1) % 64
+                        } else {
+                            b_king_square
+                        };
+
                         let arb_wk: BitBoard = 1 << w_king_square;
                         let arb_bk: BitBoard = 1 << b_king_square;
 
@@ -110,17 +116,17 @@ mod proptests {
                         let overlap = all_white & all_black;
 
                         Board::new(
-                            wp & !overlap,
-                            wn & !overlap,
-                            wb & !overlap,
-                            wr & !overlap,
-                            wq & !overlap,
+                            wp & !overlap & !wk,
+                            bp & !overlap & !bk,
+                            wn & !overlap & !wk,
+                            bn & !overlap & !bk,
+                            wb & !overlap & !wk,
+                            bb & !overlap & !bk,
+                            wr & !overlap & !wk,
+                            br & !overlap & !bk,
+                            wq & !overlap & !wk,
+                            bq & !overlap & !bk,
                             wk,
-                            bp & !overlap,
-                            bn & !overlap,
-                            bb & !overlap,
-                            br & !overlap,
-                            bq & !overlap,
                             bk,
                         )
                     },
@@ -142,7 +148,22 @@ mod proptests {
 
         #[test]
         fn test_move_validation(board: Board, from in 0..64u8, to in 0..64u8) {
-            let _ = is_possible(&board, &(from, to));
+                let correct_board = Board::new(
+                    board.get_bitboard(&Color::White, &Type::Pawn),
+                    board.get_bitboard(&Color::White, &Type::Knight),
+                    board.get_bitboard(&Color::White, &Type::Bishop),
+                    board.get_bitboard(&Color::White, &Type::Rook),
+                    board.get_bitboard(&Color::White, &Type::Queen),
+                    board.get_bitboard(&Color::White, &Type::King).get_occupied_squares()[0].to_bitboard(),
+                    board.get_bitboard(&Color::Black, &Type::Pawn),
+                    board.get_bitboard(&Color::Black, &Type::Knight),
+                    board.get_bitboard(&Color::Black, &Type::Bishop),
+                    board.get_bitboard(&Color::Black, &Type::Rook),
+                    board.get_bitboard(&Color::Black, &Type::Queen),
+                    board.get_bitboard(&Color::Black, &Type::King).get_occupied_squares()[0].to_bitboard(),
+                );
+
+            let _ = is_possible(&correct_board, &(from, to));
             // We're just testing it doesn't panic
         }
 
@@ -150,10 +171,6 @@ mod proptests {
         fn always_one_king_per_color(board: Board) {
             let wk = board.get_bitboard(&Color::White, &Type::King);
             let bk = board.get_bitboard(&Color::Black, &Type::King);
-
-            if wk.count_ones() != 1 || bk.count_ones() != 1 {
-                board.display();
-            }
 
             assert_eq!(wk.count_ones(), 1, "White must have exactly one king");
             assert_eq!(bk.count_ones(), 1, "Black must have exactly one king");

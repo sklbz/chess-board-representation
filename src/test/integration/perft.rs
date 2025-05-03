@@ -79,3 +79,36 @@ fn alternate_position() {
         assert_eq!(move_count[i], perft[i], "Minimal failing depth: {}", i + 1);
     }
 }
+
+#[test]
+fn alternate_position_2() {
+    let mut board = Board::from_fen("8/2p5/3p4/KP5r/1R3p1k/8/4P1P1/8");
+
+    let moves = generate_move_vec(&board, Color::White);
+
+    let perft: Vec<usize> = vec![14, 191, 2812, 43238];
+
+    let mut move_count: Vec<usize> = vec![moves.len(), 0, 0];
+
+    for played_move in moves {
+        board.play_move(&played_move);
+
+        let current_moves = generate_move_vec(&board, Color::Black);
+
+        move_count[1] += current_moves.len();
+
+        for move_ in current_moves {
+            let mut next_board = board.clone();
+            next_board.play_move(&move_);
+
+            let next_moves = generate_move_vec(&next_board, Color::White);
+            move_count[2] += next_moves.len();
+        }
+
+        board = Board::from_fen("8/2p5/3p4/KP5r/1R3p1k/8/4P1P1/8");
+    }
+
+    for i in 0..move_count.len() {
+        assert_eq!(move_count[i], perft[i], "Minimal failing depth: {}", i + 1);
+    }
+}
