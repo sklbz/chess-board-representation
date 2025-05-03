@@ -112,3 +112,14 @@ fn alternate_position_2() {
         assert_eq!(move_count[i], perft[i], "Minimal failing depth: {}", i + 1);
     }
 }
+
+#[test]
+fn position_with_the_most_legal_moves() {
+    let board = Board::from_fen("R6R/3Q4/1Q4Q1/4Q3/2Q4Q/Q4Q2/pp1Q4/kBNN1KB1");
+
+    let reference = 218;
+
+    let moves = generate_move_vec(&board, Color::White);
+
+    assert_eq!(moves.len(), reference);
+}
