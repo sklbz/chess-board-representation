@@ -71,10 +71,6 @@ pub fn generate_move_mask(board: &Board, start: &Square) -> BitBoard {
 
     let is_pinned = attack_mask & (1 << king_square) != 0;
 
-    if is_pinned {
-        println!("Piece at square {} is pinned!", square_to_string(*start));
-    }
-
     if !is_checked && !is_pinned {
         return generate_pseudo_move_mask(board, start);
     }
@@ -104,6 +100,7 @@ pub fn generate_move_mask(board: &Board, start: &Square) -> BitBoard {
             8 => !(left_mask(*start) | right_mask(*start)),
             9 => right_diagonal_mask(*start),
             10 => get_checking_knight(board, color, &board.get_bitboard(&color, &Type::King)),
+            u8::MAX => u64::MAX,
             _ => unreachable!(),
         },
         false => u64::MAX,

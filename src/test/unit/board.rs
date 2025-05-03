@@ -178,6 +178,7 @@ mod proptests {
 
         #[test]
         fn always_one_king_per_color(board: Board) {
+            board.display();
             assert_eq!(board.get_bitboard(&Color::White, &Type::King).count_ones(), 1, "White must have exactly one king");
             assert_eq!(board.get_bitboard(&Color::Black, &Type::King).count_ones(), 1, "Black must have exactly one king");
             assert_ne!(
