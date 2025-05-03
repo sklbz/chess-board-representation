@@ -9,6 +9,7 @@ use crate::{
     utils::{string_to_square, user_input},
 };
 
+#[allow(unused)]
 pub fn run_debug() {
     let mut board = knight_board(
         string_to_square("a1"),

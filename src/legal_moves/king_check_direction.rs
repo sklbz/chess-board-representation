@@ -1,5 +1,5 @@
 use crate::{
-    bitboard::{BitBoard, BitBoardGetter, Display},
+    bitboard::{BitBoard, BitBoardGetter},
     board::Board,
     legal_moves::misc::ToBitBoard,
     r#move::king::king_move_mask,
@@ -86,6 +86,16 @@ pub fn get_checking_knight(board: &Board, color: Color, king: &BitBoard) -> BitB
             return 1 << square;
         }
     }
+
+    // We probably are going to assume that there are multiple knights checking
+
+    let mask = generate_attack_mask(board, &ennemy_color, &ennemy_knights, &0);
+
+    if king & mask == 0 {
+        return 0;
+    }
+
+    // This would be very strange
 
     panic!("No checking knight found");
 }

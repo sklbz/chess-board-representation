@@ -4,7 +4,7 @@ use crate::{
     bitmask::{down_mask, left_diagonal_mask, left_mask, right_diagonal_mask, right_mask, up_mask},
     board::Board,
     r#move::{king::king_move_mask, queen::queen_move_bitmask},
-    utils::{mask_to_moves, square_to_string},
+    utils::mask_to_moves,
 };
 
 use super::king_check_direction::{get_check_direction, get_checking_knight};

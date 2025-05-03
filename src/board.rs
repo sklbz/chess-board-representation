@@ -212,15 +212,15 @@ impl Board {
     }
 
     pub fn get_legal_moves(&self, color: &Color) -> Vec<Move> {
-        generate_move_vec(&self, *color)
+        generate_move_vec(self, *color)
     }
 
     pub fn black_attack_mask(&self) -> BitBoard {
-        generate_attack_mask(&self, &Color::Black, &0, &0)
+        generate_attack_mask(self, &Color::Black, &0, &0)
     }
 
     pub fn white_attack_mask(&self) -> BitBoard {
-        generate_attack_mask(&self, &Color::White, &0, &0)
+        generate_attack_mask(self, &Color::White, &0, &0)
     }
 
     pub fn castle(&mut self, code: &str, side: &Color) {

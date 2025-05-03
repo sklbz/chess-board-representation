@@ -68,6 +68,7 @@ impl BitBoardOperations for BitBoard {
     }
 }
 
+#[allow(unused)]
 pub trait Display {
     fn display(&self);
 }
