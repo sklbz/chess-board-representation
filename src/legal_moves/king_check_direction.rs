@@ -58,3 +58,19 @@ pub fn get_check_direction(board: &Board, king: &Square, color: Color) -> u8 {
 
     0
 }
+
+pub fn get_checking_knight(board: &Board, color: Color, king: &BitBoard) -> BitBoard {
+    let ennemy_color = !color;
+    let ennemy_knights = board.get_bitboard(&ennemy_color, &Type::Knight);
+    let knight_squares = ennemy_knights.get_occupied_squares();
+
+    for square in knight_squares {
+        let mask = generate_attack_mask(board, &ennemy_color, &(1 << square), &0);
+
+        if king & mask == 0 {
+            return 1 << square;
+        }
+    }
+
+    panic!("No checking knight found");
+}

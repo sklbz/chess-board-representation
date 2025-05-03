@@ -7,7 +7,7 @@ use crate::{
     utils::{mask_to_moves, square_to_string},
 };
 
-use super::king_check_direction::get_check_direction;
+use super::king_check_direction::{get_check_direction, get_checking_knight};
 use super::misc::ToBitBoard;
 use super::{
     misc::{Color, Move, Square, Type},
@@ -94,14 +94,16 @@ pub fn generate_move_mask(board: &Board, start: &Square) -> BitBoard {
         false => u64::MAX,
     };
 
-    let deflection_mask = match is_checked {
+    let color = board.get_piece(start).color;
+
+    let deflection_mask: BitBoard = match is_checked {
         true => match get_check_direction(board, start, board.get_piece(start).color) {
             0 => 0,
             1 => !(up_mask(*start) | down_mask(*start)),
             7 => left_diagonal_mask(*start),
             8 => !(left_mask(*start) | right_mask(*start)),
             9 => right_diagonal_mask(*start),
-            10 => board.get_bitboard(&!board.get_piece(start).color, &Type::Knight),
+            10 => get_checking_knight(board, color, &board.get_bitboard(&color, &Type::King)),
             _ => unreachable!(),
         },
         false => u64::MAX,

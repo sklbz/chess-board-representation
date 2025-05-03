@@ -1,4 +1,3 @@
-/*
 use crate::board::Board;
 use crate::legal_moves::generate_possible_moves::generate_move_vec;
 use crate::legal_moves::misc::Color;
@@ -79,4 +78,4 @@ fn alternate_position() {
     for i in 0..move_count.len() {
         assert_eq!(move_count[i], perft[i]);
     }
-}*/
+}
