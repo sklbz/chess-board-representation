@@ -26,34 +26,35 @@ pub fn get_check_direction(board: &Board, king: &Square, color: Color) -> u8 {
 
     let ennemy_color = !color;
 
+    let ennemy_horsey = board.get_bitboard(&ennemy_color, &Type::Knight);
+    let mask_no_knights: u64 = generate_attack_mask(board, &ennemy_color, &ennemy_horsey, &0);
+
+    if (1 << king) & mask_no_knights == 0 {
+        // 10 for knights
+        return 10;
+    }
+    // Now I know that there is one check not from a knight
+
+    let mask_knights_only: u64 =
+        generate_attack_mask(board, &ennemy_color, &king.to_bitboard(), &direction_mask);
+
+    if (1 << king) & mask_knights_only != 0 {
+        // In case of double check, the king has to move
+        return 0;
+    }
+
     for i in 0..direction_moves.len() {
         let mask = generate_attack_mask(
             board,
             &ennemy_color,
             &king.to_bitboard(),
-            &(direction_mask & !direction_moves[i]),
+            &direction_moves[i],
         );
 
-        if (1 << king) & mask != 0 {
-            // DEBUG
-            mask.display();
-            board.display();
-
+        if (1 << king) & mask == 0 {
             return direction_offsets[i].unsigned_abs();
         }
     }
-
-    let ennemy_horsey = board.get_bitboard(&ennemy_color, &Type::Knight);
-    let mask_no_knights: u64 = generate_attack_mask(board, &ennemy_color, &ennemy_horsey, &0);
-
-    if (1 << king) & mask_no_knights == 0 {
-        return 0;
-    }
-
-    println!("King must move!");
-    println!("Attack :");
-    generate_attack_mask(board, &!color, &king.to_bitboard(), &0).display();
-    board.display();
 
     0
 }

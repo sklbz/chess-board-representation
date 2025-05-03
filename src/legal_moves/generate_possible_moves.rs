@@ -4,7 +4,7 @@ use crate::{
     bitmask::{down_mask, left_diagonal_mask, left_mask, right_diagonal_mask, right_mask, up_mask},
     board::Board,
     r#move::{king::king_move_mask, queen::queen_move_bitmask},
-    utils::mask_to_moves,
+    utils::{mask_to_moves, square_to_string},
 };
 
 use super::king_check_direction::get_check_direction;
@@ -65,11 +65,15 @@ pub fn generate_move_mask(board: &Board, start: &Square) -> BitBoard {
     let attack_mask = generate_attack_mask(
         board,
         &!board.get_piece(start).color,
-        &start.to_bitboard(),
+        &(start.to_bitboard() | board.get_bitboard(&Color::Null, &Type::Knight)),
         &king_move_mask(&king_square, &0, &0),
     );
 
     let is_pinned = attack_mask & (1 << king_square) != 0;
+
+    if is_pinned {
+        println!("Piece at square {} is pinned!", square_to_string(*start));
+    }
 
     if !is_checked && !is_pinned {
         return generate_pseudo_move_mask(board, start);
@@ -97,6 +101,7 @@ pub fn generate_move_mask(board: &Board, start: &Square) -> BitBoard {
             7 => left_diagonal_mask(*start),
             8 => !(left_mask(*start) | right_mask(*start)),
             9 => right_diagonal_mask(*start),
+            10 => board.get_bitboard(&!board.get_piece(start).color, &Type::Knight),
             _ => unreachable!(),
         },
         false => u64::MAX,
