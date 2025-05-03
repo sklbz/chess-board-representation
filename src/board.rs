@@ -1,7 +1,11 @@
 use crate::{
     bitboard::*,
-    legal_moves::misc::{Color, Move, Piece, Square, Type},
-    utils::string_to_move,
+    legal_moves::{
+        attack_mask::generate_attack_mask,
+        generate_possible_moves::generate_move_vec,
+        misc::{Color, Move, Piece, Square, Type},
+    },
+    utils::{piece_from_char, piece_to_icon, string_to_move},
 };
 
 #[derive(Debug, Clone)]
@@ -110,57 +114,7 @@ impl Board {
                     return;
                 }
 
-                let piece = match char {
-                    'P' => Piece {
-                        r#type: Type::Pawn,
-                        color: Color::White,
-                    },
-                    'p' => Piece {
-                        r#type: Type::Pawn,
-                        color: Color::Black,
-                    },
-                    'N' => Piece {
-                        r#type: Type::Knight,
-                        color: Color::White,
-                    },
-                    'n' => Piece {
-                        r#type: Type::Knight,
-                        color: Color::Black,
-                    },
-                    'B' => Piece {
-                        r#type: Type::Bishop,
-                        color: Color::White,
-                    },
-                    'b' => Piece {
-                        r#type: Type::Bishop,
-                        color: Color::Black,
-                    },
-                    'R' => Piece {
-                        r#type: Type::Rook,
-                        color: Color::White,
-                    },
-                    'r' => Piece {
-                        r#type: Type::Rook,
-                        color: Color::Black,
-                    },
-                    'Q' => Piece {
-                        r#type: Type::Queen,
-                        color: Color::White,
-                    },
-                    'q' => Piece {
-                        r#type: Type::Queen,
-                        color: Color::Black,
-                    },
-                    'K' => Piece {
-                        r#type: Type::King,
-                        color: Color::White,
-                    },
-                    'k' => Piece {
-                        r#type: Type::King,
-                        color: Color::Black,
-                    },
-                    _ => panic!("Invalid FEN"),
-                };
+                let piece = piece_from_char(char);
 
                 pieces.push((piece, 8u8 * (7u8 - file as u8) + idx));
                 idx += 1;
@@ -182,69 +136,91 @@ impl Board {
             color,
         } = piece;
 
+        let mut board = Board::empty();
+
         match (piece_type, color) {
             (Type::Pawn, Color::White) => {
-                let mut board = Board::empty();
                 board.white_pawns = mask;
                 board
             }
             (Type::Pawn, Color::Black) => {
-                let mut board = Board::empty();
                 board.black_pawns = mask;
                 board
             }
             (Type::Knight, Color::White) => {
-                let mut board = Board::empty();
                 board.white_knights = mask;
                 board
             }
             (Type::Knight, Color::Black) => {
-                let mut board = Board::empty();
                 board.black_knights = mask;
                 board
             }
             (Type::Bishop, Color::White) => {
-                let mut board = Board::empty();
                 board.white_bishops = mask;
                 board
             }
             (Type::Bishop, Color::Black) => {
-                let mut board = Board::empty();
                 board.black_bishops = mask;
                 board
             }
             (Type::Rook, Color::White) => {
-                let mut board = Board::empty();
                 board.white_rooks = mask;
                 board
             }
             (Type::Rook, Color::Black) => {
-                let mut board = Board::empty();
                 board.black_rooks = mask;
                 board
             }
             (Type::Queen, Color::White) => {
-                let mut board = Board::empty();
                 board.white_queens = mask;
                 board
             }
             (Type::Queen, Color::Black) => {
-                let mut board = Board::empty();
                 board.black_queens = mask;
                 board
             }
             (Type::King, Color::White) => {
-                let mut board = Board::empty();
                 board.white_king = mask;
                 board
             }
             (Type::King, Color::Black) => {
-                let mut board = Board::empty();
                 board.black_king = mask;
                 board
             }
             _ => panic!("Piece not found!"),
         }
+    }
+
+    pub fn is_check(&self, color: Color) -> bool {
+        match color {
+            Color::White => self.white_king & self.black_attack_mask() != 0,
+            Color::Black => self.black_king & self.white_attack_mask() != 0,
+            Color::Null => panic!("Color is null"),
+        }
+    }
+
+    pub fn is_checkmate(&self, color: Color) -> bool {
+        match color {
+            Color::White => {
+                self.is_check(Color::White) && self.get_legal_moves(&Color::White).is_empty()
+            }
+            Color::Black => {
+                self.is_check(Color::Black) && self.get_legal_moves(&Color::Black).is_empty()
+            }
+            Color::Null => panic!("Color is null"),
+        }
+    }
+
+    pub fn get_legal_moves(&self, color: &Color) -> Vec<Move> {
+        generate_move_vec(&self, *color)
+    }
+
+    pub fn black_attack_mask(&self) -> BitBoard {
+        generate_attack_mask(&self, &Color::Black, &0, &0)
+    }
+
+    pub fn white_attack_mask(&self) -> BitBoard {
+        generate_attack_mask(&self, &Color::White, &0, &0)
     }
 
     pub fn castle(&mut self, code: &str, side: &Color) {
@@ -445,21 +421,8 @@ impl Board {
             }
 
             let Piece { r#type, color } = self.get_piece(&i);
-            match (color, r#type) {
-                (Color::White, Type::Pawn) => row.push('󰡙'),
-                (Color::Black, Type::Pawn) => row.push('♙'),
-                (Color::White, Type::Knight) => row.push('󰡘'),
-                (Color::Black, Type::Knight) => row.push(''),
-                (Color::White, Type::Bishop) => row.push('󰡜'),
-                (Color::Black, Type::Bishop) => row.push(''),
-                (Color::White, Type::Rook) => row.push('󰡛'),
-                (Color::Black, Type::Rook) => row.push(''),
-                (Color::White, Type::Queen) => row.push('󰡚'),
-                (Color::Black, Type::Queen) => row.push(''),
-                (Color::White, Type::King) => row.push('󰡗'),
-                (Color::Black, Type::King) => row.push(''),
-                _ => row.push(' '),
-            }
+
+            row.push(piece_to_icon(&color, &r#type));
 
             row.push(' ');
             row.push('│');

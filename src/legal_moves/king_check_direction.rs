@@ -71,6 +71,14 @@ pub fn get_checking_knight(board: &Board, color: Color, king: &BitBoard) -> BitB
     let ennemy_knights = board.get_bitboard(&ennemy_color, &Type::Knight);
     let knight_squares = ennemy_knights.get_occupied_squares();
 
+    if ennemy_knights == 0 {
+        return u64::MAX;
+    }
+
+    if !board.is_check(color) {
+        return u64::MAX;
+    }
+
     for square in knight_squares {
         let mask = generate_attack_mask(board, &ennemy_color, &(1 << square), &0);
 
