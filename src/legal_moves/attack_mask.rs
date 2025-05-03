@@ -17,10 +17,9 @@ pub fn generate_attack_mask(
     board: &Board,
     color: &Color,
     cleared_piece: &BitBoard,
-    //TODO: Finish editing this type
     added_blockers: &BitBoard,
 ) -> BitBoard {
-    let pieces: BitBoard = board.get_bitboard(color, &Type::None) & !(1 << cleared_piece);
+    let pieces: BitBoard = board.get_bitboard(color, &Type::None) & !cleared_piece;
 
     pieces
         .get_occupied_squares()

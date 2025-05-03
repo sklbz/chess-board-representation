@@ -1,4 +1,3 @@
-use crate::bitboard::Display;
 use crate::legal_moves::attack_mask::generate_attack_mask;
 use crate::{
     bitboard::{BitBoard, BitBoardGetter},
@@ -72,10 +71,6 @@ pub fn generate_move_mask(board: &Board, start: &Square) -> BitBoard {
 
     let is_pinned = attack_mask & (1 << king_square) != 0;
 
-    if is_pinned {
-        println!("Piece is pinned");
-    }
-
     if !is_checked && !is_pinned {
         return generate_pseudo_move_mask(board, start);
     }
@@ -94,8 +89,6 @@ pub fn generate_move_mask(board: &Board, start: &Square) -> BitBoard {
         },
         false => u64::MAX,
     };
-
-    protection_mask.display();
 
     let deflection_mask = match is_checked {
         true => match get_check_direction(board, start, board.get_piece(start).color) {
