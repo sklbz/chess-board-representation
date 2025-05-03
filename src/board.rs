@@ -97,7 +97,7 @@ impl Board {
             black_king,
         }
     }
-    pub fn from_FEN(fen: &str) -> Board {
+    pub fn from_fen(fen: &str) -> Board {
         let mut board = Board::empty();
         let mut pieces: Vec<(Piece, Square)> = Vec::new();
 

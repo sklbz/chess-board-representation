@@ -49,8 +49,7 @@ fn depth_3() {
 }
 #[test]
 fn alternate_position() {
-    let mut board =
-        Board::from_FEN("r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq");
+    let mut board = Board::from_fen("r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R");
 
     let moves = generate_move_vec(&board, Color::White);
 
