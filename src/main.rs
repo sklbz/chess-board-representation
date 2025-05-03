@@ -9,6 +9,7 @@ mod test;
 mod utils;
 
 // use debug::knight_movement::run_debug;
+use chess::uci::uci_loop::uci;
 use game::game_loop::run;
 use utils::squarewise_display;
 
@@ -23,6 +24,7 @@ fn main() {
         squarewise_display(&board);
     }
 
-    run(&mut board);
+    // run(&mut board);
     // run_debug();
+    uci();
 }

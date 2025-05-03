@@ -1,40 +1,4 @@
-use crate::{
-    board::Board,
-    legal_moves::{generate_possible_moves::generate_move_vec, misc::Color},
-    utils::move_to_string,
-};
-
-fn search(board: &Board, depth: usize, color: Color) -> usize {
-    if depth == 0 {
-        return generate_move_vec(board, color).len();
-    }
-
-    let moves = generate_move_vec(board, color);
-
-    let mut result = 0;
-
-    for move_ in moves {
-        let mut next_board = board.clone();
-        next_board.play_move(&move_);
-
-        result += search(&next_board, depth - 1, !color);
-    }
-
-    result
-}
-
-fn divide(board: &Board, color: Color, depth: usize) -> Vec<(String, usize)> {
-    let moves = generate_move_vec(board, color);
-
-    moves
-        .iter()
-        .map(|move_| {
-            let mut next_board = board.clone();
-            next_board.play_move(move_);
-            (move_to_string(move_), search(&next_board, depth - 1, color))
-        })
-        .collect()
-}
+use crate::{board::Board, debug::divide::divide, legal_moves::misc::Color, utils::string_to_move};
 
 #[test]
 fn depth_3() {
@@ -65,6 +29,52 @@ fn depth_3() {
 
     let depth = 3;
     let result = divide(&board, Color::White, depth - 1);
+
+    for (move_, count) in result {
+        println!("{}: {}", move_, count);
+        let reference = stockfish_ref.iter().find(|(m, _)| *m == move_).unwrap();
+        assert_eq!(
+            count, reference.1,
+            "\nEngine: {} => {}\n Stockfish: {} => {}",
+            move_, count, reference.0, reference.1
+        );
+    }
+}
+
+#[test]
+fn b1a3_depth_3() {
+    let mut board = Board::init();
+
+    let mut depth = 3;
+
+    board.play_move(&string_to_move("b1a3"));
+
+    depth -= 1;
+
+    let stockfish_ref = [
+        ("a7a6", 20),
+        ("b7b6", 20),
+        ("c7c6", 20),
+        ("d7d6", 20),
+        ("e7e6", 20),
+        ("f7f6", 20),
+        ("g7g6", 20),
+        ("h7h6", 20),
+        ("a7a5", 20),
+        ("b7b5", 20),
+        ("c7c5", 20),
+        ("d7d5", 20),
+        ("e7e5", 20),
+        ("f7f5", 20),
+        ("g7g5", 20),
+        ("h7h5", 20),
+        ("b8a6", 20),
+        ("b8c6", 20),
+        ("g8f6", 20),
+        ("g8h6", 20),
+    ];
+
+    let result = divide(&board, Color::Black, depth - 1);
 
     for (move_, count) in result {
         println!("{}: {}", move_, count);
