@@ -74,87 +74,60 @@ mod proptests {
         type Strategy = BoxedStrategy<Self>;
 
         fn arbitrary_with(_: Self::Parameters) -> Self::Strategy {
-            // Generate random squares for kings first (ensuring they're different)
-            (0..64u8, 0..64u8)
-                .prop_filter("Kings must be on different squares", |(wk, bk)| wk != bk)
-                .prop_flat_map(|(white_king_sq, black_king_sq)| {
-                    // Generate other pieces (0-15 of each type)
-                    (
-                        prop::collection::vec(0..64u8, 0..16), // white pawns
-                        prop::collection::vec(0..64u8, 0..16), // white knights
-                        prop::collection::vec(0..64u8, 0..16), // white bishops
-                        prop::collection::vec(0..64u8, 0..16), // white rooks
-                        prop::collection::vec(0..64u8, 0..16), // white queens
-                        prop::collection::vec(0..64u8, 0..16), // black pawns
-                        prop::collection::vec(0..64u8, 0..16), // black knights
-                        prop::collection::vec(0..64u8, 0..16), // black bishops
-                        prop::collection::vec(0..64u8, 0..16), // black rooks
-                        prop::collection::vec(0..64u8, 0..16), // black queens
-                    )
-                        .prop_map(
-                            move |(wp, wn, wb, wr, wq, bp, bn, bb, br, bq)| {
-                                // Create bitboards from square lists
-                                let to_bitboard = |squares: Vec<u8>| {
-                                    squares.iter().fold(0u64, |acc, &sq| acc | (1 << sq))
-                                };
+            (
+                // White pieces
+                any::<BitBoard>(), // pawns
+                any::<BitBoard>(), // knights
+                any::<BitBoard>(), // bishops
+                any::<BitBoard>(), // rooks
+                any::<BitBoard>(), // queens
+                0..63u8,           // king
+                // Black pieces
+                any::<BitBoard>(), // pawns
+                any::<BitBoard>(), // knights
+                any::<BitBoard>(), // bishops
+                any::<BitBoard>(), // rooks
+                any::<BitBoard>(), // queens
+                0..63u8,           // king
+            )
+                .prop_map(
+                    |(wp, wn, wb, wr, wq, w_king_square, bp, bn, bb, br, bq, b_king_square)| {
+                        let arb_wk: BitBoard = 1 << w_king_square;
+                        let arb_bk: BitBoard = 1 << b_king_square;
 
-                                // Create king bitboards
-                                let wk = 1u64 << white_king_sq;
-                                let bk = 1u64 << black_king_sq;
+                        // Ensure kings exist and are unique
+                        let wk = if arb_wk.count_ones() == 1 {
+                            arb_wk
+                        } else {
+                            1 << 0
+                        };
+                        let bk = if arb_bk.count_ones() == 1 {
+                            arb_bk
+                        } else {
+                            1 << 63
+                        };
 
-                                // Convert to bitboard
-                                let mut wp_bb = to_bitboard(wp);
-                                let mut wn_bb = to_bitboard(wn);
-                                let mut wb_bb = to_bitboard(wb);
-                                let mut wr_bb = to_bitboard(wr);
-                                let mut wq_bb = to_bitboard(wq);
-                                let mut bp_bb = to_bitboard(bp);
-                                let mut bn_bb = to_bitboard(bn);
-                                let mut bb_bb = to_bitboard(bb);
-                                let mut br_bb = to_bitboard(br);
-                                let mut bq_bb = to_bitboard(bq);
+                        // Ensure no overlapping pieces
+                        let all_white = wp | wn | wb | wr | wq | wk;
+                        let all_black = bp | bn | bb | br | bq | bk;
+                        let overlap = all_white & all_black;
 
-                                // Remove any pieces that overlap with kings
-                                wp_bb &= !wk;
-                                wn_bb &= !wk;
-                                wb_bb &= !wk;
-                                wr_bb &= !wk;
-                                wq_bb &= !wk;
-
-                                bp_bb &= !bk;
-                                bn_bb &= !bk;
-                                bb_bb &= !bk;
-                                br_bb &= !bk;
-                                bq_bb &= !bk;
-
-                                // Remove any overlapping pieces between colors
-                                let all_white = wp_bb | wn_bb | wb_bb | wr_bb | wq_bb | wk;
-                                let all_black = bp_bb | bn_bb | bb_bb | br_bb | bq_bb | bk;
-
-                                let overlap = all_white & all_black;
-
-                                if overlap != 0 {
-                                    wp_bb &= !overlap;
-                                    wn_bb &= !overlap;
-                                    wb_bb &= !overlap;
-                                    wr_bb &= !overlap;
-                                    wq_bb &= !overlap;
-
-                                    bp_bb &= !overlap;
-                                    bn_bb &= !overlap;
-                                    bb_bb &= !overlap;
-                                    br_bb &= !overlap;
-                                    bq_bb &= !overlap;
-                                }
-
-                                // Combine all pieces
-                                Board::new(
-                                    wp_bb, wn_bb, wb_bb, wr_bb, wq_bb, wk, bp_bb, bn_bb, bb_bb,
-                                    br_bb, bq_bb, bk,
-                                )
-                            },
+                        Board::new(
+                            wp & !overlap,
+                            wn & !overlap,
+                            wb & !overlap,
+                            wr & !overlap,
+                            wq & !overlap,
+                            wk,
+                            bp & !overlap,
+                            bn & !overlap,
+                            bb & !overlap,
+                            br & !overlap,
+                            bq & !overlap,
+                            bk,
                         )
-                })
+                    },
+                )
                 .boxed()
         }
     }
@@ -178,12 +151,18 @@ mod proptests {
 
         #[test]
         fn always_one_king_per_color(board: Board) {
-            board.display();
-            assert_eq!(board.get_bitboard(&Color::White, &Type::King).count_ones(), 1, "White must have exactly one king");
-            assert_eq!(board.get_bitboard(&Color::Black, &Type::King).count_ones(), 1, "Black must have exactly one king");
+            let wk = board.get_bitboard(&Color::White, &Type::King);
+            let bk = board.get_bitboard(&Color::Black, &Type::King);
+
+            if wk.count_ones() != 1 || bk.count_ones() != 1 {
+                board.display();
+            }
+
+            assert_eq!(wk.count_ones(), 1, "White must have exactly one king");
+            assert_eq!(bk.count_ones(), 1, "Black must have exactly one king");
             assert_ne!(
-                board.get_bitboard(&Color::White, &Type::King).trailing_zeros() as u8,
-                board.get_bitboard(&Color::Black, &Type::King).trailing_zeros() as u8,
+                wk.trailing_zeros() as u8,
+                bk.trailing_zeros() as u8,
                 "Kings cannot be on the same square"
             );
         }

@@ -44,7 +44,7 @@ fn depth_3() {
     }
 
     for i in 0..move_count.len() {
-        assert_eq!(move_count[i], perft[i]);
+        assert_eq!(move_count[i], perft[i], "Minimal failing depth: {}", i + 1);
     }
 }
 #[test]
@@ -76,6 +76,6 @@ fn alternate_position() {
     }
 
     for i in 0..move_count.len() {
-        assert_eq!(move_count[i], perft[i]);
+        assert_eq!(move_count[i], perft[i], "Minimal failing depth: {}", i + 1);
     }
 }
