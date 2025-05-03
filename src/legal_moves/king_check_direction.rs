@@ -26,6 +26,13 @@ pub fn get_check_direction(board: &Board, king: &Square, color: Color) -> u8 {
 
     let ennemy_color = !color;
 
+    let attack = generate_attack_mask(board, &ennemy_color, &king.to_bitboard(), &0);
+
+    if (1 << king) & attack == 0 {
+        // No check
+        return u8::MAX;
+    }
+
     let ennemy_horsey = board.get_bitboard(&ennemy_color, &Type::Knight);
     let mask_no_knights: u64 = generate_attack_mask(board, &ennemy_color, &ennemy_horsey, &0);
 
@@ -63,6 +70,14 @@ pub fn get_checking_knight(board: &Board, color: Color, king: &BitBoard) -> BitB
     let ennemy_color = !color;
     let ennemy_knights = board.get_bitboard(&ennemy_color, &Type::Knight);
     let knight_squares = ennemy_knights.get_occupied_squares();
+
+    if ennemy_knights == 0 {
+        return u64::MAX;
+    }
+
+    if !board.is_check(color) {
+        return u64::MAX;
+    }
 
     for square in knight_squares {
         let mask = generate_attack_mask(board, &ennemy_color, &(1 << square), &0);

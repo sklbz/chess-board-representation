@@ -1,7 +1,79 @@
 use crate::bitboard::{BitBoard, BitBoardGetter};
 use crate::board::Board;
 use crate::legal_moves::is_move_possible::is_possible;
-use crate::legal_moves::misc::{Move, Square};
+use crate::legal_moves::misc::{Color, Move, Piece, Square, Type};
+
+pub fn piece_to_icon(color: &Color, piece_type: &Type) -> char {
+    match (color, piece_type) {
+        (Color::White, Type::Pawn) => '󰡙',
+        (Color::Black, Type::Pawn) => '♙',
+        (Color::White, Type::Knight) => '󰡘',
+        (Color::Black, Type::Knight) => '',
+        (Color::White, Type::Bishop) => '󰡜',
+        (Color::Black, Type::Bishop) => '',
+        (Color::White, Type::Rook) => '󰡛',
+        (Color::Black, Type::Rook) => '',
+        (Color::White, Type::Queen) => '󰡚',
+        (Color::Black, Type::Queen) => '',
+        (Color::White, Type::King) => '󰡗',
+        (Color::Black, Type::King) => '',
+        _ => ' ',
+    }
+}
+
+pub fn piece_from_char(char: char) -> Piece {
+    match char {
+        'P' => Piece {
+            r#type: Type::Pawn,
+            color: Color::White,
+        },
+        'p' => Piece {
+            r#type: Type::Pawn,
+            color: Color::Black,
+        },
+        'N' => Piece {
+            r#type: Type::Knight,
+            color: Color::White,
+        },
+        'n' => Piece {
+            r#type: Type::Knight,
+            color: Color::Black,
+        },
+        'B' => Piece {
+            r#type: Type::Bishop,
+            color: Color::White,
+        },
+        'b' => Piece {
+            r#type: Type::Bishop,
+            color: Color::Black,
+        },
+        'R' => Piece {
+            r#type: Type::Rook,
+            color: Color::White,
+        },
+        'r' => Piece {
+            r#type: Type::Rook,
+            color: Color::Black,
+        },
+        'Q' => Piece {
+            r#type: Type::Queen,
+            color: Color::White,
+        },
+        'q' => Piece {
+            r#type: Type::Queen,
+            color: Color::Black,
+        },
+        'K' => Piece {
+            r#type: Type::King,
+            color: Color::White,
+        },
+        'k' => Piece {
+            r#type: Type::King,
+            color: Color::Black,
+        },
+        _ => panic!("Invalid FEN"),
+    }
+}
 
 pub fn move_to_string((start, end): &Move) -> String {
     let start = square_to_string(*start);
