@@ -31,11 +31,11 @@ pub fn uci() {
             "move" => {
                 for move_ in input_args {
                     if !is_possible(&board, &string_to_move(move_)) {
-                        play_turn = !play_turn;
                         println!("Illegal move: {}", move_);
                         break;
                     }
 
+                    play_turn = !play_turn;
                     board.play_move(&string_to_move(move_));
                 }
             }
