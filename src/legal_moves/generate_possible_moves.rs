@@ -1,22 +1,14 @@
 use crate::{
     bitboard::{BitBoard, BitBoardGetter},
-    bitmask::{down_mask, left_diagonal_mask, left_mask, right_diagonal_mask, right_mask, up_mask},
     board::Board,
-    legal_moves::attack_mask::generate_attack_mask,
-    r#move::{king::king_move_mask, queen::queen_move_bitmask},
     utils::mask_to_moves,
 };
 
 use super::{
     castle::castle_mask::castle_mask,
-    helper_functions::{deflection_mask, get_direction, protection_mask},
-};
-use super::{helper_functions::is_pinned, misc::ToBitBoard};
-use super::{
+    helper_functions::is_pinned,
     helper_functions::is_pre_pinned,
-    king_check_direction::{get_check_direction, get_checking_knight},
-};
-use super::{
+    helper_functions::{deflection_mask, protection_mask},
     misc::{Color, Move, Square, Type},
     pseudo_legal_mask::generate_pseudo_move_mask,
 };
@@ -45,13 +37,10 @@ pub fn generate_move_mask(board: &Board, start: &Square) -> BitBoard {
         return generate_pseudo_move_mask(board, start) | castle_mask(board, color);
     }
 
-    let king_bitboard = board.get_bitboard(&color, &Type::King);
-
-    if king_bitboard == 0 {
-        return generate_pseudo_move_mask(board, start);
-    }
-
-    let king_square = king_bitboard.get_occupied_squares()[0];
+    let king_square = match board.get_bitboard(&color, &Type::King) {
+        0 => return generate_pseudo_move_mask(board, start),
+        king_bit => king_bit.get_occupied_squares()[0],
+    };
 
     if is_pre_pinned(board, start, &king_square) {
         return generate_pseudo_move_mask(board, start);

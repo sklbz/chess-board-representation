@@ -53,18 +53,19 @@ pub(super) fn is_pinned(board: &Board, start: &Square, king_square: &Square) -> 
 }
 
 pub(super) fn protection_mask(king_square: Square, start: &Square, is_pinned: bool) -> BitBoard {
+    if !is_pinned {
+        return u64::MAX;
+    }
+
     let offset = king_square as i8 - *start as i8;
     let direction = get_direction(offset);
 
-    match is_pinned {
-        true => match direction {
-            1 => !(up_mask(*start) | down_mask(*start)),
-            7 => left_diagonal_mask(*start),
-            8 => !(left_mask(*start) | right_mask(*start)),
-            9 => right_diagonal_mask(*start),
-            _ => unreachable!(),
-        },
-        false => u64::MAX,
+    match direction {
+        1 => !(up_mask(*start) | down_mask(*start)),
+        7 => left_diagonal_mask(*start),
+        8 => !(left_mask(*start) | right_mask(*start)),
+        9 => right_diagonal_mask(*start),
+        _ => unreachable!(),
     }
 }
 
@@ -74,17 +75,18 @@ pub(super) fn deflection_mask(
     start: &Square,
     color: Color,
 ) -> BitBoard {
-    match is_checked {
-        true => match get_check_direction(board, start, board.get_piece(start).color) {
-            0 => 0,
-            1 => !(up_mask(*start) | down_mask(*start)),
-            7 => left_diagonal_mask(*start),
-            8 => !(left_mask(*start) | right_mask(*start)),
-            9 => right_diagonal_mask(*start),
-            10 => get_checking_knight(board, color, &board.get_bitboard(&color, &Type::King)),
-            u8::MAX => u64::MAX,
-            _ => unreachable!(),
-        },
-        false => u64::MAX,
+    if !is_checked {
+        return u64::MAX;
+    }
+
+    match get_check_direction(board, start, board.get_piece(start).color) {
+        0 => 0,
+        1 => !(up_mask(*start) | down_mask(*start)),
+        7 => left_diagonal_mask(*start),
+        8 => !(left_mask(*start) | right_mask(*start)),
+        9 => right_diagonal_mask(*start),
+        10 => get_checking_knight(board, color, &board.get_bitboard(&color, &Type::King)),
+        u8::MAX => u64::MAX,
+        _ => unreachable!(),
     }
 }

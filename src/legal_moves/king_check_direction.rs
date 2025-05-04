@@ -26,10 +26,7 @@ pub fn get_check_direction(board: &Board, king: &Square, color: Color) -> u8 {
 
     let ennemy_color = !color;
 
-    let attack = generate_attack_mask(board, &ennemy_color, &king.to_bitboard(), &0);
-
-    if (1 << king) & attack == 0 {
-        // No check
+    if !board.is_check(color) {
         return u8::MAX;
     }
 
