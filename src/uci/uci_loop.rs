@@ -27,6 +27,7 @@ pub fn uci() {
                 board = Board::init();
                 play_turn = Color::White;
             }
+            "fen" => board = Board::from_fen(input_args[0]),
             "board" => board.display(),
             "move" => {
                 for move_ in input_args {
@@ -43,10 +44,13 @@ pub fn uci() {
                 let depth = input_args[0].parse::<usize>().unwrap();
 
                 let result = divide(&board, play_turn, depth - 1);
+                let nodes = result.iter().fold(0, |acc, (_, leaves)| acc + leaves);
 
-                for (move_, score) in result {
-                    println!("{} {}", move_, score);
+                for (move_, leaves) in result {
+                    println!("{}: {}", move_, leaves);
                 }
+
+                println!("Nodes searched: {}", nodes);
             }
             "turn" => match play_turn {
                 Color::White => println!("White to move"),
