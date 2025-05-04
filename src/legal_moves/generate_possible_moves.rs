@@ -59,7 +59,7 @@ pub fn generate_move_mask(board: &Board, start: &Square) -> BitBoard {
 
     let is_checked = board.is_check(color);
 
-    let is_pinned = is_pinned(board, start, &king_square, &king_bitboard);
+    let is_pinned = is_pinned(board, start, &king_square);
 
     if !is_checked && !is_pinned {
         return generate_pseudo_move_mask(board, start);

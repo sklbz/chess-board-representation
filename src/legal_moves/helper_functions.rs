@@ -41,12 +41,7 @@ pub(super) fn is_pre_pinned(board: &Board, start: &Square, king_square: &Square)
     protector_mask & (1 << start) == 0
 }
 
-pub(super) fn is_pinned(
-    board: &Board,
-    start: &Square,
-    king_square: &Square,
-    king_bitboard: &BitBoard,
-) -> bool {
+pub(super) fn is_pinned(board: &Board, start: &Square, king_square: &Square) -> bool {
     let attack_mask = generate_attack_mask(
         board,
         &!board.get_piece(start).color,
@@ -54,7 +49,7 @@ pub(super) fn is_pinned(
         &king_move_mask(king_square, &0, &0),
     );
 
-    attack_mask & king_bitboard != 0
+    attack_mask & (1 << king_square) != 0
 }
 
 pub(super) fn protection_mask(king_square: Square, start: &Square, is_pinned: bool) -> BitBoard {
