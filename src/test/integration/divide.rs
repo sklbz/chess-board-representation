@@ -42,6 +42,47 @@ fn depth_3() {
 }
 
 #[test]
+fn depth_4() {
+    let board = Board::init();
+
+    let stockfish_ref = [
+        ("a2a3", 8457),
+        ("b2b3", 9345),
+        ("c2c3", 9272),
+        ("d2d3", 11959),
+        ("e2e3", 13134),
+        ("f2f3", 8457),
+        ("g2g3", 9345),
+        ("h2h3", 8457),
+        ("a2a4", 9329),
+        ("b2b4", 9332),
+        ("c2c4", 9744),
+        ("d2d4", 12435),
+        ("e2e4", 13160),
+        ("f2f4", 8929),
+        ("g2g4", 9328),
+        ("h2h4", 9329),
+        ("b1a3", 8885),
+        ("b1c3", 9755),
+        ("g1f3", 9748),
+        ("g1h3", 8881),
+    ];
+
+    let depth = 4;
+    let result = divide(&board, Color::White, depth - 1);
+
+    for (move_, count) in result {
+        println!("{}: {}", move_, count);
+        let reference = stockfish_ref.iter().find(|(m, _)| *m == move_).unwrap();
+        assert_eq!(
+            count, reference.1,
+            "\nEngine: {} => {}\n Stockfish: {} => {}",
+            move_, count, reference.0, reference.1
+        );
+    }
+}
+
+#[test]
 fn alternate_position() {
     let board = Board::from_fen("r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R");
 
