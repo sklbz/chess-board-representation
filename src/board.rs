@@ -264,20 +264,20 @@ impl Board {
     pub fn castle(&mut self, code: &str, side: &Color) {
         match (code, side) {
             ("O-O", Color::White) => {
-                self.play_move(&string_to_move("e1g1"));
-                self.play_move(&string_to_move("h1f1"));
+                self.make_move(&string_to_move("e1g1"));
+                self.make_move(&string_to_move("h1f1"));
             }
             ("O-O", Color::Black) => {
-                self.play_move(&string_to_move("e8g8"));
-                self.play_move(&string_to_move("h8f8"));
+                self.make_move(&string_to_move("e8g8"));
+                self.make_move(&string_to_move("h8f8"));
             }
             ("O-O-O", Color::White) => {
-                self.play_move(&string_to_move("e1c1"));
-                self.play_move(&string_to_move("a1d1"));
+                self.make_move(&string_to_move("e1c1"));
+                self.make_move(&string_to_move("a1d1"));
             }
             ("O-O-O", Color::Black) => {
-                self.play_move(&string_to_move("e8c8"));
-                self.play_move(&string_to_move("a8d8"));
+                self.make_move(&string_to_move("e8c8"));
+                self.make_move(&string_to_move("a8d8"));
             }
             _ => panic!("Invalid castle code!"),
         }
@@ -291,8 +291,8 @@ impl Board {
         }
     }
 
-    pub fn play_move(&mut self, r#move: &Move) {
-        let (start, end): &(Square, Square) = r#move;
+    pub fn play_move(&mut self, move_: &Move) {
+        let (start, end): &(Square, Square) = move_;
 
         let piece = self.get_piece(start);
 
@@ -311,10 +311,19 @@ impl Board {
                     self.castling_rights[3] = false;
                 }
                 Color::Null => panic!("Color is null"),
-            }
+            };
+
             self.castle(castle_code, &piece.color);
             return;
         }
+
+        self.make_move(move_);
+    }
+
+    fn make_move(&mut self, move_: &Move) {
+        let (start, end): &(Square, Square) = move_;
+
+        let piece = self.get_piece(start);
 
         self.remove_piece(start);
 
