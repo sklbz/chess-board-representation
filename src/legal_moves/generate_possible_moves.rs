@@ -7,6 +7,7 @@ use crate::{
     utils::mask_to_moves,
 };
 
+use super::castle::castle_mask::castle_mask;
 use super::king_check_direction::{get_check_direction, get_checking_knight};
 use super::misc::ToBitBoard;
 use super::{
@@ -31,11 +32,14 @@ pub fn generate_move_vec_single_square(board: &Board, start: &Square) -> Vec<Mov
 }
 
 pub fn generate_move_mask(board: &Board, start: &Square) -> BitBoard {
-    if board.get_piece(start).r#type == Type::King {
-        return generate_pseudo_move_mask(board, start);
+    let color = board.get_piece(start).color;
+    let piece_type = board.get_piece(start).r#type;
+
+    if piece_type == Type::King {
+        return generate_pseudo_move_mask(board, start) | castle_mask(board, color);
     }
 
-    let king_bitboard = board.get_bitboard(&board.get_piece(start).color, &Type::King);
+    let king_bitboard = board.get_bitboard(&color, &Type::King);
 
     if king_bitboard == 0 {
         return generate_pseudo_move_mask(board, start);

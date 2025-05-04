@@ -1,4 +1,5 @@
 pub mod attack_mask;
+pub mod castle;
 pub mod generate_possible_moves;
 pub mod is_move_possible;
 pub mod king_check_direction;
