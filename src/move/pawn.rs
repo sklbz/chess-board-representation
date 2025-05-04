@@ -6,12 +6,12 @@ pub fn pawn_move_white(
     allies_board: &BitBoard,
     ennemy_board: &BitBoard,
 ) -> BitBoard {
-    (pawn_motion_white(pawn, ennemy_board) & !allies_board) | pawn_attack_white(pawn, ennemy_board)
+    pawn_motion_white(pawn, &(ennemy_board | allies_board)) | pawn_attack_white(pawn, ennemy_board)
 }
 
-pub fn pawn_motion_white(pawn: &Square, ennemy_board: &BitBoard) -> BitBoard {
-    let pawn_move = (pawn.to_bitboard() << 8) & !ennemy_board;
-    let pawn_double_move = (pawn_move << 8) & !ennemy_board;
+pub fn pawn_motion_white(pawn: &Square, blockers: &BitBoard) -> BitBoard {
+    let pawn_move = (pawn.to_bitboard() << 8) & !blockers;
+    let pawn_double_move = (pawn_move << 8) & !blockers;
 
     if pawn <= &15
     /* h2 */
@@ -37,12 +37,12 @@ pub fn pawn_move_black(
     allies_board: &BitBoard,
     ennemy_board: &BitBoard,
 ) -> BitBoard {
-    (pawn_motion_black(pawn, ennemy_board) & !allies_board) | pawn_attack_black(pawn, ennemy_board)
+    pawn_motion_black(pawn, &(ennemy_board | allies_board)) | pawn_attack_black(pawn, ennemy_board)
 }
 
-pub fn pawn_motion_black(pawn: &Square, ennemy_board: &BitBoard) -> BitBoard {
-    let pawn_move = (pawn.to_bitboard() >> 8) & !ennemy_board;
-    let pawn_double_move = (pawn_move >> 8) & !ennemy_board;
+pub fn pawn_motion_black(pawn: &Square, blockers: &BitBoard) -> BitBoard {
+    let pawn_move = (pawn.to_bitboard() >> 8) & !blockers;
+    let pawn_double_move = (pawn_move >> 8) & !blockers;
 
     if pawn >= &48
     /* a7 */
