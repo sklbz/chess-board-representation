@@ -93,6 +93,7 @@ pub fn get_checking_knight(board: &Board, color: Color, king: &BitBoard) -> BitB
     }
 
     // This would be very strange
+    // It keeps on happening. Why ?
 
     panic!("No checking knight found");
 }
