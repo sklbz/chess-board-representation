@@ -56,7 +56,7 @@ pub fn generate_move_mask(board: &Board, start: &Square) -> BitBoard {
 
     let protection_mask: BitBoard = protection_mask(king_square, start, is_pinned);
 
-    let deflection_mask: BitBoard = deflection_mask(is_checked, board, start, color);
+    let deflection_mask: BitBoard = deflection_mask(is_checked, board, color);
 
     generate_pseudo_move_mask(board, start) & protection_mask & deflection_mask
 }

@@ -1,3 +1,4 @@
+use crate::bitboard::Display;
 use crate::{
     bitboard::{BitBoard, BitBoardGetter},
     board::Board,
@@ -34,6 +35,8 @@ pub fn get_check_direction(board: &Board, king: &Square, color: Color) -> u8 {
     let mask_no_knights: u64 = generate_attack_mask(board, &ennemy_color, &ennemy_horsey, &0);
 
     if (1 << king) & mask_no_knights == 0 {
+        (1 << king).display();
+        mask_no_knights.display();
         // 10 for knights
         return 10;
     }
@@ -48,18 +51,14 @@ pub fn get_check_direction(board: &Board, king: &Square, color: Color) -> u8 {
     }
 
     for i in 0..direction_moves.len() {
-        let mask = generate_attack_mask(
-            board,
-            &ennemy_color,
-            &king.to_bitboard(),
-            &direction_moves[i],
-        );
+        let mask = generate_attack_mask(board, &ennemy_color, &0, &direction_moves[i]);
 
         if (1 << king) & mask == 0 {
             return direction_offsets[i].unsigned_abs();
         }
     }
 
+    println!("No direction found");
     0
 }
 
@@ -94,6 +93,8 @@ pub fn get_checking_knight(board: &Board, color: Color, king: &BitBoard) -> BitB
 
     // This would be very strange
     // It keeps on happening. Why ?
+
+    board.display();
 
     panic!("No checking knight found");
 }

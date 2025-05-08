@@ -1,6 +1,5 @@
-use crate::{board::Board, debug::divide::divide, legal_moves::misc::Color, utils::string_to_move};
+use crate::{board::Board, debug::divide::divide, legal_moves::misc::Color};
 
-#[test]
 fn depth_3() {
     let board = Board::init();
 
@@ -35,13 +34,12 @@ fn depth_3() {
         let reference = stockfish_ref.iter().find(|(m, _)| *m == move_).unwrap();
         assert_eq!(
             count, reference.1,
-            "\nEngine: {} => {}\n Stockfish: {} => {}",
-            move_, count, reference.0, reference.1
+            "\nDepth: {}\nEngine: {} => {}\n Stockfish: {} => {}",
+            depth, move_, count, reference.0, reference.1
         );
     }
 }
 
-#[test]
 fn depth_4() {
     let board = Board::init();
 
@@ -76,10 +74,57 @@ fn depth_4() {
         let reference = stockfish_ref.iter().find(|(m, _)| *m == move_).unwrap();
         assert_eq!(
             count, reference.1,
-            "\nEngine: {} => {}\n Stockfish: {} => {}",
-            move_, count, reference.0, reference.1
+            "\nDepth: {}\nEngine: {} => {}\n Stockfish: {} => {}",
+            depth, move_, count, reference.0, reference.1
         );
     }
+}
+
+fn depth_5() {
+    let board = Board::init();
+
+    let stockfish_ref = [
+        ("a2a3", 181046),
+        ("b2b3", 215255),
+        ("c2c3", 222861),
+        ("d2d3", 328511),
+        ("e2e3", 402988),
+        ("f2f3", 178889),
+        ("g2g3", 217210),
+        ("h2h3", 181044),
+        ("a2a4", 217832),
+        ("b2b4", 216145),
+        ("c2c4", 240082),
+        ("d2d4", 361790),
+        ("e2e4", 405385),
+        ("f2f4", 198473),
+        ("g2g4", 214048),
+        ("h2h4", 218829),
+        ("b1a3", 198572),
+        ("b1c3", 234656),
+        ("g1f3", 233491),
+        ("g1h3", 198502),
+    ];
+
+    let depth = 5;
+    let result = divide(&board, Color::White, depth - 1);
+
+    for (move_, count) in result {
+        println!("{}: {}", move_, count);
+        let reference = stockfish_ref.iter().find(|(m, _)| *m == move_).unwrap();
+        assert_eq!(
+            count, reference.1,
+            "\nDepth: {}\nEngine: {} => {}\n Stockfish: {} => {}",
+            depth, move_, count, reference.0, reference.1
+        );
+    }
+}
+
+#[test]
+fn perft() {
+    depth_3();
+    depth_4();
+    depth_5();
 }
 
 #[test]
