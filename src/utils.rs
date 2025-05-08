@@ -181,7 +181,11 @@ pub fn squarewise_display(_board: &Board) {
 }
 
 pub fn min(a: usize, b: usize) -> usize {
-    if a < b { a } else { b }
+    if a < b {
+        a
+    } else {
+        b
+    }
 }
 
 pub fn extract_square(input: &str) -> Square {
