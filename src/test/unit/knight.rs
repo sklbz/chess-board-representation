@@ -24,7 +24,7 @@ fn test_knight_moves_center() {
 
     for &target in &valid_moves {
         assert!(
-            is_possible(&board, &(knight_square, target)),
+            is_possible(&board, &(knight_square, target), Color::White),
             "Knight should be able to move from {} to {}",
             knight_square,
             target
@@ -61,7 +61,7 @@ fn test_knight_blocked_by_own_pieces() {
     );
 
     assert!(
-        !is_possible(&board, &(knight_square, blocked_square)),
+        !is_possible(&board, &(knight_square, blocked_square), Color::White),
         "Knight shouldn't be able to capture own piece at {}",
         blocked_square
     );

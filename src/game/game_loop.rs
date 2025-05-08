@@ -8,7 +8,10 @@ use crate::{
     utils::{extract_move, extract_square, user_input},
 };
 
+use std::{thread, time};
+
 pub fn run(board: &mut Board) {
+    let mut play_turn = Color::White;
     loop {
         print!("{esc}[2J", esc = 27 as char);
         board.display();
@@ -23,8 +26,12 @@ pub fn run(board: &mut Board) {
             Action::Move => {
                 let move_to_play = extract_move(&game_input);
 
-                if is_possible(board, &move_to_play) {
-                    board.play_move(&move_to_play)
+                if is_possible(board, &move_to_play, play_turn) {
+                    board.play_move(&move_to_play);
+                    play_turn = !play_turn;
+                } else {
+                    println!("Illegal move: {}", game_input);
+                    thread::sleep(time::Duration::from_millis(1000));
                 }
             }
 

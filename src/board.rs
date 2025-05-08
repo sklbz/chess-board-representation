@@ -3,7 +3,7 @@ use crate::{
     legal_moves::{
         attack_mask::generate_attack_mask,
         generate_possible_moves::generate_move_vec,
-        misc::{Color, Move, Piece, Square, Type},
+        misc::{Color, Coord, Move, Piece, Square, Type},
     },
     utils::{piece_from_char, piece_to_icon, string_to_move},
 };
@@ -13,6 +13,7 @@ pub struct Board {
     // Pawns
     white_pawns: BitBoard,
     black_pawns: BitBoard,
+    en_passant: BitBoard,
     // Knights
     white_knights: BitBoard,
     black_knights: BitBoard,
@@ -44,6 +45,7 @@ impl Board {
         Board {
             white_pawns: pawn_pattern,
             black_pawns: pawn_pattern.bitwise_reverse(),
+            en_passant: 0,
             white_knights: knight_pattern,
             black_knights: knight_pattern.bitwise_reverse(),
             white_bishops: bishop_pattern,
@@ -62,6 +64,7 @@ impl Board {
         Board {
             white_pawns: 0,
             black_pawns: 0,
+            en_passant: 0,
             white_knights: 0,
             black_knights: 0,
             white_bishops: 0,
@@ -93,6 +96,7 @@ impl Board {
         Board {
             white_pawns,
             black_pawns,
+            en_passant: 0,
             white_knights,
             black_knights,
             white_bishops,
@@ -283,25 +287,9 @@ impl Board {
         }
     }
 
-    fn can_castle(&self, color: Color) -> bool {
-        match color {
-            Color::White => self.castling_rights[0] || self.castling_rights[1],
-            Color::Black => self.castling_rights[2] || self.castling_rights[3],
-            Color::Null => panic!("Color is null"),
-        }
-    }
-
-    pub fn play_move(&mut self, move_: &Move) {
-        let (start, end): &(Square, Square) = move_;
-
-        let piece = self.get_piece(start);
-
-        let offset = *end as i8 - *start as i8;
-
-        if piece.r#type == Type::King && offset.abs() == 2 && self.can_castle(piece.color) {
-            let castle_code = if start > end { "O-O-O" } else { "O-O" };
-
-            match piece.color {
+    fn update_castling_rights(&mut self, start: &Square, piece_type: Type, color: Color) {
+        match piece_type {
+            Type::King => match color {
                 Color::White => {
                     self.castling_rights[0] = false;
                     self.castling_rights[1] = false;
@@ -311,11 +299,44 @@ impl Board {
                     self.castling_rights[3] = false;
                 }
                 Color::Null => panic!("Color is null"),
-            };
+            },
+            Type::Rook => match start.file() {
+                0 => match color {
+                    Color::White => self.castling_rights[1] = false,
+                    Color::Black => self.castling_rights[3] = false,
+                    Color::Null => panic!("Color is null"),
+                },
+                7 => match color {
+                    Color::White => self.castling_rights[0] = false,
+                    Color::Black => self.castling_rights[2] = false,
+                    Color::Null => panic!("Color is null"),
+                },
+                _ => (),
+            },
+            _ => (),
+        };
+    }
 
-            self.castle(castle_code, &piece.color);
+    pub fn play_move(&mut self, move_: &Move) {
+        let (start, end): &(Square, Square) = move_;
+
+        let Piece {
+            r#type: piece_type,
+            color,
+        } = self.get_piece(start);
+
+        let offset = *end as i8 - *start as i8;
+
+        self.update_castling_rights(start, piece_type, color);
+
+        if piece_type == Type::King && offset.abs() == 2 {
+            let castle_code = if start > end { "O-O-O" } else { "O-O" };
+            self.castle(castle_code, &color);
+
             return;
         }
+
+        self.handle_en_passant(piece_type, start, end, offset);
 
         self.make_move(move_);
     }
@@ -330,6 +351,30 @@ impl Board {
         self.remove_piece(end);
 
         self.add_piece(end, piece);
+    }
+
+    fn handle_en_passant(&mut self, piece_type: Type, start: &Square, end: &Square, offset: i8) {
+        if piece_type != Type::Pawn {
+            self.en_passant = 0;
+            return;
+        }
+
+        if self.en_passant & (1 << end) != 0 {
+            let sign = if offset > 0 { 1 } else { -1 };
+
+            let en_passant_square = *start as i8 + (offset.abs() - 8) * sign;
+            self.remove_piece(&(en_passant_square as Square));
+
+            self.en_passant = 0;
+            return;
+        }
+
+        if offset.abs() == 16 {
+            self.en_passant = 1 << (*start as i8 + offset / 2);
+            return;
+        }
+
+        self.en_passant = 0;
     }
 
     fn set(&mut self, square: &Square, piece: Piece) {
@@ -372,6 +417,10 @@ impl Board {
             (Color::Black, Type::King) => self.black_king |= mask,
             _ => (),
         }
+    }
+
+    pub fn en_passant_board(&self) -> BitBoard {
+        self.en_passant
     }
 
     pub fn get_bitboard(&self, color: &Color, piece: &Type) -> BitBoard {

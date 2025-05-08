@@ -163,7 +163,7 @@ mod proptests {
                     board.get_bitboard(&Color::Black, &Type::King).get_occupied_squares()[0].to_bitboard(),
                 );
 
-            let _ = is_possible(&correct_board, &(from, to));
+            let _ = is_possible(&correct_board, &(from, to), board.get_piece(&from).color);
             // We're just testing it doesn't panic
         }
 

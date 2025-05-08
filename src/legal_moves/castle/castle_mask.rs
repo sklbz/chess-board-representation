@@ -5,7 +5,7 @@ use crate::{
         attack_mask::{generate_attack_mask, generate_attack_mask_single_square},
         misc::{Color, Square, Type},
     },
-    utils::{square_to_string, string_to_square},
+    utils::string_to_square,
 };
 
 pub fn castle_mask(board: &Board, color: Color) -> BitBoard {

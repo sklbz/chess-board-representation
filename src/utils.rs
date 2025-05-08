@@ -1,7 +1,20 @@
 use crate::bitboard::{BitBoard, BitBoardGetter};
 use crate::board::Board;
-use crate::legal_moves::is_move_possible::is_possible;
 use crate::legal_moves::misc::{Color, Move, Piece, Square, Type};
+
+pub fn string_to_file(file: char) -> u8 {
+    match file {
+        'a' => 0,
+        'b' => 1,
+        'c' => 2,
+        'd' => 3,
+        'e' => 4,
+        'f' => 5,
+        'g' => 6,
+        'h' => 7,
+        _ => panic!("Invalid file : {}", file),
+    }
+}
 
 pub fn piece_to_icon(color: &Color, piece_type: &Type) -> char {
     match (color, piece_type) {
@@ -149,7 +162,7 @@ pub fn string_to_square(string: &str) -> Square {
 }
 
 use std::{thread::sleep, time::Duration};
-pub fn squarewise_display(board: &Board) {
+pub fn squarewise_display(_board: &Board) {
     for i in 0..64 {
         let letter = match i % 8 {
             0 => 'a',
@@ -163,7 +176,6 @@ pub fn squarewise_display(board: &Board) {
             _ => unreachable!(),
         };
         print!("{}{}\t", letter, i / 8 + 1);
-        is_possible(board, &(i, 0));
         sleep(Duration::from_millis(50));
     }
 }

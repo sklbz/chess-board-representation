@@ -129,7 +129,7 @@ fn perft() {
 
 #[test]
 fn alternate_position() {
-    let board = Board::from_fen("r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R");
+    let board = Board::from_fen("r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R KQkq");
 
     let stockfish_ref = [
         ("a2a3", 2186),
