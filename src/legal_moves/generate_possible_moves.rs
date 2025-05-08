@@ -1,5 +1,5 @@
 use crate::{
-    bitboard::{BitBoard, BitBoardGetter},
+    bitboard::{BitBoard, BitBoardGetter, Display},
     board::Board,
     utils::mask_to_moves,
 };
@@ -42,11 +42,11 @@ pub fn generate_move_mask(board: &Board, start: &Square) -> BitBoard {
         king_bit => king_bit.get_occupied_squares()[0],
     };
 
-    if is_pre_pinned(board, start, &king_square) {
+    let is_checked = board.is_check(color);
+
+    if !is_checked && !is_pre_pinned(board, start, &king_square) {
         return generate_pseudo_move_mask(board, start);
     }
-
-    let is_checked = board.is_check(color);
 
     let is_pinned = is_pinned(board, start, &king_square);
 
@@ -54,9 +54,26 @@ pub fn generate_move_mask(board: &Board, start: &Square) -> BitBoard {
         return generate_pseudo_move_mask(board, start);
     }
 
+    if is_checked && is_pinned {
+        return 0;
+    }
+
     let protection_mask: BitBoard = protection_mask(king_square, start, is_pinned);
 
     let deflection_mask: BitBoard = deflection_mask(is_checked, board, color);
 
-    generate_pseudo_move_mask(board, start) & protection_mask & deflection_mask
+    let mask: BitBoard =
+        generate_pseudo_move_mask(board, start) & protection_mask & deflection_mask;
+
+    assert!(
+        mask & !protection_mask == 0,
+        "Move mask should be a subset of the protection mask"
+    );
+
+    assert!(
+        mask & !deflection_mask == 0,
+        "Move mask should be a subset of the deflection mask"
+    );
+
+    mask
 }

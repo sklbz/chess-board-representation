@@ -49,7 +49,7 @@ fn depth_3() {
 }
 #[test]
 fn alternate_position() {
-    let mut board = Board::from_fen("r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R");
+    let mut board = Board::from_fen("r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R KQkq");
 
     let moves = generate_move_vec(&board, Color::White);
 
@@ -72,7 +72,7 @@ fn alternate_position() {
             move_count[2] += next_moves.len();
         }
 
-        board = Board::from_fen("r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R");
+        board = Board::from_fen("r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R KQkq");
     }
 
     for i in 0..move_count.len() {
@@ -82,7 +82,7 @@ fn alternate_position() {
 
 #[test]
 fn alternate_position_2() {
-    let mut board = Board::from_fen("8/2p5/3p4/KP5r/1R3p1k/8/4P1P1/8");
+    let mut board = Board::from_fen("8/2p5/3p4/KP5r/1R3p1k/8/4P1P1/8 -");
 
     let moves = generate_move_vec(&board, Color::White);
 
@@ -105,7 +105,7 @@ fn alternate_position_2() {
             move_count[2] += next_moves.len();
         }
 
-        board = Board::from_fen("8/2p5/3p4/KP5r/1R3p1k/8/4P1P1/8");
+        board = Board::from_fen("8/2p5/3p4/KP5r/1R3p1k/8/4P1P1/8 -");
     }
 
     for i in 0..move_count.len() {
@@ -115,7 +115,7 @@ fn alternate_position_2() {
 
 #[test]
 fn position_with_the_most_legal_moves() {
-    let board = Board::from_fen("R6R/3Q4/1Q4Q1/4Q3/2Q4Q/Q4Q2/pp1Q4/kBNN1KB1");
+    let board = Board::from_fen("R6R/3Q4/1Q4Q1/4Q3/2Q4Q/Q4Q2/pp1Q4/kBNN1KB1 -");
 
     let reference = 218;
 

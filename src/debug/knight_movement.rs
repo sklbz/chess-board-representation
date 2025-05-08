@@ -33,7 +33,7 @@ pub fn run_debug() {
             string_to_square(&input),
         );
 
-        if is_possible(&board, &move_to_play) {
+        if is_possible(&board, &move_to_play, Color::White) {
             board = knight_board(move_to_play.1, &board);
         }
     }

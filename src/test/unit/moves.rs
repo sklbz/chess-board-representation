@@ -7,12 +7,12 @@ fn test_pawn_moves() {
 
     // Test initial white pawn moves
     let e2 = 12;
-    assert!(is_possible(&board, &(e2, e2 + 8))); // Single push
-    assert!(is_possible(&board, &(e2, e2 + 16))); // Double push
+    assert!(is_possible(&board, &(e2, e2 + 8), Color::White)); // Single push
+    assert!(is_possible(&board, &(e2, e2 + 16), Color::White)); // Double push
 
     // Test invalid pawn moves
-    assert!(!is_possible(&board, &(e2, e2 + 7))); // No capture
-    assert!(!is_possible(&board, &(e2, e2 + 9))); // No capture
+    assert!(!is_possible(&board, &(e2, e2 + 7), Color::White)); // No capture
+    assert!(!is_possible(&board, &(e2, e2 + 9), Color::White)); // No capture
 }
 
 #[test]
@@ -27,7 +27,7 @@ fn test_pawn_capture_wrap_around_border() {
     board.play_move(&(a7, a5));
     board.play_move(&(a5, a4));
     board.play_move(&(a4, a3));
-    assert!(!is_possible(&board, &(h2, a3))); // Take around border
+    assert!(!is_possible(&board, &(h2, a3), Color::White)); // Take around border
 }
 
 #[test]
@@ -35,11 +35,11 @@ fn test_rook_moves() {
     let board = Board::from_mask(1 << 0, Piece::new(Type::Rook, Color::White)); // White rook at a1
 
     // Valid rook moves
-    assert!(is_possible(&board, &(0, 7))); // Horizontal
-    assert!(is_possible(&board, &(0, 56))); // Vertical
+    assert!(is_possible(&board, &(0, 7), Color::White)); // Horizontal
+    assert!(is_possible(&board, &(0, 56), Color::White)); // Vertical
 
     // Invalid rook moves
-    assert!(!is_possible(&board, &(0, 9))); // Diagonal
+    assert!(!is_possible(&board, &(0, 9), Color::White)); // Diagonal
 }
 
 #[test]
@@ -65,41 +65,41 @@ fn test_bishop_moves() {
     let board = Board::from_mask(e5.to_bitboard(), Piece::new(Type::Bishop, Color::White)); // White bishop at e5
     // Light squared bishop
 
-    assert!(is_possible(&board, &(e5, a1)));
-    assert!(is_possible(&board, &(e5, b2)));
-    assert!(is_possible(&board, &(e5, c3)));
-    assert!(is_possible(&board, &(e5, d4)));
-    assert!(is_possible(&board, &(e5, f6)));
-    assert!(is_possible(&board, &(e5, g7)));
-    assert!(is_possible(&board, &(e5, h8)));
+    assert!(is_possible(&board, &(e5, a1), Color::White));
+    assert!(is_possible(&board, &(e5, b2), Color::White));
+    assert!(is_possible(&board, &(e5, c3), Color::White));
+    assert!(is_possible(&board, &(e5, d4), Color::White));
+    assert!(is_possible(&board, &(e5, f6), Color::White));
+    assert!(is_possible(&board, &(e5, g7), Color::White));
+    assert!(is_possible(&board, &(e5, h8), Color::White));
 
     let board_alt = Board::from_mask(d5.to_bitboard(), Piece::new(Type::Bishop, Color::White)); // White bishop at d5
     // Dark squared bishop
 
-    assert!(is_possible(&board_alt, &(d5, a8)));
-    assert!(is_possible(&board_alt, &(d5, b7)));
-    assert!(is_possible(&board_alt, &(d5, c6)));
-    assert!(is_possible(&board_alt, &(d5, e4)));
-    assert!(is_possible(&board_alt, &(d5, f3)));
-    assert!(is_possible(&board_alt, &(d5, g2)));
-    assert!(is_possible(&board_alt, &(d5, h1)));
+    assert!(is_possible(&board_alt, &(d5, a8), Color::White));
+    assert!(is_possible(&board_alt, &(d5, b7), Color::White));
+    assert!(is_possible(&board_alt, &(d5, c6), Color::White));
+    assert!(is_possible(&board_alt, &(d5, e4), Color::White));
+    assert!(is_possible(&board_alt, &(d5, f3), Color::White));
+    assert!(is_possible(&board_alt, &(d5, g2), Color::White));
+    assert!(is_possible(&board_alt, &(d5, h1), Color::White));
 
     // testign invalid moves
 
-    assert!(!is_possible(&board_alt, &(d5, a1)));
-    assert!(!is_possible(&board_alt, &(d5, b2)));
+    assert!(!is_possible(&board_alt, &(d5, a1), Color::White));
+    assert!(!is_possible(&board_alt, &(d5, b2), Color::White));
 }
 
 #[test]
 pub fn test_blockers_rook() {
     let board = Board::init();
-    assert!(!is_possible(&board, &(0, 1)));
+    assert!(!is_possible(&board, &(0, 1), Color::White));
 }
 
 #[test]
 pub fn test_blockers_bishop() {
     let board = Board::init();
-    assert!(!is_possible(&board, &(3, 10)));
+    assert!(!is_possible(&board, &(3, 10), Color::White));
 }
 
 #[test]
@@ -165,9 +165,9 @@ proptest! {
         let board = Board::init();
 
         // Single push
-        assert!(is_possible(&board, &(pawn, pawn + 8)));
+        assert!(is_possible(&board, &(pawn, pawn + 8), Color::White));
         // Double push
-        assert!(is_possible(&board, &(pawn, pawn + 16)));
+        assert!(is_possible(&board, &(pawn, pawn + 16), Color::White));
     }
 
     #[test]

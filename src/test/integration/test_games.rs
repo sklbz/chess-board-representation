@@ -39,7 +39,7 @@ fn opening() {
     .collect::<Vec<Move>>();
 
     for move_ in moves.iter() {
-        assert!(is_possible(&board, move_));
+        assert!(is_possible(&board, move_, Color::White));
         board.play_move(move_);
     }
 }
@@ -62,13 +62,17 @@ fn full_game_no_castling_no_en_passant_no_promotion() {
     .map(|s| string_to_move(s))
     .collect();
 
+    let mut turn = Color::White;
+
     for (move_, i) in game.iter().zip(1..) {
         assert!(
-            is_possible(&board, move_),
+            is_possible(&board, move_, turn),
             "Failed at move {i}: {}",
             move_to_string(move_)
         );
         board.play_move(move_);
+
+        turn = !turn;
     }
 }
 
@@ -82,6 +86,8 @@ fn magnus_carlsen() {
         d1b3 a7a5 a1d1 a5b4 a3b4 f8c8 b2d4 b6d7 c4c5 f6d5 e2c4 d7f6 f1e1 b7b6 
         c5b6 d5b6 d4b6 c7b6 e5f7 g8f7 c4e6 f5e6 e1e6 c8c3 e6f6 f7f6 b3c3 f6f7 
         f3e5 f7g8 c3c4 g8h8 c4e4 a8e8 e5g6 h8g8 g6e7 g8f7 d1e1 b6d6";
+
+    let mut turn = Color::White;
 
     for (move_, i) in game.split_whitespace().zip(1..) {
         if move_.starts_with('O') {
@@ -100,10 +106,12 @@ fn magnus_carlsen() {
         let algebric_move = string_to_move(move_);
 
         assert!(
-            is_possible(&board, &algebric_move),
+            is_possible(&board, &algebric_move, turn),
             "Failed at move {i}: {}",
             move_
         );
         board.play_move(&algebric_move);
+
+        turn = !turn;
     }
 }

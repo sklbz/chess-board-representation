@@ -6,14 +6,19 @@ use super::{
     misc::{Color, Move, Square, ToBitBoard, Type},
 };
 
-pub fn is_possible(board: &Board, r#move: &Move) -> bool {
-    let (start, end): (Square, Square) = *r#move;
+pub fn is_possible(board: &Board, move_: &Move, color: Color) -> bool {
+    let (start, end): (Square, Square) = *move_;
+    let piece = board.get_piece(&start);
 
-    if board.get_piece(&start).r#type == Type::None {
+    if piece.r#type == Type::None {
         return false;
     }
 
-    if board.get_piece(&start).color == Color::Null {
+    if piece.color == Color::Null {
+        return false;
+    }
+
+    if piece.color != color {
         return false;
     }
 
