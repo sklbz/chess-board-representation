@@ -28,6 +28,8 @@ pub struct Board {
     // Kings
     white_king: BitBoard,
     black_king: BitBoard,
+    // White: Kingside/Queenside, Black: Kingside/Queenside
+    castling_rights: [bool; 4],
 }
 
 impl Board {
@@ -52,6 +54,7 @@ impl Board {
             black_queens: king_pattern.bitwise_reverse(),
             white_king: king_pattern,
             black_king: queen_pattern.bitwise_reverse(),
+            castling_rights: [true; 4],
         }
     }
 
@@ -69,6 +72,7 @@ impl Board {
             black_queens: 0,
             white_king: 0,
             black_king: 0,
+            castling_rights: [true; 4],
         }
     }
 
@@ -99,6 +103,7 @@ impl Board {
             black_queens,
             white_king,
             black_king,
+            castling_rights: [false; 4],
         }
     }
 
@@ -106,8 +111,25 @@ impl Board {
         let mut board = Board::empty();
         let mut pieces: Vec<(Piece, Square)> = Vec::new();
 
+        let piece_str = fen.split_whitespace().next().unwrap();
+        let castling = fen
+            .split_whitespace()
+            .last()
+            .unwrap()
+            .chars()
+            .collect::<Vec<char>>();
+
+        let castling_rights: [bool; 4] = [
+            castling.contains(&'K'),
+            castling.contains(&'Q'),
+            castling.contains(&'k'),
+            castling.contains(&'q'),
+        ];
+
+        board.castling_rights = castling_rights;
+
         let mut idx = 0;
-        fen.split('/').enumerate().for_each(|(file, row)| {
+        piece_str.split('/').enumerate().for_each(|(file, row)| {
             row.chars().for_each(|char| {
                 if char.is_numeric() {
                     idx += char.to_string().parse::<u8>().unwrap();
@@ -191,6 +213,22 @@ impl Board {
         }
     }
 
+    pub fn can_castle_kingside(&self, color: Color) -> bool {
+        match color {
+            Color::White => self.castling_rights[0],
+            Color::Black => self.castling_rights[2],
+            Color::Null => panic!("Color is null"),
+        }
+    }
+
+    pub fn can_castle_queenside(&self, color: Color) -> bool {
+        match color {
+            Color::White => self.castling_rights[1],
+            Color::Black => self.castling_rights[3],
+            Color::Null => panic!("Color is null"),
+        }
+    }
+
     pub fn is_check(&self, color: Color) -> bool {
         match color {
             Color::White => self.white_king & self.black_attack_mask() != 0,
@@ -226,36 +264,72 @@ impl Board {
     pub fn castle(&mut self, code: &str, side: &Color) {
         match (code, side) {
             ("O-O", Color::White) => {
-                self.play_move(&string_to_move("e1g1"));
-                self.play_move(&string_to_move("h1f1"));
+                self.make_move(&string_to_move("e1g1"));
+                self.make_move(&string_to_move("h1f1"));
             }
             ("O-O", Color::Black) => {
-                self.play_move(&string_to_move("e8g8"));
-                self.play_move(&string_to_move("h8f8"));
+                self.make_move(&string_to_move("e8g8"));
+                self.make_move(&string_to_move("h8f8"));
             }
             ("O-O-O", Color::White) => {
-                self.play_move(&string_to_move("e1c1"));
-                self.play_move(&string_to_move("a1d1"));
+                self.make_move(&string_to_move("e1c1"));
+                self.make_move(&string_to_move("a1d1"));
             }
             ("O-O-O", Color::Black) => {
-                self.play_move(&string_to_move("e8c8"));
-                self.play_move(&string_to_move("a8d8"));
+                self.make_move(&string_to_move("e8c8"));
+                self.make_move(&string_to_move("a8d8"));
             }
             _ => panic!("Invalid castle code!"),
         }
     }
 
-    pub fn play_move(&mut self, r#move: &Move) {
-        let start: Square = r#move.0;
+    fn can_castle(&self, color: Color) -> bool {
+        match color {
+            Color::White => self.castling_rights[0] || self.castling_rights[1],
+            Color::Black => self.castling_rights[2] || self.castling_rights[3],
+            Color::Null => panic!("Color is null"),
+        }
+    }
 
-        let piece = self.get_piece(&start);
-        self.remove_piece(&start);
+    pub fn play_move(&mut self, move_: &Move) {
+        let (start, end): &(Square, Square) = move_;
 
-        let end: Square = r#move.1;
+        let piece = self.get_piece(start);
 
-        self.remove_piece(&end);
+        let offset = *end as i8 - *start as i8;
 
-        self.add_piece(&end, piece);
+        if piece.r#type == Type::King && offset.abs() == 2 && self.can_castle(piece.color) {
+            let castle_code = if start > end { "O-O-O" } else { "O-O" };
+
+            match piece.color {
+                Color::White => {
+                    self.castling_rights[0] = false;
+                    self.castling_rights[1] = false;
+                }
+                Color::Black => {
+                    self.castling_rights[2] = false;
+                    self.castling_rights[3] = false;
+                }
+                Color::Null => panic!("Color is null"),
+            };
+
+            self.castle(castle_code, &piece.color);
+            return;
+        }
+
+        self.make_move(move_);
+    }
+
+    fn make_move(&mut self, move_: &Move) {
+        let (start, end): &(Square, Square) = move_;
+
+        let piece = self.get_piece(start);
+
+        self.remove_piece(start);
+
+        self.remove_piece(end);
+
+        self.add_piece(end, piece);
     }
 
     fn set(&mut self, square: &Square, piece: Piece) {

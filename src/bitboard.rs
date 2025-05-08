@@ -4,9 +4,13 @@ pub type BitBoard = u64;
 
 pub trait BitBoardGetter {
     fn get_occupied_squares(&self) -> Vec<Square>;
+    fn empty() -> BitBoard;
 }
 
 impl BitBoardGetter for BitBoard {
+    fn empty() -> BitBoard {
+        0
+    }
     fn get_occupied_squares(&self) -> Vec<Square> {
         /*
         // Recursive way
