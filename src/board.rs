@@ -283,25 +283,9 @@ impl Board {
         }
     }
 
-    fn can_castle(&self, color: Color) -> bool {
-        match color {
-            Color::White => self.castling_rights[0] || self.castling_rights[1],
-            Color::Black => self.castling_rights[2] || self.castling_rights[3],
-            Color::Null => panic!("Color is null"),
-        }
-    }
-
-    pub fn play_move(&mut self, move_: &Move) {
-        let (start, end): &(Square, Square) = move_;
-
-        let piece = self.get_piece(start);
-
-        let offset = *end as i8 - *start as i8;
-
-        if piece.r#type == Type::King && offset.abs() == 2 && self.can_castle(piece.color) {
-            let castle_code = if start > end { "O-O-O" } else { "O-O" };
-
-            match piece.color {
+    fn update_castling_rights(&mut self, start: &Square, piece_type: Type, color: Color) {
+        match piece_type {
+            Type::King => match color {
                 Color::White => {
                     self.castling_rights[0] = false;
                     self.castling_rights[1] = false;
@@ -311,9 +295,40 @@ impl Board {
                     self.castling_rights[3] = false;
                 }
                 Color::Null => panic!("Color is null"),
-            };
+            },
+            Type::Rook => match start.get_file() {
+                0 => match color {
+                    Color::White => self.castling_rights[1] = false,
+                    Color::Black => self.castling_rights[3] = false,
+                    Color::Null => panic!("Color is null"),
+                },
+                7 => match color {
+                    Color::White => self.castling_rights[0] = false,
+                    Color::Black => self.castling_rights[2] = false,
+                    Color::Null => panic!("Color is null"),
+                },
+                _ => (),
+            },
+            _ => (),
+        };
+    }
 
-            self.castle(castle_code, &piece.color);
+    pub fn play_move(&mut self, move_: &Move) {
+        let (start, end): &(Square, Square) = move_;
+
+        let Piece {
+            r#type: piece_type,
+            color,
+        } = self.get_piece(start);
+
+        let offset = *end as i8 - *start as i8;
+
+        self.update_castling_rights(start, piece_type, color);
+
+        if piece_type == Type::King && offset.abs() == 2 {
+            let castle_code = if start > end { "O-O-O" } else { "O-O" };
+            self.castle(castle_code, &color);
+
             return;
         }
 
