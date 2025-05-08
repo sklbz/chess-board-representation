@@ -32,7 +32,7 @@ pub fn generate_pseudo_move_mask(board: &Board, start: &Square) -> BitBoard {
     let enemies: &BitBoard = &board.get_bitboard(&ennemy, &Type::None);
 
     match piece.r#type {
-        Type::Pawn => pawn_move(start, allies, enemies),
+        Type::Pawn => pawn_move(start, allies, &(enemies | board.en_passant_board())),
         Type::Rook => rook_move_bitmask(start, allies, enemies),
         Type::Bishop => bishop_move_bitmask(start, allies, enemies),
         Type::Queen => queen_move_bitmask(start, allies, enemies),

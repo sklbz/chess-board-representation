@@ -3,6 +3,20 @@ use crate::board::Board;
 use crate::legal_moves::is_move_possible::is_possible;
 use crate::legal_moves::misc::{Color, Move, Piece, Square, Type};
 
+pub fn string_to_file(file: char) -> u8 {
+    match file {
+        'a' => 0,
+        'b' => 1,
+        'c' => 2,
+        'd' => 3,
+        'e' => 4,
+        'f' => 5,
+        'g' => 6,
+        'h' => 7,
+        _ => panic!("Invalid file : {}", file),
+    }
+}
+
 pub fn piece_to_icon(color: &Color, piece_type: &Type) -> char {
     match (color, piece_type) {
         (Color::White, Type::Pawn) => '󰡙',
