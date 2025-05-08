@@ -65,7 +65,6 @@ pub fn castle_mask(board: &Board, color: Color) -> BitBoard {
             continue;
         }
 
-        println!("5");
         let attack_mask: BitBoard = generate_attack_mask(board, &!color, &0, &0);
         let travel_mask: BitBoard = king_bit | king_bit >> 1 | king_bit >> 2;
 
