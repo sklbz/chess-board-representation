@@ -1,5 +1,12 @@
 use crate::{board::Board, debug::divide::divide, legal_moves::misc::Color};
 
+#[test]
+fn perft() {
+    depth_3();
+    depth_4();
+    // depth_5();
+}
+
 fn depth_3() {
     let board = Board::init();
 
@@ -118,13 +125,6 @@ fn depth_5() {
             depth, move_, count, reference.0, reference.1
         );
     }
-}
-
-#[test]
-fn perft() {
-    depth_3();
-    depth_4();
-    depth_5();
 }
 
 #[test]

@@ -38,9 +38,13 @@ fn opening() {
     .map(|(a, b)| (string_to_square(a), string_to_square(b)))
     .collect::<Vec<Move>>();
 
+    let mut turn = Color::White;
+
     for move_ in moves.iter() {
-        assert!(is_possible(&board, move_, Color::White));
+        assert!(is_possible(&board, move_, turn));
         board.play_move(move_);
+
+        turn = !turn;
     }
 }
 
@@ -62,17 +66,21 @@ fn full_game_no_castling_no_en_passant_no_promotion() {
     .map(|s| string_to_move(s))
     .collect();
 
-    let mut turn = Color::White;
-
     for (move_, i) in game.iter().zip(1..) {
         assert!(
-            is_possible(&board, move_, turn),
+            is_possible(
+                &board,
+                move_,
+                if i % 2 == 1 {
+                    Color::White
+                } else {
+                    Color::Black
+                }
+            ),
             "Failed at move {i}: {}",
             move_to_string(move_)
         );
         board.play_move(move_);
-
-        turn = !turn;
     }
 }
 
@@ -100,6 +108,7 @@ fn magnus_carlsen() {
                 },
             );
 
+            turn = !turn;
             continue;
         }
 
