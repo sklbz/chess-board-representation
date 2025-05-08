@@ -1,11 +1,11 @@
 use crate::{
-    Board,
-    game::action_state::{Action, get_action, get_input, get_mask},
+    game::action_state::{get_action, get_input, get_mask, Action},
     legal_moves::{
         is_move_possible::*,
         misc::{Color, Piece, Type},
     },
     utils::{extract_move, extract_square, user_input},
+    Board,
 };
 
 use std::{thread, time};

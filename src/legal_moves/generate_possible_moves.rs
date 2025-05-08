@@ -1,5 +1,5 @@
 use crate::{
-    bitboard::{BitBoard, BitBoardGetter, Display},
+    bitboard::{BitBoard, BitBoardGetter},
     board::Board,
     utils::mask_to_moves,
 };

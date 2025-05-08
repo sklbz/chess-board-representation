@@ -38,15 +38,19 @@ pub(super) fn is_pre_pinned(board: &Board, start: &Square, king_square: &Square)
         &board.get_bitboard(&Color::Null, &Type::None),
     );
 
-    protector_mask & (1 << start) == 0
+    protector_mask & (1 << start) != 0
 }
 
 pub(super) fn is_pinned(board: &Board, start: &Square, king_square: &Square) -> bool {
+    let ennemy_color = !board.get_piece(start).color;
+
+    let defensive_mask = king_move_mask(king_square, &0, &0) & !start.to_bitboard();
+
     let attack_mask = generate_attack_mask(
         board,
-        &!board.get_piece(start).color,
-        &(start.to_bitboard() | board.get_bitboard(&Color::Null, &Type::Knight)),
-        &king_move_mask(king_square, &0, &0),
+        &ennemy_color,
+        &(start.to_bitboard() | board.get_bitboard(&ennemy_color, &Type::Knight)),
+        &defensive_mask,
     );
 
     attack_mask & (1 << king_square) != 0

@@ -63,7 +63,7 @@ fn test_bishop_moves() {
 
     use crate::legal_moves::misc::*;
     let board = Board::from_mask(e5.to_bitboard(), Piece::new(Type::Bishop, Color::White)); // White bishop at e5
-    // Light squared bishop
+                                                                                            // Light squared bishop
 
     assert!(is_possible(&board, &(e5, a1), Color::White));
     assert!(is_possible(&board, &(e5, b2), Color::White));
@@ -74,7 +74,7 @@ fn test_bishop_moves() {
     assert!(is_possible(&board, &(e5, h8), Color::White));
 
     let board_alt = Board::from_mask(d5.to_bitboard(), Piece::new(Type::Bishop, Color::White)); // White bishop at d5
-    // Dark squared bishop
+                                                                                                // Dark squared bishop
 
     assert!(is_possible(&board_alt, &(d5, a8), Color::White));
     assert!(is_possible(&board_alt, &(d5, b7), Color::White));

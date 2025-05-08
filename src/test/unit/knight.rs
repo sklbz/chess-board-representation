@@ -43,7 +43,7 @@ fn test_knight_moves_edge() {
 #[test]
 fn test_knight_blocked_by_own_pieces() {
     let knight_square = 28; // e4
-    // Block one of the knight's moves with a white pawn
+                            // Block one of the knight's moves with a white pawn
     let blocked_square = knight_square + 15;
     let board = Board::new(
         1 << blocked_square,
