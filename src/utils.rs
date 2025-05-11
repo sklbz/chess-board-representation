@@ -16,6 +16,29 @@ pub fn string_to_file(file: char) -> u8 {
     }
 }
 
+pub fn piece_to_char(
+    Piece {
+        color,
+        r#type: piece_type,
+    }: &Piece,
+) -> char {
+    match (color, piece_type) {
+        (Color::White, Type::Pawn) => 'P',
+        (Color::Black, Type::Pawn) => 'p',
+        (Color::White, Type::Knight) => 'N',
+        (Color::Black, Type::Knight) => 'n',
+        (Color::White, Type::Bishop) => 'B',
+        (Color::Black, Type::Bishop) => 'b',
+        (Color::White, Type::Rook) => 'R',
+        (Color::Black, Type::Rook) => 'r',
+        (Color::White, Type::Queen) => 'Q',
+        (Color::Black, Type::Queen) => 'q',
+        (Color::White, Type::King) => 'K',
+        (Color::Black, Type::King) => 'k',
+        _ => panic!("Piece not found!"),
+    }
+}
+
 pub fn piece_to_icon(color: &Color, piece_type: &Type) -> char {
     match (color, piece_type) {
         (Color::White, Type::Pawn) => '󰡙',

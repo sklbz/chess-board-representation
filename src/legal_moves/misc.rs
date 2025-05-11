@@ -27,9 +27,14 @@ pub struct Piece {
     pub r#type: Type,
     pub color: Color,
 }
+
 impl Piece {
     pub fn new(r#type: Type, color: Color) -> Self {
         Self { r#type, color }
+    }
+
+    pub fn is_none(&self) -> bool {
+        return self.r#type == Type::None || self.color == Color::Null;
     }
 }
 

@@ -5,7 +5,7 @@ use crate::{
         generate_possible_moves::generate_move_vec,
         misc::{Color, Coord, Move, Piece, Square, Type},
     },
-    utils::{piece_from_char, piece_to_icon, string_to_move},
+    utils::{piece_from_char, piece_to_char, piece_to_icon, string_to_move},
 };
 
 #[derive(Debug, Clone)]
@@ -163,7 +163,7 @@ impl Board {
         for rank in (0..8).rev() {
             for file in 0..8 {
                 let square = rank * 8 + file;
-                let piece = self.get_piece(square);
+                let piece = self.get_piece(&square);
 
                 if piece.is_none() {
                     empty_spaces += 1;
@@ -173,8 +173,7 @@ impl Board {
                         empty_spaces = 0;
                     }
 
-                    let piece = piece.unwrap();
-                    fen.push(piece_to_char(piece));
+                    fen.push(piece_to_char(&piece));
                 }
             }
 
