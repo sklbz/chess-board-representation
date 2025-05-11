@@ -2,7 +2,7 @@ use crate::{
     bitboard::{BitBoard, BitBoardGetter},
     bitmask::{down_mask, left_diagonal_mask, left_mask, right_diagonal_mask, right_mask, up_mask},
     board::Board,
-    r#move::{king::king_move_mask, queen::queen_move_bitmask},
+    r#move::{king::king_move_mask, knight::knight_move_bitmask, queen::queen_move_bitmask},
 };
 
 use super::{
@@ -69,7 +69,7 @@ pub(super) fn protection_mask(king_square: Square, start: &Square, is_pinned: bo
         7 => left_diagonal_mask(*start),
         8 => !(left_mask(*start) | right_mask(*start)),
         9 => right_diagonal_mask(*start),
-        _ => unreachable!(),
+        _ => unreachable!("Invalid direction"),
     }
 }
 
@@ -82,14 +82,19 @@ pub(super) fn deflection_mask(is_checked: bool, board: &Board, color: Color) -> 
         .get_bitboard(&color, &Type::King)
         .get_occupied_squares()[0];
 
-    match get_check_direction(board, &king, color) {
-        0 => 0,
-        1 => !(up_mask(king) | down_mask(king)),
-        7 => left_diagonal_mask(king),
-        8 => !(left_mask(king) | right_mask(king)),
-        9 => right_diagonal_mask(king),
-        10 => get_checking_knight(board, color, &board.get_bitboard(&color, &Type::King)),
-        u8::MAX => u64::MAX,
-        _ => unreachable!(),
-    }
+    let king_vision: BitBoard =
+        queen_move_bitmask(&king, &0, &board.get_bitboard(&Color::Null, &Type::None))
+            | knight_move_bitmask(&king, &0);
+
+    king_vision
+        & match get_check_direction(board, &king, color) {
+            0 => 0,
+            1 => !(up_mask(king) | down_mask(king)),
+            7 => left_diagonal_mask(king),
+            8 => !(left_mask(king) | right_mask(king)),
+            9 => right_diagonal_mask(king),
+            10 => get_checking_knight(board, color, &board.get_bitboard(&color, &Type::King)),
+            u8::MAX => u64::MAX,
+            _ => unreachable!("Invalid check direction"),
+        }
 }
