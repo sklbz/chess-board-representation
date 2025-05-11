@@ -156,6 +156,60 @@ impl Board {
         board
     }
 
+    pub fn to_fen(&self) -> String {
+        let mut fen: String = String::new();
+        let mut empty_spaces: u8 = 0;
+
+        for rank in (0..8).rev() {
+            for file in 0..8 {
+                let square = rank * 8 + file;
+                let piece = self.get_piece(square);
+
+                if piece.is_none() {
+                    empty_spaces += 1;
+                } else {
+                    if empty_spaces > 0 {
+                        fen.push_str(&empty_spaces.to_string());
+                        empty_spaces = 0;
+                    }
+
+                    let piece = piece.unwrap();
+                    fen.push(piece_to_char(piece));
+                }
+            }
+
+            if empty_spaces > 0 {
+                fen.push_str(&empty_spaces.to_string());
+                empty_spaces = 0;
+            }
+
+            if rank > 0 {
+                fen.push('/');
+            }
+        }
+
+        let castling: String = self
+            .castling_rights
+            .iter()
+            .enumerate()
+            .filter_map(|(idx, right)| {
+                if *right {
+                    match idx {
+                        0 => Some('K'),
+                        1 => Some('Q'),
+                        2 => Some('k'),
+                        3 => Some('q'),
+                        _ => None,
+                    }
+                } else {
+                    None
+                }
+            })
+            .collect();
+
+        format!("{} {} 0 1", fen, castling)
+    }
+
     pub fn from_mask(mask: BitBoard, piece: Piece) -> Board {
         let Piece {
             r#type: piece_type,
