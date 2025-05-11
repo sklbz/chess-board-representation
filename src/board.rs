@@ -370,6 +370,10 @@ impl Board {
         };
     }
 
+    pub fn make_move_str(&mut self, move_: &str) {
+        self.play_move(&string_to_move(move_));
+    }
+
     pub fn play_move(&mut self, move_: &Move) {
         let (start, end): &(Square, Square) = move_;
 
