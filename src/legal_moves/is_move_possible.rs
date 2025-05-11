@@ -3,7 +3,7 @@ use crate::board::Board;
 
 use super::{
     generate_possible_moves::generate_move_mask,
-    misc::{Color, Move, Square, ToBitBoard, Type},
+    misc::{Color, Move, Piece, Square, ToBitBoard, Type},
 };
 
 pub fn is_possible(board: &Board, move_: &Move, color: Color) -> bool {
@@ -24,5 +24,15 @@ pub fn is_possible(board: &Board, move_: &Move, color: Color) -> bool {
 
     let move_mask: BitBoard = generate_move_mask(board, &start);
 
-    move_mask & end.to_bitboard() != 0
+    let result: bool = move_mask & end.to_bitboard() != 0;
+
+    if !result {
+        board.display();
+        Board::from_mask(move_mask, Piece::new(Type::Pawn, Color::White))
+            .set(&start, piece)
+            .set(&end, Piece::new(Type::Pawn, Color::Black))
+            .display();
+    }
+
+    result
 }

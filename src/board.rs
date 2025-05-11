@@ -1,7 +1,7 @@
 use crate::{
     bitboard::*,
     legal_moves::{
-        attack_mask::generate_attack_mask,
+        attack_mask::{generate_attack_mask, generate_attack_mask_single_square},
         generate_possible_moves::generate_move_vec,
         misc::{Color, Coord, Move, Piece, Square, Type},
     },
@@ -377,9 +377,13 @@ impl Board {
         self.en_passant = 0;
     }
 
-    fn set(&mut self, square: &Square, piece: Piece) {
+    // WARNING: make this function private after testing
+    pub fn set(&mut self, square: &Square, piece: Piece) -> Board {
         self.remove_piece(square);
         self.add_piece(square, piece);
+
+        // WARNING: This may cause performance issues
+        self.clone()
     }
 
     fn remove_piece(&mut self, square: &Square) {
@@ -524,6 +528,19 @@ impl Board {
         }
 
         Type::None
+    }
+
+    pub fn get_attackers_to(&self, square: Square) -> BitBoard {
+        let color = !self.get_piece_color(&square);
+
+        let attackers: BitBoard = self
+            .get_bitboard(&color, &Type::None)
+            .get_occupied_squares()
+            .iter()
+            .filter(|s| (1 << square) & generate_attack_mask_single_square(self, s, &0, &0) != 0)
+            .fold(0, |acc, attacker| acc | (1 << attacker));
+
+        attackers
     }
 
     pub fn display(&self) {

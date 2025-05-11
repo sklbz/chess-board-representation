@@ -37,6 +37,19 @@ pub fn generate_move_mask(board: &Board, start: &Square) -> BitBoard {
         return generate_pseudo_move_mask(board, start) | castle_mask(board, color);
     }
 
+    let mut alt_board = board.clone();
+
+    return generate_pseudo_move_mask(board, start)
+        .get_occupied_squares()
+        .iter()
+        .filter(|target| {
+            alt_board.play_move(&(*start, **target));
+            let is_check = alt_board.is_check(color);
+            alt_board.play_move(&(**target, *start));
+            !is_check
+        })
+        .fold(0, |acc, target| acc | (1 << target));
+
     let king_square = match board.get_bitboard(&color, &Type::King) {
         0 => return generate_pseudo_move_mask(board, start),
         king_bit => king_bit.get_occupied_squares()[0],
@@ -54,6 +67,17 @@ pub fn generate_move_mask(board: &Board, start: &Square) -> BitBoard {
         return generate_pseudo_move_mask(board, start);
     }
 
+    /* let attackers: BitBoard = board.get_attackers_to(king_square);
+
+       assert!(
+           generate_attack_mask(board, &color, &attackers, &0) & (1 << king_square) == 0,
+           "Attackers mask is not correct"
+       );
+
+       if attackers.count_ones() > 1 {
+           return 0;
+       }
+    */
     if is_checked && is_pinned {
         return 0;
     }
@@ -62,18 +86,5 @@ pub fn generate_move_mask(board: &Board, start: &Square) -> BitBoard {
 
     let deflection_mask: BitBoard = deflection_mask(is_checked, board, color);
 
-    let mask: BitBoard =
-        generate_pseudo_move_mask(board, start) & protection_mask & deflection_mask;
-
-    assert!(
-        mask & !protection_mask == 0,
-        "Move mask should be a subset of the protection mask"
-    );
-
-    assert!(
-        mask & !deflection_mask == 0,
-        "Move mask should be a subset of the deflection mask"
-    );
-
-    mask
+    generate_pseudo_move_mask(board, start) & protection_mask & deflection_mask
 }
