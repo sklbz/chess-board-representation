@@ -37,7 +37,6 @@ fn depth_3() {
     let result = divide(&board, Color::White, depth - 1);
 
     for (move_, count) in result {
-        println!("{}: {}", move_, count);
         let reference = stockfish_ref.iter().find(|(m, _)| *m == move_).unwrap();
         assert_eq!(
             count, reference.1,
@@ -77,8 +76,12 @@ fn depth_4() {
     let result = divide(&board, Color::White, depth - 1);
 
     for (move_, count) in result {
-        println!("{}: {}", move_, count);
         let reference = stockfish_ref.iter().find(|(m, _)| *m == move_).unwrap();
+
+        if count != reference.1 {
+            tree(move_.to_string(), depth - 1);
+        }
+
         assert_eq!(
             count, reference.1,
             "\nDepth: {}\nEngine: {} => {}\n Stockfish: {} => {}",
@@ -117,8 +120,12 @@ fn depth_5() {
     let result = divide(&board, Color::White, depth - 1);
 
     for (move_, count) in result {
-        println!("{}: {}", move_, count);
         let reference = stockfish_ref.iter().find(|(m, _)| *m == move_).unwrap();
+
+        if count != reference.1 {
+            tree(move_.to_string(), depth - 1);
+        }
+
         assert_eq!(
             count, reference.1,
             "\nDepth: {}\nEngine: {} => {}\n Stockfish: {} => {}",
@@ -186,7 +193,6 @@ fn alternate_position() {
     let result = divide(&board, Color::White, depth - 1);
 
     for (move_, count) in result {
-        println!("{}: {}", move_, count);
         let reference = stockfish_ref.iter().find(|(m, _)| *m == move_).unwrap();
         assert_eq!(
             count, reference.1,
@@ -194,4 +200,71 @@ fn alternate_position() {
             move_, count, reference.0, reference.1
         );
     }
+}
+
+fn tree(moves: String, depth: usize) {
+    let board = Board::init();
+
+    let stockfish_ref = get_stockfish_output(board.to_fen(), depth);
+    /*
+    let result = divide(&board, Color::White, depth - 1);
+
+        for (move_, count) in result {
+            let reference = stockfish_ref.iter().find(|(m, _)| *m == move_).unwrap();
+            assert_eq!(
+                count, reference.1,
+                "\nDepth: {}\nEngine: {} => {}\n Stockfish: {} => {}",
+                depth, move_, count, reference.0, reference.1
+            );
+        }
+    */
+
+    println!("{}", stockfish_ref);
+}
+
+use std::io::{BufRead, BufReader, Write};
+use std::process::{Command, Stdio};
+use std::thread;
+use std::time::Duration;
+fn get_stockfish_output(fen: String, depth: usize) -> String {
+    // Launch Stockfish process
+    let mut stockfish = Command::new("stockfish")
+        .stdin(Stdio::piped())
+        .stdout(Stdio::piped())
+        .spawn()?;
+
+    // Get handles to stdin and stdout
+    let stdin = stockfish.stdin.as_mut().unwrap();
+    let stdout = stockfish.stdout.take().unwrap();
+    let reader = BufReader::new(stdout);
+
+    let mut send_command = |command: &str| {
+        writeln!(stdin, "{}", command).unwrap();
+        println!("Sent: {}", command.trim());
+    };
+
+    let mut read_perft_output = || {
+        let mut output = String::new();
+        for line in reader.lines() {
+            let line = line.unwrap();
+            if line.starts_with("Nodes searched") {
+                break;
+            }
+            output.push_str(&line);
+        }
+
+        output
+    };
+
+    send_command(&format!("position fen {}", fen));
+    send_command(&format!("go perft {}", depth));
+
+    // Give Stockfish some time to respond
+    thread::sleep(Duration::from_millis(1000));
+
+    let perft_results = read_perft_output();
+
+    send_command("quit");
+
+    perft_results
 }
