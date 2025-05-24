@@ -34,7 +34,7 @@ impl Piece {
     }
 
     pub fn is_none(&self) -> bool {
-        return self.r#type == Type::None || self.color == Color::Null;
+        self.r#type == Type::None || self.color == Color::Null
     }
 }
 

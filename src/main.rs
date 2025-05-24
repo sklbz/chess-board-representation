@@ -9,12 +9,15 @@ mod test;
 mod utils;
 
 // use debug::knight_movement::run_debug;
-use chess::uci::uci_loop::uci;
-use utils::squarewise_display;
+// use chess::uci::uci_loop::uci;
+use debug::divide::divide;
+use legal_moves::misc::Color;
+// use utils::squarewise_display;
 
 use crate::board::*;
 
 fn main() {
+    /*
     let board = Board::init();
 
     let square_by_square_check: bool = false;
@@ -26,4 +29,173 @@ fn main() {
     // run(&mut board);
     // run_debug();
     uci();
+    */
+
+    tree("".to_string(), 4);
+}
+
+use std::fs::File;
+
+fn tree(moves: String, depth: usize) {
+    let mut board = Board::init();
+
+    for m in moves.split_whitespace() {
+        board.make_move_str(m);
+    }
+
+    let turn = match moves.split_whitespace().count() % 2 {
+        1 => Color::White,
+        0 => Color::Black,
+        _ => panic!("Invalid moves length"),
+    };
+
+    // let (stockfish_ref, result) = get_stockfish_output(board.to_fen(turn), depth);
+    let stockfish_ref = get_stockfish_output(board.to_fen(turn), depth + 1);
+
+    let result = divide(&board, turn, depth);
+
+    /* for (move_, count) in result.iter() {
+            println!(
+                "{}: Engine => {}, Stockfish => {}",
+                move_,
+                count,
+                stockfish_ref.iter().find(|(m, _)| m == move_).unwrap().1
+            );
+        }
+    */
+
+    if result == stockfish_ref {
+        println!("OK");
+        return;
+    }
+
+    for (move_, count) in result
+        .iter()
+        .filter(|(m, _)| stockfish_ref.iter().any(|(s, _)| s == m))
+    {
+        let reference = stockfish_ref.iter().find(|(m, _)| m == move_).unwrap();
+
+        if *count != reference.1 {
+            println!(
+                "\nEngine: {} => {}\n Stockfish: {} => {}",
+                move_, count, reference.0, reference.1
+            );
+            tree(format!("{} {}", moves, move_), depth - 1);
+        }
+    }
+
+    for (move_, _) in result
+        .iter()
+        .filter(|(m, _)| !stockfish_ref.iter().any(|(s, _)| s == m))
+    {
+        println!("Extra path: {} {}", moves, move_);
+        writeln!(
+            File::open("./logs/perft_extra_paths.log").unwrap(),
+            "{} {}",
+            moves,
+            move_
+        );
+    }
+
+    for (move_, _) in stockfish_ref
+        .iter()
+        .filter(|(m, _)| !result.iter().any(|(s, _)| s == m))
+    {
+        println!("Missing path: {} {}", moves, move_);
+        writeln!(
+            File::open("./logs/perft_missing_paths.log").unwrap(),
+            "{} {}",
+            moves,
+            move_
+        );
+    }
+}
+
+use std::io::{BufRead, BufReader, Write};
+use std::process::{Command, Stdio};
+use std::thread::sleep;
+use std::time::Duration;
+fn get_stockfish_output(fen: String, depth: usize) -> Vec<(String, usize)> /*, Vec<(String, usize)>)*/
+{
+    // Launch Stockfish process
+    let mut stockfish = Command::new("stockfish")
+        .stdin(Stdio::piped())
+        .stdout(Stdio::piped())
+        .spawn()
+        .unwrap();
+
+    // Get handles to stdin and stdout
+    let stdin = stockfish.stdin.as_mut().unwrap();
+    let stdout = stockfish.stdout.take().unwrap();
+    let reader = BufReader::new(stdout);
+
+    let mut send_command = |command: &str| {
+        writeln!(stdin, "{}", command).unwrap();
+    };
+
+    let read_perft_output = || {
+        let mut output = String::new();
+        for line in reader.lines() {
+            let line = line.unwrap();
+
+            if line.starts_with("Nodes searched") {
+                break;
+            }
+
+            if line.split_whitespace().count() > 4 {
+                continue;
+            }
+
+            output.push_str(&line);
+            output.push('\n');
+        }
+
+        output
+    };
+
+    send_command(&format!("position fen {}", fen));
+    send_command(&format!("go perft {}", depth));
+
+    /*
+        // Stockfish is faster than our own perft so we will uses this property to speed up our tests
+        let turn = match fen.split_whitespace().nth(1).unwrap() {
+            "w" => Color::White,
+            "b" => Color::Black,
+            _ => panic!("Invalid color"),
+        };
+        let fen_board = Board::from_fen(&fen);
+
+        let custom_perft = divide(&fen_board, turn, depth);
+    */
+
+    sleep(Duration::from_millis(100));
+
+    let perft_results = read_perft_output();
+    // println!("{}", perft_results);
+
+    send_command("quit");
+    let _ = stockfish.wait();
+
+    let formatted_perft = perft_results
+        .trim()
+        .split('\n')
+        .map(|s| -> (String, usize) {
+            let s = s.replace(":", "");
+            let move_ = s
+                .split_whitespace()
+                .next()
+                .unwrap_or_else(|| panic!("{}", s))
+                .to_string();
+            let count = s
+                .split_whitespace()
+                .last()
+                .unwrap()
+                .parse::<usize>()
+                .unwrap();
+
+            (move_, count)
+        })
+        .collect::<Vec<(String, usize)>>();
+
+    formatted_perft
 }
