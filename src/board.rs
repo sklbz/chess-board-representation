@@ -118,7 +118,7 @@ impl Board {
         let piece_str = fen.split_whitespace().next().unwrap();
         let castling = fen
             .split_whitespace()
-            .last()
+            .nth(2)
             .unwrap()
             .chars()
             .collect::<Vec<char>>();
@@ -156,7 +156,7 @@ impl Board {
         board
     }
 
-    pub fn to_fen(&self) -> String {
+    pub fn to_fen(&self, color: Color) -> String {
         let mut fen: String = String::new();
         let mut empty_spaces: u8 = 0;
 
@@ -206,7 +206,13 @@ impl Board {
             })
             .collect();
 
-        format!("{} {} 0 1", fen, castling)
+        let turn = match color {
+            Color::White => 'w',
+            Color::Black => 'b',
+            _ => panic!("Invalid color"),
+        };
+
+        format!("{} {} {} 0 1", fen, turn, castling)
     }
 
     pub fn from_mask(mask: BitBoard, piece: Piece) -> Board {

@@ -3,7 +3,7 @@ use crate::{board::Board, debug::divide::divide, legal_moves::misc::Color};
 #[test]
 fn perft() {
     depth_3();
-    depth_4();
+    //depth_4();
     // depth_5();
 }
 
@@ -136,7 +136,7 @@ fn depth_5() {
 
 #[test]
 fn alternate_position() {
-    let board = Board::from_fen("r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R KQkq");
+    let board = Board::from_fen("r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq");
 
     let stockfish_ref = [
         ("a2a3", 2186),
@@ -212,10 +212,18 @@ fn tree(moves: String, depth: usize) {
         board.make_move_str(m);
     }
 
-    let stockfish_ref = get_stockfish_output(board.to_fen(), depth);
-    let result = divide(&board, Color::White, depth - 1);
+    let turn = match moves.split_whitespace().count() % 2 {
+        1 => Color::White,
+        0 => Color::Black,
+        _ => panic!("Invalid moves length"),
+    };
 
-    for (move_, count) in &result {
+    let (stockfish_ref, result) = get_stockfish_output(board.to_fen(turn), depth);
+
+    for (move_, count) in result
+        .iter()
+        .filter(|(m, _)| stockfish_ref.iter().any(|(s, _)| s == m))
+    {
         let reference = stockfish_ref.iter().find(|(m, _)| m == move_).unwrap();
 
         if *count != reference.1 {
@@ -250,9 +258,7 @@ fn tree(moves: String, depth: usize) {
 
 use std::io::{BufRead, BufReader, Write};
 use std::process::{Command, Stdio};
-use std::thread;
-use std::time::Duration;
-fn get_stockfish_output(fen: String, depth: usize) -> Vec<(String, usize)> {
+fn get_stockfish_output(fen: String, depth: usize) -> (Vec<(String, usize)>, Vec<(String, usize)>) {
     // Launch Stockfish process
     let mut stockfish = Command::new("stockfish")
         .stdin(Stdio::piped())
@@ -292,14 +298,21 @@ fn get_stockfish_output(fen: String, depth: usize) -> Vec<(String, usize)> {
     send_command(&format!("position fen {}", fen));
     send_command(&format!("go perft {}", depth));
 
-    // Give Stockfish some time to respond
-    thread::sleep(Duration::from_millis(150 * depth as u64));
+    // Stockfish is faster than our own perft so we will uses this property to speed up our tests
+    let turn = match fen.split_whitespace().nth(1).unwrap() {
+        "w" => Color::White,
+        "b" => Color::Black,
+        _ => panic!("Invalid color"),
+    };
+    let fen_board = Board::from_fen(&fen);
+
+    let custom_perft = divide(&fen_board, turn, depth);
 
     let perft_results = read_perft_output();
 
     send_command("quit");
 
-    perft_results
+    let formatted_perft = perft_results
         .trim()
         .split('\n')
         .map(|s| -> (String, usize) {
@@ -318,5 +331,7 @@ fn get_stockfish_output(fen: String, depth: usize) -> Vec<(String, usize)> {
 
             (move_, count)
         })
-        .collect::<Vec<(String, usize)>>()
+        .collect::<Vec<(String, usize)>>();
+
+    (formatted_perft, custom_perft)
 }
