@@ -9,15 +9,14 @@ mod test;
 mod utils;
 
 // use debug::knight_movement::run_debug;
-// use chess::uci::uci_loop::uci;
+use chess::uci::uci_loop::uci;
 use debug::divide::divide;
 use legal_moves::misc::Color;
-// use utils::squarewise_display;
+use utils::squarewise_display;
 
 use crate::board::*;
 
 fn main() {
-    /*
     let board = Board::init();
 
     let square_by_square_check: bool = false;
@@ -29,9 +28,8 @@ fn main() {
     // run(&mut board);
     // run_debug();
     uci();
-    */
 
-    tree("".to_string(), 4);
+    // tree("".to_string(), 4);
 }
 
 use std::fs::File;

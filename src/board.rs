@@ -324,23 +324,43 @@ impl Board {
         generate_attack_mask(self, &Color::White, &0, &0)
     }
 
-    pub fn castle(&mut self, code: &str, side: &Color) {
+    pub fn castle(&mut self, code: &str, side: &Color) -> Fn() {
         match (code, side) {
             ("O-O", Color::White) => {
                 self.make_move(&string_to_move("e1g1"));
                 self.make_move(&string_to_move("h1f1"));
+
+                return || {
+                    self.make_move_str("g1e1");
+                    self.make_move_str("f1h1");
+                };
             }
             ("O-O", Color::Black) => {
                 self.make_move(&string_to_move("e8g8"));
                 self.make_move(&string_to_move("h8f8"));
+
+                return || {
+                    self.make_move_str("g8e8");
+                    self.make_move_str("f8h8");
+                };
             }
             ("O-O-O", Color::White) => {
                 self.make_move(&string_to_move("e1c1"));
                 self.make_move(&string_to_move("a1d1"));
+
+                return || {
+                    self.make_move_str("c1e1");
+                    self.make_move_str("d1a1");
+                };
             }
             ("O-O-O", Color::Black) => {
                 self.make_move(&string_to_move("e8c8"));
                 self.make_move(&string_to_move("a8d8"));
+
+                return || {
+                    self.make_move_str("c8e8");
+                    self.make_move_str("d8a8");
+                };
             }
             _ => panic!("Invalid castle code!"),
         }
@@ -376,11 +396,11 @@ impl Board {
         };
     }
 
-    pub fn make_move_str(&mut self, move_: &str) {
-        self.play_move(&string_to_move(move_));
+    pub fn make_move_str(&mut self, move_: &str) -> Fn() {
+        self.play_move(&string_to_move(move_))
     }
 
-    pub fn play_move(&mut self, move_: &Move) {
+    pub fn play_move(&mut self, move_: &Move) -> Fn() {
         let (start, end): &(Square, Square) = move_;
 
         let Piece {
@@ -388,56 +408,94 @@ impl Board {
             color,
         } = self.get_piece(start);
 
+        let captured = self.get_piece(end);
+
         let offset = *end as i8 - *start as i8;
+
+        let previous_castling_rights = self.castling_rights;
 
         self.update_castling_rights(start, piece_type, color);
 
         if piece_type == Type::King && offset.abs() == 2 {
             let castle_code = if start > end { "O-O-O" } else { "O-O" };
-            self.castle(castle_code, &color);
+            let undo_castle = self.castle(castle_code, &color);
 
-            return;
+            return || {
+                undo_castle();
+                self.castling_rights = previous_castling_rights;
+            };
         }
 
-        self.handle_en_passant(piece_type, start, end, offset);
+        let undo_en_passant = self.handle_en_passant(piece_type, start, end, offset);
 
-        self.make_move(move_);
+        let undo_move = self.make_move(move_);
+
+        return || {
+            undo_move();
+            undo_en_passant();
+            self.castling_rights = previous_castling_rights;
+        };
     }
 
-    fn make_move(&mut self, move_: &Move) {
+    fn make_move(&mut self, move_: &Move) -> Fn() {
         let (start, end): &(Square, Square) = move_;
 
         let piece = self.get_piece(start);
 
+        let captured = self.get_piece(end);
+
         self.remove_piece(start);
 
-        self.remove_piece(end);
+        self.set(end, piece);
 
-        self.add_piece(end, piece);
+        return || {
+            self.set(start, piece);
+            self.set(end, captured);
+        };
     }
 
-    fn handle_en_passant(&mut self, piece_type: Type, start: &Square, end: &Square, offset: i8) {
+    fn handle_en_passant(
+        &mut self,
+        piece_type: Type,
+        start: &Square,
+        end: &Square,
+        offset: i8,
+    ) -> Fn() {
         if piece_type != Type::Pawn {
             self.en_passant = 0;
             return;
         }
 
+        let previous_en_passant = self.en_passant;
+
         if self.en_passant & (1 << end) != 0 {
             let sign = if offset > 0 { 1 } else { -1 };
 
             let en_passant_square = *start as i8 + (offset.abs() - 8) * sign;
+            let taken_pawn = self.get_piece(&(en_passant_square as Square));
             self.remove_piece(&(en_passant_square as Square));
 
             self.en_passant = 0;
-            return;
+
+            return || {
+                self.add_piece(&(en_passant_square as Square), taken_pawn);
+                self.en_passant = previous_en_passant;
+            };
         }
 
         if offset.abs() == 16 {
             self.en_passant = 1 << (*start as i8 + offset / 2);
-            return;
+
+            return || {
+                self.en_passant = previous_en_passant;
+            };
         }
 
         self.en_passant = 0;
+
+        return || {
+            self.en_passant = previous_en_passant;
+        };
     }
 
     // WARNING: make this function private after testing
