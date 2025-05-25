@@ -1,4 +1,5 @@
-use crate::board::Board;
+use crate::board::board::Board;
+use crate::board::fen_handling::FenHandling;
 use crate::legal_moves::generate_possible_moves::generate_move_vec;
 use crate::legal_moves::misc::Color;
 

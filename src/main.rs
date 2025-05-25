@@ -8,16 +8,16 @@ mod r#move;
 mod test;
 mod utils;
 
-// use debug::knight_movement::run_debug;
+use crate::board::fen_handling::FenHandling;
+use board::board::Board;
 use chess::uci::uci_loop::uci;
 use debug::divide::divide;
+use game::game_loop::run;
 use legal_moves::misc::Color;
-use utils::squarewise_display;
-
-use crate::board::*;
+use utils::{squarewise_display, user_input};
 
 fn main() {
-    let board = Board::init();
+    let mut board = Board::init();
 
     let square_by_square_check: bool = false;
 
@@ -25,11 +25,15 @@ fn main() {
         squarewise_display(&board);
     }
 
-    // run(&mut board);
-    // run_debug();
-    uci();
+    let input = user_input();
 
-    // tree("".to_string(), 4);
+    match input.as_str() {
+        "uci" => uci(),
+        "tree" => tree("".to_string(), 4),
+        "run" => run(&mut board),
+        "board" => squarewise_display(&board),
+        _ => println!("Invalid input"),
+    }
 }
 
 use std::fs::File;
@@ -38,7 +42,7 @@ fn tree(moves: String, depth: usize) {
     let mut board = Board::init();
 
     for m in moves.split_whitespace() {
-        board.make_move_str(m);
+        let _ = board.make_move_str(m);
     }
 
     let turn = match moves.split_whitespace().count() % 2 {

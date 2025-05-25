@@ -37,7 +37,7 @@ pub fn generate_move_mask(board: &Board, start: &Square) -> BitBoard {
 
     let mut alt_board = board.clone();
 
-    return generate_pseudo_move_mask(board, start)
+    generate_pseudo_move_mask(board, start)
         .get_occupied_squares()
         .iter()
         .filter(|target| {
@@ -46,7 +46,7 @@ pub fn generate_move_mask(board: &Board, start: &Square) -> BitBoard {
             alt_board.play_move(&(**target, *start));
             !is_check
         })
-        .fold(0, |acc, target| acc | (1 << target));
+        .fold(0, |acc, target| acc | (1 << target))
     /*
 
     let king_square = match board.get_bitboard(&color, &Type::King) {
