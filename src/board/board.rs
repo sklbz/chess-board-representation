@@ -235,6 +235,12 @@ impl Board {
         Box::new(self.play_move(&string_to_move(move_)))
     }
 
+    pub fn as_played(&self, move_: &Move) -> Board {
+        let mut new_board = self.clone();
+        let _ = new_board.play_move(move_);
+        new_board
+    }
+
     pub fn play_move(&mut self, move_: &Move) -> Box<dyn FnOnce(&mut Board) + '_> {
         let (start, end): &(Square, Square) = move_;
 
