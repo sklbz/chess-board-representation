@@ -1,7 +1,7 @@
 pub(crate) use crate::legal_moves::attack_mask::generate_attack_mask;
 use crate::{
     bitboard::BitBoard,
-    board::Board,
+    board::board::Board,
     r#move::{
         bishop::bishop_move_bitmask,
         king::king_move_mask,

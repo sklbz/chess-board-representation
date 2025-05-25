@@ -5,32 +5,32 @@ use crate::{
         generate_possible_moves::generate_move_vec,
         misc::{Color, Coord, Move, Piece, Square, Type},
     },
-    utils::{piece_from_char, piece_to_char, piece_to_icon, string_to_move},
+    utils::{piece_to_icon, string_to_move},
 };
 
 #[derive(Debug, Clone)]
 pub struct Board {
     // Pawns
-    white_pawns: BitBoard,
-    black_pawns: BitBoard,
-    en_passant: BitBoard,
+    pub(super) white_pawns: BitBoard,
+    pub(super) black_pawns: BitBoard,
+    pub(super) en_passant: BitBoard,
     // Knights
-    white_knights: BitBoard,
-    black_knights: BitBoard,
+    pub(super) white_knights: BitBoard,
+    pub(super) black_knights: BitBoard,
     // Bishops
-    white_bishops: BitBoard,
-    black_bishops: BitBoard,
+    pub(super) white_bishops: BitBoard,
+    pub(super) black_bishops: BitBoard,
     // Rooks
-    white_rooks: BitBoard,
-    black_rooks: BitBoard,
+    pub(super) white_rooks: BitBoard,
+    pub(super) black_rooks: BitBoard,
     // Queens
-    white_queens: BitBoard,
-    black_queens: BitBoard,
+    pub(super) white_queens: BitBoard,
+    pub(super) black_queens: BitBoard,
     // Kings
-    white_king: BitBoard,
-    black_king: BitBoard,
+    pub(super) white_king: BitBoard,
+    pub(super) black_king: BitBoard,
     // White: Kingside/Queenside, Black: Kingside/Queenside
-    castling_rights: [bool; 4],
+    pub(super) castling_rights: [bool; 4],
 }
 
 impl Board {
@@ -111,171 +111,6 @@ impl Board {
         }
     }
 
-    pub fn from_fen(fen: &str) -> Board {
-        let mut board = Board::empty();
-        let mut pieces: Vec<(Piece, Square)> = Vec::new();
-
-        let piece_str = fen.split_whitespace().next().unwrap();
-        let castling = fen
-            .split_whitespace()
-            .nth(2)
-            .unwrap()
-            .chars()
-            .collect::<Vec<char>>();
-
-        let castling_rights: [bool; 4] = [
-            castling.contains(&'K'),
-            castling.contains(&'Q'),
-            castling.contains(&'k'),
-            castling.contains(&'q'),
-        ];
-
-        board.castling_rights = castling_rights;
-
-        let mut idx = 0;
-        piece_str.split('/').enumerate().for_each(|(file, row)| {
-            row.chars().for_each(|char| {
-                if char.is_numeric() {
-                    idx += char.to_string().parse::<u8>().unwrap();
-                    return;
-                }
-
-                let piece = piece_from_char(char);
-
-                pieces.push((piece, 8u8 * (7u8 - file as u8) + idx));
-                idx += 1;
-            });
-
-            idx = 0;
-        });
-
-        pieces.iter().for_each(|(piece, square)| {
-            board.set(square, *piece);
-        });
-
-        board
-    }
-
-    pub fn to_fen(&self, color: Color) -> String {
-        let mut fen: String = String::new();
-        let mut empty_spaces: u8 = 0;
-
-        for rank in (0..8).rev() {
-            for file in 0..8 {
-                let square = rank * 8 + file;
-                let piece = self.get_piece(&square);
-
-                if piece.is_none() {
-                    empty_spaces += 1;
-                } else {
-                    if empty_spaces > 0 {
-                        fen.push_str(&empty_spaces.to_string());
-                        empty_spaces = 0;
-                    }
-
-                    fen.push(piece_to_char(&piece));
-                }
-            }
-
-            if empty_spaces > 0 {
-                fen.push_str(&empty_spaces.to_string());
-                empty_spaces = 0;
-            }
-
-            if rank > 0 {
-                fen.push('/');
-            }
-        }
-
-        let castling: String = self
-            .castling_rights
-            .iter()
-            .enumerate()
-            .filter_map(|(idx, right)| {
-                if *right {
-                    match idx {
-                        0 => Some('K'),
-                        1 => Some('Q'),
-                        2 => Some('k'),
-                        3 => Some('q'),
-                        _ => None,
-                    }
-                } else {
-                    None
-                }
-            })
-            .collect();
-
-        let turn = match color {
-            Color::White => 'w',
-            Color::Black => 'b',
-            _ => panic!("Invalid color"),
-        };
-
-        format!("{} {} {} 0 1", fen, turn, castling)
-    }
-
-    pub fn from_mask(mask: BitBoard, piece: Piece) -> Board {
-        let Piece {
-            r#type: piece_type,
-            color,
-        } = piece;
-
-        let mut board = Board::empty();
-
-        match (piece_type, color) {
-            (Type::Pawn, Color::White) => {
-                board.white_pawns = mask;
-                board
-            }
-            (Type::Pawn, Color::Black) => {
-                board.black_pawns = mask;
-                board
-            }
-            (Type::Knight, Color::White) => {
-                board.white_knights = mask;
-                board
-            }
-            (Type::Knight, Color::Black) => {
-                board.black_knights = mask;
-                board
-            }
-            (Type::Bishop, Color::White) => {
-                board.white_bishops = mask;
-                board
-            }
-            (Type::Bishop, Color::Black) => {
-                board.black_bishops = mask;
-                board
-            }
-            (Type::Rook, Color::White) => {
-                board.white_rooks = mask;
-                board
-            }
-            (Type::Rook, Color::Black) => {
-                board.black_rooks = mask;
-                board
-            }
-            (Type::Queen, Color::White) => {
-                board.white_queens = mask;
-                board
-            }
-            (Type::Queen, Color::Black) => {
-                board.black_queens = mask;
-                board
-            }
-            (Type::King, Color::White) => {
-                board.white_king = mask;
-                board
-            }
-            (Type::King, Color::Black) => {
-                board.black_king = mask;
-                board
-            }
-            _ => panic!("Piece not found!"),
-        }
-    }
-
     pub fn can_castle_kingside(&self, color: Color) -> bool {
         match color {
             Color::White => self.castling_rights[0],
@@ -324,43 +159,43 @@ impl Board {
         generate_attack_mask(self, &Color::White, &0, &0)
     }
 
-    pub fn castle(&mut self, code: &str, side: &Color) -> Fn() {
+    pub fn castle(&mut self, code: &str, side: &Color) -> Box<dyn FnOnce(&mut Board)> {
         match (code, side) {
             ("O-O", Color::White) => {
                 self.make_move(&string_to_move("e1g1"));
                 self.make_move(&string_to_move("h1f1"));
 
-                return || {
-                    self.make_move_str("g1e1");
-                    self.make_move_str("f1h1");
-                };
+                Box::new(|board: &mut Board| {
+                    board.make_move_str("g1e1");
+                    board.make_move_str("f1h1");
+                })
             }
             ("O-O", Color::Black) => {
                 self.make_move(&string_to_move("e8g8"));
                 self.make_move(&string_to_move("h8f8"));
 
-                return || {
-                    self.make_move_str("g8e8");
-                    self.make_move_str("f8h8");
-                };
+                Box::new(|board: &mut Board| {
+                    board.make_move_str("g8e8");
+                    board.make_move_str("f8h8");
+                })
             }
             ("O-O-O", Color::White) => {
                 self.make_move(&string_to_move("e1c1"));
                 self.make_move(&string_to_move("a1d1"));
 
-                return || {
-                    self.make_move_str("c1e1");
-                    self.make_move_str("d1a1");
-                };
+                Box::new(|board: &mut Board| {
+                    board.make_move_str("c1e1");
+                    board.make_move_str("d1a1");
+                })
             }
             ("O-O-O", Color::Black) => {
                 self.make_move(&string_to_move("e8c8"));
                 self.make_move(&string_to_move("a8d8"));
 
-                return || {
-                    self.make_move_str("c8e8");
-                    self.make_move_str("d8a8");
-                };
+                Box::new(|board: &mut Board| {
+                    board.make_move_str("c8e8");
+                    board.make_move_str("d8a8");
+                })
             }
             _ => panic!("Invalid castle code!"),
         }
@@ -396,19 +231,17 @@ impl Board {
         };
     }
 
-    pub fn make_move_str(&mut self, move_: &str) -> Fn() {
-        self.play_move(&string_to_move(move_))
+    pub fn make_move_str(&mut self, move_: &str) -> Box<dyn FnOnce(&mut Board) + '_> {
+        Box::new(self.play_move(&string_to_move(move_)))
     }
 
-    pub fn play_move(&mut self, move_: &Move) -> Fn() {
+    pub fn play_move(&mut self, move_: &Move) -> Box<dyn FnOnce(&mut Board) + '_> {
         let (start, end): &(Square, Square) = move_;
 
         let Piece {
             r#type: piece_type,
             color,
         } = self.get_piece(start);
-
-        let captured = self.get_piece(end);
 
         let offset = *end as i8 - *start as i8;
 
@@ -420,38 +253,38 @@ impl Board {
             let castle_code = if start > end { "O-O-O" } else { "O-O" };
             let undo_castle = self.castle(castle_code, &color);
 
-            return || {
-                undo_castle();
-                self.castling_rights = previous_castling_rights;
-            };
+            return Box::new(move |board: &mut Board| {
+                undo_castle(board);
+                board.castling_rights = previous_castling_rights;
+            });
         }
 
         let undo_en_passant = self.handle_en_passant(piece_type, start, end, offset);
 
         let undo_move = self.make_move(move_);
 
-        return || {
-            undo_move();
-            undo_en_passant();
-            self.castling_rights = previous_castling_rights;
-        };
+        Box::new(move |board: &mut Board| {
+            undo_move(board);
+            undo_en_passant(board);
+            board.castling_rights = previous_castling_rights;
+        })
     }
 
-    fn make_move(&mut self, move_: &Move) -> Fn() {
-        let (start, end): &(Square, Square) = move_;
+    fn make_move(&mut self, move_: &Move) -> Box<dyn FnOnce(&mut Board) + '_> {
+        let (start, end): (Square, Square) = *move_;
 
-        let piece = self.get_piece(start);
+        let piece = self.get_piece(&start);
 
-        let captured = self.get_piece(end);
+        let captured = self.get_piece(&end);
 
-        self.remove_piece(start);
+        self.remove_piece(&start);
 
-        self.set(end, piece);
+        self.set(&end, piece);
 
-        return || {
-            self.set(start, piece);
-            self.set(end, captured);
-        };
+        Box::new(move |board: &mut Board| {
+            board.set(&start, piece);
+            board.set(&end, captured);
+        })
     }
 
     fn handle_en_passant(
@@ -460,10 +293,10 @@ impl Board {
         start: &Square,
         end: &Square,
         offset: i8,
-    ) -> Fn() {
+    ) -> Box<dyn FnOnce(&mut Board)> {
         if piece_type != Type::Pawn {
             self.en_passant = 0;
-            return;
+            return Box::new(|_: &mut Board| {});
         }
 
         let previous_en_passant = self.en_passant;
@@ -477,25 +310,25 @@ impl Board {
 
             self.en_passant = 0;
 
-            return || {
-                self.add_piece(&(en_passant_square as Square), taken_pawn);
-                self.en_passant = previous_en_passant;
-            };
+            return Box::new(move |board: &mut Board| {
+                board.add_piece(&(en_passant_square as Square), taken_pawn);
+                board.en_passant = previous_en_passant;
+            });
         }
 
         if offset.abs() == 16 {
             self.en_passant = 1 << (*start as i8 + offset / 2);
 
-            return || {
-                self.en_passant = previous_en_passant;
-            };
+            return Box::new(move |board: &mut Board| {
+                board.en_passant = previous_en_passant;
+            });
         }
 
         self.en_passant = 0;
 
-        return || {
-            self.en_passant = previous_en_passant;
-        };
+        Box::new(move |board: &mut Board| {
+            board.en_passant = previous_en_passant;
+        })
     }
 
     // WARNING: make this function private after testing

@@ -1,5 +1,5 @@
 use crate::{
-    board::Board,
+    board::board::Board,
     legal_moves::{generate_possible_moves::generate_move_vec, misc::Color},
 };
 

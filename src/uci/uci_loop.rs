@@ -1,5 +1,6 @@
+use crate::board::fen_handling::FenHandling;
 use crate::{
-    board::Board,
+    board::board::Board,
     debug::divide::divide,
     legal_moves::{is_move_possible::is_possible, misc::Color},
     utils::{string_to_move, user_input},
