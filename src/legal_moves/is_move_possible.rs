@@ -1,5 +1,5 @@
-use crate::bitboard::BitBoard;
-use crate::board::Board;
+use crate::board::board::Board;
+use crate::{bitboard::BitBoard, board::mask_handling::MaskHandler};
 
 use super::{
     generate_possible_moves::generate_move_mask,

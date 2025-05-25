@@ -1,14 +1,12 @@
 use crate::{
     bitboard::{BitBoard, BitBoardGetter},
-    board::Board,
+    board::board::Board,
     utils::mask_to_moves,
 };
 
 use super::{
     castle::castle_mask::castle_mask,
-    helper_functions::is_pinned,
-    helper_functions::is_pre_pinned,
-    helper_functions::{deflection_mask, protection_mask},
+    /*helper_functions::{deflection_mask, is_pinned, is_pre_pinned, protection_mask}, */
     misc::{Color, Move, Square, Type},
     pseudo_legal_mask::generate_pseudo_move_mask,
 };
@@ -49,6 +47,7 @@ pub fn generate_move_mask(board: &Board, start: &Square) -> BitBoard {
             !is_check
         })
         .fold(0, |acc, target| acc | (1 << target));
+    /*
 
     let king_square = match board.get_bitboard(&color, &Type::King) {
         0 => return generate_pseudo_move_mask(board, start),
@@ -87,4 +86,5 @@ pub fn generate_move_mask(board: &Board, start: &Square) -> BitBoard {
     let deflection_mask: BitBoard = deflection_mask(is_checked, board, color);
 
     generate_pseudo_move_mask(board, start) & protection_mask & deflection_mask
+    */
 }

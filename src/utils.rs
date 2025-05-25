@@ -1,5 +1,5 @@
 use crate::bitboard::{BitBoard, BitBoardGetter};
-use crate::board::Board;
+use crate::board::board::Board;
 use crate::legal_moves::misc::{Color, Move, Piece, Square, Type};
 
 pub fn string_to_file(file: char) -> u8 {

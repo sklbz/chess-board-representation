@@ -1,7 +1,7 @@
 use crate::{
     bitboard::{BitBoard, BitBoardGetter},
     bitmask::{down_mask, left_diagonal_mask, left_mask, right_diagonal_mask, right_mask, up_mask},
-    board::Board,
+    board::board::Board,
     r#move::{king::king_move_mask, knight::knight_move_bitmask, queen::queen_move_bitmask},
 };
 
