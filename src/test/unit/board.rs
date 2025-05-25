@@ -1,4 +1,4 @@
-use crate::board::*;
+use crate::board::board::Board;
 use crate::legal_moves::misc::{Color, Type};
 
 #[test]
@@ -61,7 +61,8 @@ fn test_capture_logic() {
 
 #[cfg(test)]
 mod proptests {
-    use crate::{bitboard::BitBoard, bitboard::BitBoardGetter, board::*};
+    use crate::board::board::Board;
+    use crate::{bitboard::BitBoard, bitboard::BitBoardGetter};
     use proptest::arbitrary::Arbitrary;
     use proptest::prelude::*;
     use proptest::strategy::BoxedStrategy;

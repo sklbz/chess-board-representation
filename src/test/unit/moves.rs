@@ -1,4 +1,5 @@
-use crate::board::Board;
+use crate::board::board::Board;
+use crate::board::mask_handling::MaskHandler;
 use crate::legal_moves::is_move_possible::*;
 
 #[test]

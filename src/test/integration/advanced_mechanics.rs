@@ -1,8 +1,8 @@
+use crate::board::board::Board;
 use crate::legal_moves::misc::Color;
 use crate::legal_moves::misc::Move;
 use crate::{
-    board::Board, legal_moves::is_move_possible::is_possible, utils::move_to_string,
-    utils::string_to_move,
+    legal_moves::is_move_possible::is_possible, utils::move_to_string, utils::string_to_move,
 };
 
 #[test]

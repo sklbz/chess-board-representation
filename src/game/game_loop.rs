@@ -1,4 +1,5 @@
 use crate::{
+    board::mask_handling::MaskHandler,
     game::action_state::{get_action, get_input, get_mask, Action},
     legal_moves::{
         is_move_possible::*,
