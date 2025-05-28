@@ -25,7 +25,7 @@ fn pinning() {
             "Incorrect move : {}",
             move_to_string(&move_)
         );
-        board.play_move(&move_);
+        let _ = board.play_move(&move_);
 
         turn = !turn;
     }

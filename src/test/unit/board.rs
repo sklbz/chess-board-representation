@@ -34,7 +34,7 @@ fn test_move_execution() {
     assert!(board.get_piece(&e4).r#type == Type::None);
 
     // Execute move
-    board.play_move(&(e2, e4));
+    let _ = board.play_move(&(e2, e4));
 
     // Verify new state
     assert!(board.get_piece(&e2).r#type == Type::None);
@@ -48,13 +48,13 @@ fn test_capture_logic() {
     let e7 = 52; // e7
 
     // Move white pawn to e4
-    board.play_move(&(e2, e2 + 16));
+    let _ = board.play_move(&(e2, e2 + 16));
 
     // Move black pawn to e5
-    board.play_move(&(e7, e7 - 16));
+    let _ = board.play_move(&(e7, e7 - 16));
 
     // White captures black
-    board.play_move(&(e2 + 16, e7 - 16));
+    let _ = board.play_move(&(e2 + 16, e7 - 16));
 
     assert!(board.get_piece(&(e7 - 16)).color == Color::White);
 }

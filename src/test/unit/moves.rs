@@ -25,9 +25,9 @@ fn test_pawn_capture_wrap_around_border() {
     let a4 = 8 * 4;
     let a3 = 8 * 3;
     let h2 = 15;
-    board.play_move(&(a7, a5));
-    board.play_move(&(a5, a4));
-    board.play_move(&(a4, a3));
+    let _ = board.play_move(&(a7, a5));
+    let _ = board.play_move(&(a5, a4));
+    let _ = board.play_move(&(a4, a3));
     assert!(!is_possible(&board, &(h2, a3), Color::White)); // Take around border
 }
 

@@ -42,7 +42,7 @@ fn opening() {
 
     for move_ in moves.iter() {
         assert!(is_possible(&board, move_, turn));
-        board.play_move(move_);
+        let _ = board.play_move(move_);
 
         turn = !turn;
     }
@@ -80,7 +80,7 @@ fn full_game_no_castling_no_en_passant_no_promotion() {
             "Failed at move {i}: {}",
             move_to_string(move_)
         );
-        board.play_move(move_);
+        let _ = board.play_move(move_);
     }
 }
 
@@ -99,7 +99,7 @@ fn magnus_carlsen() {
 
     for (move_, i) in game.split_whitespace().zip(1..) {
         if move_.starts_with('O') {
-            board.castle(
+            let _ = board.castle(
                 move_,
                 if let 1 = i % 2 {
                     &Color::White
@@ -119,7 +119,7 @@ fn magnus_carlsen() {
             "Failed at move {i}: {}",
             move_
         );
-        board.play_move(&algebric_move);
+        let _ = board.play_move(&algebric_move);
 
         turn = !turn;
     }

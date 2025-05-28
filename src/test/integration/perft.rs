@@ -102,7 +102,7 @@ fn alternate_position_2() {
 
         for move_ in current_moves {
             let mut next_board = board.clone();
-            next_board.play_move(&move_);
+            let _ = next_board.play_move(&move_);
 
             let next_moves = generate_move_vec(&next_board, Color::White);
             move_count[2] += next_moves.len();
