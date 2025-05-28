@@ -10,6 +10,7 @@ pub struct SearchTree {
     pub root: Vec<SearchTreeNode>,
 }
 
+#[derive(Clone)]
 pub struct SearchTreeNode {
     pub move_: Move,
     pub fen: String,
