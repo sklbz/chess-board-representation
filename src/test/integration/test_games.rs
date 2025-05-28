@@ -1,4 +1,5 @@
 use crate::board::board::Board;
+use crate::board::special_moves::*;
 use crate::legal_moves::is_move_possible::*;
 use crate::legal_moves::misc::{Color, Move};
 use crate::utils::move_to_string;

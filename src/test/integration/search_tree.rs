@@ -9,11 +9,15 @@ fn depth_4() {
     let init_fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1".to_string();
     let depth: usize = 4;
 
+    println!();
+    println!("\nDepth: {}", depth);
+    println!();
     let search_tree_root = search_info(&init_fen, depth);
-    perft(&init_fen, "".to_string(), depth);
+    perft(&search_tree_root, &init_fen, "".to_string(), depth);
+    println!();
 }
 
-fn search_info(fen: &String, depth: usize) -> Vec<SearchTreeNode> {
+fn search_info(fen: &str, depth: usize) -> Vec<SearchTreeNode> {
     let board = Board::from_fen(fen);
 
     let SearchTree { root } = search_tree(&board, Color::White, depth);
@@ -21,27 +25,23 @@ fn search_info(fen: &String, depth: usize) -> Vec<SearchTreeNode> {
     root
 }
 
-fn perft(root: &Vec<SearchTreeNode>, moves: String, depth: usize) {
-    // let stockfish_ref = get_stockfish_output(, depth);
-
-    let result = root
-        .iter()
-        .map(|x| -> (String, usize) { (move_to_string(&x.move_), x.score) })
-        .collect::<Vec<(String, usize)>>();
-
-    /* for (move_, count) in result {
-        let reference = stockfish_ref.iter().find(|(m, _)| *m == move_).unwrap();
-        assert_eq!(
-            count, reference.1,
-            "\nDepth: {}\nEngine: {} => {}\n Stockfish: {} => {}",
-            depth, move_, count, reference.0, reference.1
-        );
+fn perft(nodes: &Vec<SearchTreeNode>, fen: &String, moves: String, depth: usize) {
+    if depth < 0 {
+        return;
     }
-    */
 
-    for (move_, count) in result
+    let stockfish_ref = get_stockfish_output(fen, depth);
+
+    let result = nodes
         .iter()
-        .filter(|(m, _)| stockfish_ref.iter().any(|(s, _)| s == m))
+        .map(|x| -> (String, usize, SearchTreeNode) {
+            (move_to_string(&x.move_), x.score, x.clone())
+        })
+        .collect::<Vec<(String, usize, SearchTreeNode)>>();
+
+    for (move_, count, node) in result
+        .iter()
+        .filter(|(m, _, _)| stockfish_ref.iter().any(|(s, _)| s == m))
     {
         let reference = stockfish_ref.iter().find(|(m, _)| m == move_).unwrap();
 
@@ -50,86 +50,43 @@ fn perft(root: &Vec<SearchTreeNode>, moves: String, depth: usize) {
                 "\nEngine: {} => {}\n Stockfish: {} => {}",
                 move_, count, reference.0, reference.1
             );
-            perft(fen, format!("{} {}", moves, move_), depth - 1);
-        } else {
-            println!("{}: {}", move_, count);
-        }
-    }
-
-    for (move_, _) in result
-        .iter()
-        .filter(|(m, _)| !stockfish_ref.iter().any(|(s, _)| s == m))
-    {
-        println!("Extra path: {} {}", moves, move_);
-    }
-
-    for (move_, _) in stockfish_ref
-        .iter()
-        .filter(|(m, _)| !result.iter().any(|(s, _)| s == m))
-    {
-        println!("Missing path: {} {}", moves, move_);
-    }
-}
-
-fn further_perft(fen: &String, moves: String, depth: usize) {
-    let board = Board::from_fen(fen);
-
-    let stockfish_ref = get_stockfish_output(board.to_fen(Color::White), depth);
-
-    let SearchTree { root } = search_tree(&board, Color::White, depth);
-
-    let result = root
-        .iter()
-        .map(|x| -> (String, usize) { (move_to_string(&x.move_), x.score) })
-        .collect::<Vec<(String, usize)>>();
-
-    /* for (move_, count) in result {
-        let reference = stockfish_ref.iter().find(|(m, _)| *m == move_).unwrap();
-        assert_eq!(
-            count, reference.1,
-            "\nDepth: {}\nEngine: {} => {}\n Stockfish: {} => {}",
-            depth, move_, count, reference.0, reference.1
-        );
-    }
-    */
-
-    for (move_, count) in result
-        .iter()
-        .filter(|(m, _)| stockfish_ref.iter().any(|(s, _)| s == m))
-    {
-        let reference = stockfish_ref.iter().find(|(m, _)| m == move_).unwrap();
-
-        if *count != reference.1 {
-            println!(
-                "\nEngine: {} => {}\n Stockfish: {} => {}",
-                move_, count, reference.0, reference.1
+            perft(
+                &node.children,
+                &node.fen,
+                format!("{} {}", moves, move_),
+                depth - 1,
             );
-            perft(fen, format!("{} {}", moves, move_), depth - 1);
         } else {
             println!("{}: {}", move_, count);
         }
     }
 
-    for (move_, _) in result
+    for (move_, _, _) in result
         .iter()
-        .filter(|(m, _)| !stockfish_ref.iter().any(|(s, _)| s == m))
+        .filter(|(m, _, _)| !stockfish_ref.iter().any(|(s, _)| s == m))
     {
         println!("Extra path: {} {}", moves, move_);
     }
 
     for (move_, _) in stockfish_ref
         .iter()
-        .filter(|(m, _)| !result.iter().any(|(s, _)| s == m))
+        .filter(|(m, _)| !result.iter().any(|(s, _, _)| s == m))
     {
         println!("Missing path: {} {}", moves, move_);
     }
+
+    let total = result.iter().fold(0, |acc, (_, count, _)| acc + count);
+
+    println!();
+    println!();
+    println!("Nodes searched: {}", total);
 }
 
 use std::io::{BufRead, BufReader, Write};
 use std::process::{Command, Stdio};
 use std::thread::sleep;
 use std::time::Duration;
-fn get_stockfish_output(fen: String, depth: usize) -> Vec<(String, usize)> /*, Vec<(String, usize)>)*/
+fn get_stockfish_output(fen: &String, depth: usize) -> Vec<(String, usize)> /*, Vec<(String, usize)>)*/
 {
     // Launch Stockfish process
     let mut stockfish = Command::new("stockfish")
