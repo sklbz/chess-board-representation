@@ -8,6 +8,8 @@ use crate::{
     utils::{piece_to_icon, string_to_move},
 };
 
+use super::special_moves::Castle;
+
 #[derive(Debug, Clone)]
 pub struct Board {
     // Pawns
@@ -159,48 +161,6 @@ impl Board {
         generate_attack_mask(self, &Color::White, &0, &0)
     }
 
-    pub fn castle(&mut self, code: &str, side: &Color) -> Box<dyn FnOnce(&mut Board)> {
-        match (code, side) {
-            ("O-O", Color::White) => {
-                self.make_move(&string_to_move("e1g1"));
-                self.make_move(&string_to_move("h1f1"));
-
-                Box::new(|board: &mut Board| {
-                    board.make_move_str("g1e1");
-                    board.make_move_str("f1h1");
-                })
-            }
-            ("O-O", Color::Black) => {
-                self.make_move(&string_to_move("e8g8"));
-                self.make_move(&string_to_move("h8f8"));
-
-                Box::new(|board: &mut Board| {
-                    board.make_move_str("g8e8");
-                    board.make_move_str("f8h8");
-                })
-            }
-            ("O-O-O", Color::White) => {
-                self.make_move(&string_to_move("e1c1"));
-                self.make_move(&string_to_move("a1d1"));
-
-                Box::new(|board: &mut Board| {
-                    board.make_move_str("c1e1");
-                    board.make_move_str("d1a1");
-                })
-            }
-            ("O-O-O", Color::Black) => {
-                self.make_move(&string_to_move("e8c8"));
-                self.make_move(&string_to_move("a8d8"));
-
-                Box::new(|board: &mut Board| {
-                    board.make_move_str("c8e8");
-                    board.make_move_str("d8a8");
-                })
-            }
-            _ => panic!("Invalid castle code!"),
-        }
-    }
-
     fn update_castling_rights(&mut self, start: &Square, piece_type: Type, color: Color) {
         match piece_type {
             Type::King => match color {
@@ -260,7 +220,6 @@ impl Board {
             let undo_castle = self.castle(castle_code, &color);
 
             return Box::new(move |board: &mut Board| {
-                undo_castle(board);
                 board.castling_rights = previous_castling_rights;
             });
         }
@@ -276,7 +235,7 @@ impl Board {
         })
     }
 
-    fn make_move(&mut self, move_: &Move) -> Box<dyn FnOnce(&mut Board) + '_> {
+    pub(super) fn make_move(&mut self, move_: &Move) -> Box<dyn FnOnce(&mut Board) + '_> {
         let (start, end): (Square, Square) = *move_;
 
         let piece = self.get_piece(&start);

@@ -1,5 +1,5 @@
 use crate::{
-    board::board::Board,
+    board::{board::Board, fen_handling::FenHandling},
     legal_moves::{
         generate_possible_moves::generate_move_vec,
         misc::{Color, Move},
@@ -12,6 +12,7 @@ pub struct SearchTree {
 
 pub struct SearchTreeNode {
     pub move_: Move,
+    pub fen: String,
     pub score: usize,
     pub children: Vec<SearchTreeNode>,
 }
@@ -25,6 +26,7 @@ pub fn search_tree_nodes(
     if depth == 0 {
         return SearchTreeNode {
             move_: searched_move,
+            fen: board.to_fen(color),
             score: 1,
             children: Vec::new(),
         }; //generate_move_vec(board, color).len();
@@ -44,6 +46,7 @@ pub fn search_tree_nodes(
 
     SearchTreeNode {
         move_: searched_move,
+        fen: board.to_fen(color),
         score,
         children,
     }
