@@ -10,7 +10,7 @@ use super::{
     misc::{Color, Square, Type},
 };
 
-pub fn get_check_direction(board: &Board, king: &Square, color: Color) -> u8 {
+pub fn get_check_direction(board: &Board, king: &Square, color: Color) -> i8 {
     let direction_mask: BitBoard =
         king_move_mask(king, &0, &board.get_bitboard(&color, &Type::None));
     let direction_moves: Vec<BitBoard> = direction_mask
@@ -27,7 +27,7 @@ pub fn get_check_direction(board: &Board, king: &Square, color: Color) -> u8 {
     let ennemy_color = !color;
 
     if !board.is_check(color) {
-        return u8::MAX;
+        return i8::MAX;
     }
 
     let ennemy_horsey = board.get_bitboard(&ennemy_color, &Type::Knight);
@@ -51,7 +51,7 @@ pub fn get_check_direction(board: &Board, king: &Square, color: Color) -> u8 {
         let mask = generate_attack_mask(board, &ennemy_color, &0, &direction_moves[i]);
 
         if (1 << king) & mask == 0 {
-            return direction_offsets[i].unsigned_abs();
+            return direction_offsets[i];
         }
     }
 
