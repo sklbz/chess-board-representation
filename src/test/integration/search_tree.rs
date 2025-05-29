@@ -7,7 +7,7 @@ use crate::utils::move_to_string;
 #[test]
 fn stockfish_comparison() {
     let init_fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1".to_string();
-    let depth: usize = 5;
+    let depth: usize = 3;
 
     println!();
     println!("\nDepth: {}", depth);
@@ -140,7 +140,9 @@ fn get_stockfish_output(fen: &String, depth: usize) -> Vec<(String, usize)> /*, 
         let custom_perft = divide(&fen_board, turn, depth);
     */
 
-    sleep(Duration::from_millis(100));
+    let extra_time: u64 = if depth >= 6 { 50 * depth as u64 } else { 0 };
+
+    sleep(Duration::from_millis(100 + depth as u64 * 10 + extra_time));
 
     let perft_results = read_perft_output();
     // println!("{}", perft_results);

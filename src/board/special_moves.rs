@@ -10,8 +10,8 @@ impl Castle for Board {
     fn castle(&mut self, code: &str, side: &Color) -> Unmove {
         match (code, side) {
             ("O-O", Color::White) => {
-                let _ = self.make_move_str("e1g1");
-                let _ = self.make_move_str("h1f1");
+                let _ = self.make_move(&string_to_move("e1g1"));
+                let _ = self.make_move(&string_to_move("h1f1"));
 
                 Unmove {
                     moves: vec![string_to_move("g1e1"), string_to_move("f1h1")],

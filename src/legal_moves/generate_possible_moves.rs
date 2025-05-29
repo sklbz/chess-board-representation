@@ -1,6 +1,6 @@
 use crate::{
     bitboard::{BitBoard, BitBoardGetter},
-    board::board::Board,
+    board::{board::Board, mask_handling::MaskHandler},
     utils::{mask_to_moves, string_to_square},
 };
 
@@ -24,7 +24,9 @@ pub fn generate_move_vec(board: &Board, color: Color) -> Vec<Move> {
 }
 
 pub fn generate_move_vec_single_square(board: &Board, start: &Square) -> Vec<Move> {
-    mask_to_moves(generate_move_mask(board, start), start)
+    let move_mask = generate_move_mask(board, start);
+
+    mask_to_moves(move_mask, start)
 }
 
 pub fn generate_move_mask(board: &Board, start: &Square) -> BitBoard {
@@ -61,14 +63,14 @@ pub fn generate_move_mask(board: &Board, start: &Square) -> BitBoard {
 
     let is_pinned = is_pinned(board, start, &king_square);
 
-    if start == &string_to_square("c3") {
+    /* if start == &string_to_square("c3") {
         println!(
             "{} {} {}",
             is_checked,
             is_pinned,
             is_pre_pinned(board, start, &king_square)
         );
-    }
+    } */
 
     if !is_checked && !is_pinned {
         return generate_pseudo_move_mask(board, start);

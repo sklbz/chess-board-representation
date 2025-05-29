@@ -4,10 +4,10 @@ use crate::{debug::divide::divide, legal_moves::misc::Color};
 
 #[test]
 fn perft() {
-    // depth_3();
-    // depth_4();
+    depth_3();
+    depth_4();
     // depth_5();
-    tree(String::new(), 1);
+    // tree(String::new(), 1);
 }
 
 fn depth_3() {
