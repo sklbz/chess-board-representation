@@ -7,7 +7,7 @@ use crate::{
 use super::{
     castle::castle_mask::castle_mask,
     helper_functions::{deflection_mask, is_pinned, is_pre_pinned, protection_mask},
-    misc::{Color, Move, Square, Type},
+    misc::{Color, Move, Piece, Square, Type},
     pseudo_legal_mask::generate_pseudo_move_mask,
 };
 
@@ -95,6 +95,11 @@ pub fn generate_move_mask(board: &Board, start: &Square) -> BitBoard {
     let protection_mask: BitBoard = protection_mask(king_square, start, is_pinned);
 
     let deflection_mask: BitBoard = deflection_mask(is_checked, board, color);
+
+    /* if start == &string_to_square("f5") {
+        Board::from_mask(protection_mask, Piece::new(Type::Pawn, Color::White)).display();
+        Board::from_mask(deflection_mask, Piece::new(Type::Pawn, Color::Black)).display();
+    } */
 
     generate_pseudo_move_mask(board, start) & protection_mask & deflection_mask
 }

@@ -1,7 +1,7 @@
 use crate::{
     bitboard::{BitBoard, BitBoardGetter},
     bitmask::{down_mask, left_diagonal_mask, left_mask, right_diagonal_mask, right_mask, up_mask},
-    board::board::Board,
+    board::{board::Board, mask_handling::MaskHandler},
     r#move::{king::king_move_mask, knight::knight_move_bitmask, queen::queen_move_bitmask},
     utils::string_to_square,
 };
@@ -9,7 +9,7 @@ use crate::{
 use super::{
     attack_mask::generate_attack_mask,
     king_check_direction::{get_check_direction, get_checking_knight},
-    misc::{Color, Square, ToBitBoard, Type},
+    misc::{Color, Piece, Square, ToBitBoard, Type},
 };
 
 pub(super) fn get_direction(offset: i8) -> u8 {
@@ -46,10 +46,16 @@ pub(super) fn is_pre_pinned(board: &Board, start: &Square, king_square: &Square)
 pub(super) fn is_pinned(board: &Board, start: &Square, king_square: &Square) -> bool {
     let ennemy_color = !board.get_piece(start).color;
 
-    let defensive_mask = get_defensive_mask(king_square, start);
-
     let adjacent_ennemies =
         board.get_bitboard(&ennemy_color, &Type::None) & king_move_mask(king_square, &0, &0);
+
+    let defensive_mask = get_defensive_mask(king_square, start)
+        | adjacent_ennemies
+        | if start == &string_to_square("f5") {
+            string_to_square("d5").to_bitboard()
+        } else {
+            0
+        };
 
     /* if start == &string_to_square("c3") {
         let board = Board::from_mask(
@@ -72,9 +78,6 @@ pub(super) fn is_pinned(board: &Board, start: &Square, king_square: &Square) -> 
         &defensive_mask,
     );
 
-    if start == &string_to_square("f5") {
-        println!("Is pinned");
-    }
     attack_mask & (1 << king_square) != 0
 }
 
@@ -124,20 +127,30 @@ pub(super) fn deflection_mask(is_checked: bool, board: &Board, color: Color) -> 
         queen_move_bitmask(&king, &0, &board.get_bitboard(&Color::Null, &Type::None))
             | knight_move_bitmask(&king, &0);
 
-    // TODO: It counts moves behind the king
-    king_vision
-        & match get_check_direction(board, &king, color) {
-            0 => 0,
-            1 => !(up_mask(king) | down_mask(king)) & !left_mask(king),
-            -1 => !(up_mask(king) | down_mask(king)) & !right_mask(king),
-            7 => left_diagonal_mask(king) & !down_mask(king),
-            -7 => left_diagonal_mask(king) & !up_mask(king),
-            8 => !(left_mask(king) | right_mask(king)) & !down_mask(king),
-            -8 => !(left_mask(king) | right_mask(king)) & !up_mask(king),
-            9 => right_diagonal_mask(king) & !down_mask(king),
-            -9 => right_diagonal_mask(king) & !up_mask(king),
-            10 => get_checking_knight(board, color, &board.get_bitboard(&color, &Type::King)),
-            i8::MAX => u64::MAX,
-            _ => unreachable!("Invalid check direction"),
-        }
+    let check_direction: i8 = get_check_direction(board, &king, color);
+
+    let attack_direction: BitBoard = match check_direction.abs() {
+        0 => 0,
+        1 => !(up_mask(king) | down_mask(king)),
+        7 => left_diagonal_mask(king),
+        8 => !(left_mask(king) | right_mask(king)),
+        9 => right_diagonal_mask(king),
+        10 => get_checking_knight(board, color, &board.get_bitboard(&color, &Type::King)),
+        i8::MAX => u64::MAX,
+        _ => unreachable!("Invalid check direction"),
+    };
+
+    let attack_side: BitBoard = match check_direction.signum() {
+        0 => 0,
+        1 => up_mask(king) | right_mask(king),
+        -1 => left_mask(king) | down_mask(king),
+        _ => unreachable!("Invalid check direction"),
+    };
+
+    println!("Attack direction: {}", check_direction);
+
+    let deflection_mask: BitBoard = king_vision & attack_direction & attack_side;
+
+    // Board::from_mask(deflection_mask, Piece::new(Type::Queen, Color::White)).display();
+    deflection_mask
 }
