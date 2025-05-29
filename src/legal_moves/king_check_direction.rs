@@ -39,8 +39,18 @@ pub fn get_check_direction(board: &Board, king: &Square, color: Color) -> i8 {
     }
     // Now I know that there is one check not from a knight
 
-    let mask_knights_only: u64 =
-        generate_attack_mask(board, &ennemy_color, &king.to_bitboard(), &direction_mask);
+    let adjacent_ennemies: BitBoard =
+        board.get_bitboard(&ennemy_color, &Type::None) & direction_mask;
+
+    let non_knight_ennemies: BitBoard =
+        board.get_bitboard(&ennemy_color, &Type::None) & !ennemy_horsey;
+
+    let mask_knights_only: u64 = generate_attack_mask(
+        board,
+        &ennemy_color,
+        &(king.to_bitboard() | adjacent_ennemies | non_knight_ennemies),
+        &direction_mask,
+    );
 
     if (1 << king) & mask_knights_only != 0 {
         // In case of double check, the king has to move
@@ -48,9 +58,16 @@ pub fn get_check_direction(board: &Board, king: &Square, color: Color) -> i8 {
     }
 
     for i in 0..direction_moves.len() {
-        let mask = generate_attack_mask(board, &ennemy_color, &0, &direction_moves[i]);
+        let defense: BitBoard = !direction_moves[i] & direction_mask;
 
-        if (1 << king) & mask == 0 {
+        let mask = generate_attack_mask(
+            board,
+            &ennemy_color,
+            &(defense & adjacent_ennemies),
+            &defense,
+        );
+
+        if (1 << king) & mask != 0 {
             return direction_offsets[i];
         }
     }
