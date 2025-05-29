@@ -5,16 +5,15 @@ use crate::legal_moves::misc::Color;
 use crate::utils::move_to_string;
 
 #[test]
-fn depth_4() {
+fn stockfish_comparison() {
     let init_fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1".to_string();
-    let depth: usize = 4;
+    let depth: usize = 5;
 
     println!();
     println!("\nDepth: {}", depth);
     println!();
     let search_tree_root = search_info(&init_fen, depth);
     perft(&search_tree_root, &init_fen, "".to_string(), depth);
-    println!();
 }
 
 fn search_info(fen: &str, depth: usize) -> Vec<SearchTreeNode> {
@@ -26,7 +25,7 @@ fn search_info(fen: &str, depth: usize) -> Vec<SearchTreeNode> {
 }
 
 fn perft(nodes: &Vec<SearchTreeNode>, fen: &String, moves: String, depth: usize) {
-    if depth < 0 {
+    if depth == 0 {
         return;
     }
 
@@ -46,19 +45,21 @@ fn perft(nodes: &Vec<SearchTreeNode>, fen: &String, moves: String, depth: usize)
         let reference = stockfish_ref.iter().find(|(m, _)| m == move_).unwrap();
 
         if *count != reference.1 {
-            println!(
+            /* println!(
                 "\nEngine: {} => {}\n Stockfish: {} => {}",
                 move_, count, reference.0, reference.1
-            );
+            ); */
             perft(
                 &node.children,
                 &node.fen,
                 format!("{} {}", moves, move_),
                 depth - 1,
             );
-        } else {
-            println!("{}: {}", move_, count);
         }
+
+        /* else {
+            println!("{}: {}", move_, count);
+        } */
     }
 
     for (move_, _, _) in result
@@ -75,11 +76,11 @@ fn perft(nodes: &Vec<SearchTreeNode>, fen: &String, moves: String, depth: usize)
         println!("Missing path: {} {}", moves, move_);
     }
 
-    let total = result.iter().fold(0, |acc, (_, count, _)| acc + count);
+    // let total = result.iter().fold(0, |acc, (_, count, _)| acc + count);
 
-    println!();
-    println!();
-    println!("Nodes searched: {}", total);
+    // println!();
+    // println!();
+    // println!("Nodes searched: {}", total);
 }
 
 use std::io::{BufRead, BufReader, Write};

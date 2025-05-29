@@ -1,21 +1,18 @@
 use crate::{
     bitboard::{BitBoard, BitBoardGetter},
     bitmask::{down_mask, left_diagonal_mask, left_mask, right_diagonal_mask, right_mask, up_mask},
-    board::board::Board,
+    board::{board::Board, mask_handling::MaskHandler},
     r#move::{king::king_move_mask, knight::knight_move_bitmask, queen::queen_move_bitmask},
+    utils::string_to_square,
 };
 
 use super::{
     attack_mask::generate_attack_mask,
     king_check_direction::{get_check_direction, get_checking_knight},
-    misc::{Color, Square, ToBitBoard, Type},
+    misc::{Color, Piece, Square, ToBitBoard, Type},
 };
 
 pub(super) fn get_direction(offset: i8) -> u8 {
-    if offset < 7 {
-        return 1;
-    }
-
     if offset % 7 == 0 {
         return 7;
     }
@@ -26,6 +23,10 @@ pub(super) fn get_direction(offset: i8) -> u8 {
 
     if offset % 9 == 0 {
         return 9;
+    }
+
+    if offset.abs() < 7 {
+        return 1;
     }
 
     unreachable!()
@@ -44,7 +45,19 @@ pub(super) fn is_pre_pinned(board: &Board, start: &Square, king_square: &Square)
 pub(super) fn is_pinned(board: &Board, start: &Square, king_square: &Square) -> bool {
     let ennemy_color = !board.get_piece(start).color;
 
-    let defensive_mask = king_move_mask(king_square, &0, &0) & !start.to_bitboard();
+    let defensive_mask = get_defensive_mask(king_square, start);
+
+    if start == &string_to_square("c3") {
+        let board = Board::from_mask(
+            defensive_mask,
+            Piece {
+                r#type: Type::Pawn,
+                color: Color::White,
+            },
+        );
+
+        board.display();
+    }
 
     let attack_mask = generate_attack_mask(
         board,
@@ -54,6 +67,18 @@ pub(super) fn is_pinned(board: &Board, start: &Square, king_square: &Square) -> 
     );
 
     attack_mask & (1 << king_square) != 0
+}
+
+// TODO: Fix this nonsense
+fn get_defensive_mask(king_square: &Square, defender_square: &Square) -> BitBoard {
+    let offset = *king_square as i8 - *defender_square as i8;
+    let direction = get_direction(offset) as i8 * offset.signum();
+
+    let defended_square: Square = (*king_square as i8 + direction) as u8;
+
+    let empty_squares: BitBoard = defended_square.to_bitboard() | defender_square.to_bitboard();
+
+    king_move_mask(king_square, &0, &empty_squares)
 }
 
 pub(super) fn protection_mask(king_square: Square, start: &Square, is_pinned: bool) -> BitBoard {
