@@ -2,12 +2,12 @@ use super::board::Board;
 use crate::bitboard::BitBoardGetter;
 
 pub trait VectorOutput {
-    fn to_vector(&self) -> Vec<f32>;
+    fn to_vector(&self) -> Vec<f64>;
 }
 
 impl VectorOutput for Board {
-    fn to_vector(&self) -> Vec<f32> {
-        let mut input_vector = vec![0.0f32; 768];
+    fn to_vector(&self) -> Vec<f64> {
+        let mut input_vector = vec![0.0f64; 768];
 
         for &square in self.white_pawns.get_occupied_squares().iter() {
             input_vector[square as usize] = 1.0;
