@@ -147,7 +147,7 @@ pub(super) fn deflection_mask(is_checked: bool, board: &Board, color: Color) -> 
         _ => unreachable!("Invalid check direction"),
     };
 
-    println!("Attack direction: {}", check_direction);
+    // println!("Attack direction: {}", check_direction);
 
     let deflection_mask: BitBoard = king_vision & attack_direction & attack_side;
 
