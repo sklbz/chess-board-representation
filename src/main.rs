@@ -19,6 +19,24 @@ use legal_moves::misc::Color;
 use utils::{squarewise_display, string_to_move, user_input};
 
 fn main() {
+    let mut _board = Board::init();
+    let mut turn = Color::White;
+
+    loop {
+        _board.display();
+
+        let input = user_input();
+
+        if !is_possible(&_board, &string_to_move(&input), turn) {
+            println!("Invalid move");
+            continue;
+        }
+
+        let _ = _board.make_move_str(&input);
+
+        turn = !turn;
+    }
+
     //DEBUG---------------------------------------------------
     let mut board = Board::init();
 

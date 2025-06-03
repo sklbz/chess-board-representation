@@ -191,9 +191,8 @@ impl Board {
         };
     }
 
-    pub fn make_move_str(&mut self, move_: &str) -> Box<dyn FnOnce(&mut Board) + '_> {
-        println!("{}", move_);
-        Box::new(self.play_move(&string_to_move(move_)))
+    pub fn make_move_str(&mut self, move_: &str) {
+        self.play_move(&string_to_move(move_));
     }
 
     pub fn as_played(&self, move_: &Move) -> Board {
