@@ -285,6 +285,8 @@ impl Board {
         if offset.abs() == 16 {
             self.en_passant = 1 << (*start as i8 + offset / 2);
 
+            self.en_passant = 0;
+
             return Box::new(move |board: &mut Board| {
                 board.en_passant = previous_en_passant;
             });

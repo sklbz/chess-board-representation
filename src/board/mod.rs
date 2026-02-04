@@ -1,4 +1,5 @@
 pub mod board;
+pub mod en_passant;
 pub mod fen_handling;
 pub mod mask_handling;
 pub mod nnue_input_vector;
