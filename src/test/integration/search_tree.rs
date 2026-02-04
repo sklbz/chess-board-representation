@@ -36,7 +36,7 @@ fn search_info(fen: &str, depth: usize) -> Vec<SearchTreeNode> {
     root
 }
 
-fn perft(nodes: &Vec<SearchTreeNode>, fen: &String, moves: String, depth: usize) {
+fn perft(nodes: &[SearchTreeNode], fen: &String, moves: String, depth: usize) {
     if depth == 0 {
         return;
     }

@@ -1,13 +1,13 @@
 use crate::{
     bitboard::{BitBoard, BitBoardGetter},
-    board::{board::Board, mask_handling::MaskHandler},
-    utils::{mask_to_moves, string_to_square},
+    board::board::Board,
+    utils::mask_to_moves,
 };
 
 use super::{
     castle::castle_mask::castle_mask,
     helper_functions::{deflection_mask, is_pinned, is_pre_pinned, protection_mask},
-    misc::{Color, Move, Piece, Square, Type},
+    misc::{Color, Move, Square, Type},
     pseudo_legal_mask::generate_pseudo_move_mask,
 };
 

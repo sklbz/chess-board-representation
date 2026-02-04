@@ -17,8 +17,10 @@ use utils::{string_to_move, user_input};
 
 fn main() {
     // let mut _board = Board::init();
+    // let mut _board = Board::from_fen("r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq");
+    // "r3k2r/p1ppqpb1/b3pnp1/3PN3/1pn1P3/2N2Q1p/PPPBBPPP/R4K1R w KQkq"
     let mut _board =
-        Board::from_fen("r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq");
+        Board::from_fen("r3k2r/p1ppqpb1/b3pnp1/3PN3/1pn1P3/2N2Q1p/PPPBBPPP/R4K1R w KQkq");
     let mut turn = Color::White;
 
     loop {
@@ -31,7 +33,7 @@ fn main() {
             continue;
         }
 
-        let _ = _board.make_move_str(&input);
+        _board.make_move_str(&input);
 
         turn = !turn;
     }
@@ -103,7 +105,7 @@ fn tree(moves: String, depth: usize) {
     let mut board = Board::init();
 
     for m in moves.split_whitespace() {
-        let _ = board.make_move_str(m);
+        board.make_move_str(m);
     }
 
     let turn = match moves.split_whitespace().count() % 2 {

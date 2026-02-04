@@ -3,7 +3,7 @@ use crate::{
     legal_moves::{
         attack_mask::{generate_attack_mask, generate_attack_mask_single_square},
         generate_possible_moves::generate_move_vec,
-        misc::{Color, Coord, Move, Piece, Square, ToBitBoard, Type},
+        misc::{Color, Coord, Move, Piece, Square, Type},
     },
     utils::{piece_to_icon, string_to_move},
 };

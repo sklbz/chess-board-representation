@@ -1,10 +1,9 @@
+use crate::bitboard::BitBoard;
 use crate::board::board::Board;
-use crate::utils::string_to_square;
-use crate::{bitboard::BitBoard, board::mask_handling::MaskHandler};
 
 use super::{
     generate_possible_moves::generate_move_mask,
-    misc::{Color, Move, Piece, Square, ToBitBoard, Type},
+    misc::{Color, Move, Square, ToBitBoard, Type},
 };
 
 pub fn is_possible(board: &Board, move_: &Move, color: Color) -> bool {

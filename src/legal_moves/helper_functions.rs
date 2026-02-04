@@ -1,7 +1,7 @@
 use crate::{
     bitboard::{BitBoard, BitBoardGetter},
     bitmask::{down_mask, left_diagonal_mask, left_mask, right_diagonal_mask, right_mask, up_mask},
-    board::{board::Board, mask_handling::MaskHandler},
+    board::board::Board,
     r#move::{king::king_move_mask, knight::knight_move_bitmask, queen::queen_move_bitmask},
     utils::string_to_square,
 };
@@ -9,7 +9,7 @@ use crate::{
 use super::{
     attack_mask::generate_attack_mask,
     king_check_direction::{get_check_direction, get_checking_knight},
-    misc::{Color, Piece, Square, ToBitBoard, Type},
+    misc::{Color, Square, ToBitBoard, Type},
 };
 
 pub(super) fn get_direction(offset: i8) -> u8 {
