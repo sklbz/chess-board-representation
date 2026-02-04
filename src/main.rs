@@ -9,6 +9,9 @@ mod test;
 mod utils;
 
 use crate::board::fen_handling::FenHandling;
+use crate::board::mask_handling::MaskHandler;
+use crate::legal_moves::misc::Piece;
+use crate::legal_moves::misc::Type;
 use board::board::Board;
 use debug::divide::divide;
 use legal_moves::is_move_possible::is_possible;
@@ -28,9 +31,15 @@ fn main() {
 
         let input = user_input();
 
+        // The attack pattern does not seem to match reality
         // I should return as well the reason why the move is impossible
         if !is_possible(&_board, &string_to_move(&input), turn) {
             println!("Invalid move");
+            Board::from_mask(
+                _board.black_attack_mask(),
+                Piece::new(Type::Pawn, Color::White),
+            )
+            .display();
             continue;
         }
 
