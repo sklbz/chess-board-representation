@@ -3,7 +3,7 @@ use crate::{
     legal_moves::{
         attack_mask::{generate_attack_mask, generate_attack_mask_single_square},
         generate_possible_moves::generate_move_vec,
-        misc::{Color, Coord, Move, Piece, Square, Type},
+        misc::{Color, Coord, Move, Piece, Square, ToBitBoard, Type},
     },
     utils::{piece_to_icon, string_to_move},
 };
@@ -217,6 +217,7 @@ impl Board {
 
         if piece_type == Type::King && offset.abs() == 2 {
             let castle_code = if start > end { "O-O-O" } else { "O-O" };
+            #[allow(unused)]
             let undo_castle = self.castle(castle_code, &color);
 
             return Box::new(move |board: &mut Board| {

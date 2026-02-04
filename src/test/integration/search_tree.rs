@@ -8,12 +8,24 @@ use crate::utils::move_to_string;
 fn stockfish_comparison() {
     let init_fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1".to_string();
     let depth: usize = 3;
-
     println!();
     println!("\nDepth: {}", depth);
     println!();
     let search_tree_root = search_info(&init_fen, depth);
     perft(&search_tree_root, &init_fen, "".to_string(), depth);
+}
+
+#[test]
+fn stockfish_comparison_alt() {
+    let init_fen = "r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq".to_string();
+
+    let depth: usize = 3;
+    println!();
+    println!("\nDepth: {}", depth);
+    println!();
+    let search_tree_root = search_info(&init_fen, depth);
+    perft(&search_tree_root, &init_fen, "".to_string(), depth);
+    panic!();
 }
 
 fn search_info(fen: &str, depth: usize) -> Vec<SearchTreeNode> {
@@ -83,6 +95,7 @@ fn perft(nodes: &Vec<SearchTreeNode>, fen: &String, moves: String, depth: usize)
     // println!("Nodes searched: {}", total);
 }
 
+use core::panic;
 use std::io::{BufRead, BufReader, Write};
 use std::process::{Command, Stdio};
 use std::thread::sleep;

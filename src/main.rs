@@ -9,17 +9,16 @@ mod test;
 mod utils;
 
 use crate::board::fen_handling::FenHandling;
-use crate::board::special_moves::Castle;
 use board::board::Board;
-use chess::uci::uci_loop::uci;
 use debug::divide::divide;
-use game::game_loop::run;
 use legal_moves::is_move_possible::is_possible;
 use legal_moves::misc::Color;
-use utils::{squarewise_display, string_to_move, user_input};
+use utils::{string_to_move, user_input};
 
 fn main() {
-    let mut _board = Board::init();
+    // let mut _board = Board::init();
+    let mut _board =
+        Board::from_fen("r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq");
     let mut turn = Color::White;
 
     loop {
@@ -38,66 +37,68 @@ fn main() {
     }
 
     //DEBUG---------------------------------------------------
-    let mut board = Board::init();
+    /* let mut board = Board::init();
 
-    let game = "e2e4 g8f6 e4e5 f6d5 d2d4 d7d6 g1f3 d6e5 f3e5 c7c6 
-        f1d3 b8d7 e5f3 d7f6 h2h3 d5b4 d3e2 c8f5 b1a3 e7e6 c2c3 b4d5 a3c4 f8e7 
-        O-O O-O c4e5 c6c5 a2a3 h7h6 c3c4 d5b6 d4c5 e7c5 b2b4 c5e7 c1b2 d8c7 
-        d1b3 a7a5 a1d1 a5b4 a3b4 f8c8 b2d4 b6d7 c4c5 f6d5 e2c4 d7f6 f1e1 b7b6 
-        c5b6 d5b6 d4b6 c7b6 e5f7 g8f7 c4e6 f5e6 e1e6 c8c3 e6f6 f7f6 b3c3 f6f7 
-        f3e5 f7g8 c3c4 g8h8 c4e4 a8e8 e5g6 h8g8 g6e7 g8f7 d1e1 b6d6";
+        let game = "e2e4 g8f6 e4e5 f6d5 d2d4 d7d6 g1f3 d6e5 f3e5 c7c6
+            f1d3 b8d7 e5f3 d7f6 h2h3 d5b4 d3e2 c8f5 b1a3 e7e6 c2c3 b4d5 a3c4 f8e7
+            O-O O-O c4e5 c6c5 a2a3 h7h6 c3c4 d5b6 d4c5 e7c5 b2b4 c5e7 c1b2 d8c7
+            d1b3 a7a5 a1d1 a5b4 a3b4 f8c8 b2d4 b6d7 c4c5 f6d5 e2c4 d7f6 f1e1 b7b6
+            c5b6 d5b6 d4b6 c7b6 e5f7 g8f7 c4e6 f5e6 e1e6 c8c3 e6f6 f7f6 b3c3 f6f7
+            f3e5 f7g8 c3c4 g8h8 c4e4 a8e8 e5g6 h8g8 g6e7 g8f7 d1e1 b6d6";
 
-    let mut turn = Color::White;
+        let mut turn = Color::White;
 
-    for (move_, i) in game.split_whitespace().zip(1..) {
-        if move_.starts_with('O') {
-            let _ = board.castle(
-                move_,
-                if let 1 = i % 2 {
-                    &Color::White
-                } else {
-                    &Color::Black
-                },
+        for (move_, i) in game.split_whitespace().zip(1..) {
+            if move_.starts_with('O') {
+                let _ = board.castle(
+                    move_,
+                    if let 1 = i % 2 {
+                        &Color::White
+                    } else {
+                        &Color::Black
+                    },
+                );
+
+                turn = !turn;
+                continue;
+            }
+
+            let algebric_move = string_to_move(move_);
+
+            assert!(
+                is_possible(&board, &algebric_move, turn),
+                "Failed at move {i}: {}",
+                move_
             );
+            let _ = board.play_move(&algebric_move);
 
             turn = !turn;
-            continue;
+        }
+        //--------------------------------------------------------
+
+        let mut board = Board::init();
+
+        let square_by_square_check: bool = false;
+
+        if square_by_square_check {
+            squarewise_display(&board);
         }
 
-        let algebric_move = string_to_move(move_);
+        let input = user_input();
 
-        assert!(
-            is_possible(&board, &algebric_move, turn),
-            "Failed at move {i}: {}",
-            move_
-        );
-        let _ = board.play_move(&algebric_move);
-
-        turn = !turn;
-    }
-    //--------------------------------------------------------
-
-    let mut board = Board::init();
-
-    let square_by_square_check: bool = false;
-
-    if square_by_square_check {
-        squarewise_display(&board);
-    }
-
-    let input = user_input();
-
-    match input.as_str() {
-        "uci" => uci(),
-        "tree" => tree("".to_string(), 4),
-        "run" => run(&mut board),
-        "board" => squarewise_display(&board),
-        _ => println!("Invalid input"),
-    }
+        match input.as_str() {
+            "uci" => uci(),
+            "tree" => tree("".to_string(), 4),
+            "run" => run(&mut board),
+            "board" => squarewise_display(&board),
+            _ => println!("Invalid input"),
+        }
+    */
 }
 
 use std::fs::File;
 
+#[allow(unused)]
 fn tree(moves: String, depth: usize) {
     let mut board = Board::init();
 

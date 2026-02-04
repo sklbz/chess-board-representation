@@ -208,6 +208,10 @@ fn alternate_position() {
 use std::fs::File;
 
 fn tree(moves: String, depth: usize) {
+    if depth == 0 {
+        return;
+    }
+
     let mut board = Board::init();
 
     for m in moves.split_whitespace() {
