@@ -28,6 +28,7 @@ fn main() {
 
         let input = user_input();
 
+        // I should return as well the reason why the move is impossible
         if !is_possible(&_board, &string_to_move(&input), turn) {
             println!("Invalid move");
             continue;
