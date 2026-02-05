@@ -18,7 +18,19 @@ fn stockfish_comparison() {
 #[test]
 fn stockfish_comparison_alt() {
     let init_fen = "r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq".to_string();
+    let depth: usize = 3;
+    println!();
+    println!("\nDepth: {}", depth);
+    println!();
+    let search_tree_root = search_info(&init_fen, depth);
+    perft(&search_tree_root, &init_fen, "".to_string(), depth);
+    panic!();
+}
 
+#[test]
+fn stockfish_comparison_alt_2() {
+    let init_fen = "8/2p5/3p4/KP5r/1R3p1k/8/4P1P1/8 w -".to_string();
+    // fails at 5, succeed at 3, unknown for 4
     let depth: usize = 3;
     println!();
     println!("\nDepth: {}", depth);
