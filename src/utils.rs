@@ -118,6 +118,22 @@ pub fn move_to_string((start, end): &Move) -> String {
     format!("{}{}", start, end)
 }
 
+fn str_is_square(str: &str) -> bool {
+    let letter = str.chars().next().expect("Unable to read letter");
+    let number = str.chars().last().expect("Unable to read number");
+
+    match letter {
+        'a' | 'b' | 'c' | 'd' | 'e' | 'f' | 'g' | 'h' => (),
+        _ => return false,
+    };
+
+    matches!(number, '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8')
+}
+
+pub fn string_is_move(str: &str) -> bool {
+    str_is_square(&str[0..2]) && str_is_square(&str[2..4])
+}
+
 pub fn string_to_move(string: &str) -> Move {
     let start = string_to_square(&string[0..2]);
     let end = string_to_square(&string[2..4]);
@@ -231,9 +247,12 @@ use std::io::stdin;
 pub fn user_input() -> String {
     let mut input = String::new();
 
-    stdin()
-        .read_line(&mut input)
-        .expect("error: unable to read user input");
+    for _ in 0..10 {
+        match stdin().read_line(&mut input) {
+            Ok(_) => break,
+            Err(e) => println!("{}", e),
+        }
+    }
 
     input.pop();
 
