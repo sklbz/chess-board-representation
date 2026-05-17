@@ -73,11 +73,7 @@ pub(super) fn is_pinned(board: &Board, start: &Square, king_square: &Square) -> 
     let attack_mask = generate_attack_mask(
         board,
         &ennemy_color,
-<<<<<<< Updated upstream
         &(start.to_bitboard() | ennemy_knights | adjacent_ennemies),
-=======
-        &(start.to_bitboard() | &ennemy_knights | adjacent_ennemies),
->>>>>>> Stashed changes
         &(defensive_mask | ennemy_knights),
     );
 
