@@ -31,7 +31,8 @@ pub fn get_check_direction(board: &Board, king: &Square, color: Color) -> i8 {
     }
 
     let ennemy_horsey = board.get_bitboard(&ennemy_color, &Type::Knight);
-    let mask_no_knights: u64 = generate_attack_mask(board, &ennemy_color, &ennemy_horsey, &0);
+    let mask_no_knights: u64 =
+        generate_attack_mask(board, &ennemy_color, &ennemy_horsey, &ennemy_horsey);
 
     if (1 << king) & mask_no_knights == 0 {
         // 10 for knights

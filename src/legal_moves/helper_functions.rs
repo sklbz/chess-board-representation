@@ -69,13 +69,13 @@ pub(super) fn is_pinned(board: &Board, start: &Square, king_square: &Square) -> 
         board.display();
     } */
 
+    let ennemy_knights = board.get_bitboard(&ennemy_color, &Type::Knight);
+
     let attack_mask = generate_attack_mask(
         board,
         &ennemy_color,
-        &(start.to_bitboard()
-            | board.get_bitboard(&ennemy_color, &Type::Knight)
-            | adjacent_ennemies),
-        &defensive_mask,
+        &(start.to_bitboard() | ennemy_knights | adjacent_ennemies),
+        &(defensive_mask | ennemy_knights),
     );
 
     attack_mask & (1 << king_square) != 0

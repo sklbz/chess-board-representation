@@ -1,3 +1,5 @@
+use rayon::iter::{IntoParallelRefIterator, ParallelIterator};
+
 use crate::board::board::Board;
 use crate::board::fen_handling::FenHandling;
 use crate::debug::tree::*;
@@ -24,7 +26,6 @@ fn stockfish_comparison_alt() {
     println!();
     let search_tree_root = search_info(&init_fen, depth);
     perft(&search_tree_root, &init_fen, "".to_string(), depth);
-    panic!();
 }
 
 #[test]
@@ -37,7 +38,6 @@ fn stockfish_comparison_alt_2() {
     println!();
     let search_tree_root = search_info(&init_fen, depth);
     perft(&search_tree_root, &init_fen, "".to_string(), depth);
-    panic!();
 }
 
 fn search_info(fen: &str, depth: usize) -> Vec<SearchTreeNode> {
@@ -55,17 +55,19 @@ fn perft(nodes: &[SearchTreeNode], fen: &String, moves: String, depth: usize) {
 
     let stockfish_ref = get_stockfish_output(fen, depth);
 
-    let result = nodes
-        .iter()
+    let result: Vec<(String, usize, SearchTreeNode)> = nodes
+        .par_iter()
         .map(|x| -> (String, usize, SearchTreeNode) {
             (move_to_string(&x.move_), x.score, x.clone())
         })
         .collect::<Vec<(String, usize, SearchTreeNode)>>();
 
-    for (move_, count, node) in result
+    let filtered: Vec<&(String, usize, SearchTreeNode)> = result
         .iter()
         .filter(|(m, _, _)| stockfish_ref.iter().any(|(s, _)| s == m))
-    {
+        .collect();
+
+    filtered.par_iter().for_each(|(move_, count, node)| {
         let reference = stockfish_ref.iter().find(|(m, _)| m == move_).unwrap();
 
         if *count != reference.1 {
@@ -84,27 +86,21 @@ fn perft(nodes: &[SearchTreeNode], fen: &String, moves: String, depth: usize) {
         /* else {
             println!("{}: {}", move_, count);
         } */
-    }
+    });
 
     for (move_, _, _) in result
         .iter()
         .filter(|(m, _, _)| !stockfish_ref.iter().any(|(s, _)| s == m))
     {
-        println!("Extra path: {} {}", moves, move_);
+        eprintln!("Extra path: {} {}", moves, move_);
     }
 
     for (move_, _) in stockfish_ref
         .iter()
         .filter(|(m, _)| !result.iter().any(|(s, _, _)| s == m))
     {
-        println!("Missing path: {} {}", moves, move_);
+        eprintln!("Missing path: {} {}", moves, move_);
     }
-
-    // let total = result.iter().fold(0, |acc, (_, count, _)| acc + count);
-
-    // println!();
-    // println!();
-    // println!("Nodes searched: {}", total);
 }
 
 use core::panic;
