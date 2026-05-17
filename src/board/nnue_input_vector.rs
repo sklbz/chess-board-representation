@@ -1,8 +1,9 @@
 use super::board::Board;
-use crate::bitboard::BitBoardGetter;
+use crate::{bitboard::BitBoardGetter, legal_moves::misc::Color};
 
 pub trait VectorOutput {
     fn to_vector(&self) -> Vec<f64>;
+    fn to_vector_for(&self, color: &Color) -> Vec<f64>;
 }
 
 impl VectorOutput for Board {
@@ -52,5 +53,12 @@ impl VectorOutput for Board {
         }
 
         input_vector
+    }
+
+    fn to_vector_for(&self, color: &Color) -> Vec<f64> {
+        match color {
+            Color::Black => self.flipped().to_vector(),
+            _ => self.to_vector(),
+        }
     }
 }

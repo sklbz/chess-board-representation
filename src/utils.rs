@@ -1,6 +1,7 @@
 use crate::bitboard::{BitBoard, BitBoardGetter};
 use crate::board::board::Board;
 use crate::legal_moves::misc::{Color, Move, Piece, Square, Type};
+use Type::*;
 
 pub fn string_to_file(file: char) -> u8 {
     match file {
@@ -14,6 +15,21 @@ pub fn string_to_file(file: char) -> u8 {
         'h' => 7,
         _ => panic!("Invalid file : {}", file),
     }
+}
+
+fn flip_square(sq: &str) -> String {
+    // sq = "e2", on flip le chiffre : '2' -> '7', '1' -> '8', etc.
+    let file = &sq[0..1];
+    let rank: u8 = sq[1..2].parse().unwrap();
+    format!("{}{}", file, 9 - rank)
+}
+
+pub fn flip_move(mv: String) -> String {
+    // Format UCI : "e2e4" ou "e7e8q" (promotion)
+    let from = flip_square(&mv[0..2]);
+    let to = flip_square(&mv[2..4]);
+    let promo = &mv[4..]; // "" ou "q", "r", etc.
+    format!("{}{}{}", from, to, promo)
 }
 
 pub fn piece_to_char(
@@ -36,6 +52,18 @@ pub fn piece_to_char(
         (Color::White, Type::King) => 'K',
         (Color::Black, Type::King) => 'k',
         _ => panic!("Piece not found!"),
+    }
+}
+
+pub fn piece_to_icon_colorblind(piece_type: &Type) -> char {
+    match piece_type {
+        Pawn => '󰡙',
+        Knight => '',
+        Bishop => '',
+        Rook => '',
+        Queen => '',
+        King => '',
+        _ => ' ',
     }
 }
 

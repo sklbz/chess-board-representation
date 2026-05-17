@@ -5,7 +5,7 @@ use crate::{
         generate_possible_moves::generate_move_vec,
         misc::{Color, Coord, Move, Piece, Square, Type},
     },
-    utils::{piece_to_icon, string_to_move},
+    utils::{piece_to_icon_colorblind, string_to_move},
 };
 
 use super::special_moves::Castle;
@@ -113,6 +113,33 @@ impl Board {
         }
     }
 
+    /// Retourne le plateau vu du point de vue de `color` :
+    /// si color == Black, on flippe verticalement et on échange les couleurs.
+    pub fn flipped(&self) -> Board {
+        Board {
+            white_pawns: self.black_pawns.swap_bytes(),
+            black_pawns: self.white_pawns.swap_bytes(),
+            white_knights: self.black_knights.swap_bytes(),
+            black_knights: self.white_knights.swap_bytes(),
+            white_bishops: self.black_bishops.swap_bytes(),
+            black_bishops: self.white_bishops.swap_bytes(),
+            white_rooks: self.black_rooks.swap_bytes(),
+            black_rooks: self.white_rooks.swap_bytes(),
+            white_queens: self.black_queens.swap_bytes(),
+            black_queens: self.white_queens.swap_bytes(),
+            white_king: self.black_king.swap_bytes(),
+            black_king: self.white_king.swap_bytes(),
+            en_passant: self.en_passant.swap_bytes(),
+            // Les droits de roque s'inversent aussi [WK,WQ,BK,BQ] -> [BK,BQ,WK,WQ]
+            castling_rights: [
+                self.castling_rights[2],
+                self.castling_rights[3],
+                self.castling_rights[0],
+                self.castling_rights[1],
+            ],
+        }
+    }
+
     pub fn can_castle_kingside(&self, color: Color) -> bool {
         match color {
             Color::White => self.castling_rights[0],
@@ -147,6 +174,24 @@ impl Board {
             }
             Color::Null => panic!("Color is null"),
         }
+    }
+
+    // Check is the game is stalemate or other.
+    // Not finished
+    pub fn is_stalemate(&self) -> bool {
+        let all = (
+            self.white_pawns,
+            self.black_pawns,
+            self.white_knights,
+            self.black_knights,
+            self.white_bishops,
+            self.black_bishops,
+            self.white_rooks,
+            self.black_rooks,
+            self.white_queens,
+            self.black_queens,
+        );
+        matches!(all, (0, 0, 0, 0, 0, 0, 0, 0, 0, 0))
     }
 
     pub fn get_legal_moves(&self, color: &Color) -> Vec<Move> {
@@ -239,13 +284,21 @@ impl Board {
     pub(super) fn make_move(&mut self, move_: &Move) -> Box<dyn FnOnce(&mut Board) + '_> {
         let (start, end): (Square, Square) = *move_;
 
-        let piece = self.get_piece(&start);
+        let piece: Piece = self.get_piece(&start);
 
         let captured = self.get_piece(&end);
 
         self.remove_piece(&start);
 
-        self.set(&end, piece);
+        let piece_to_set = match (piece.r#type, end / 8) {
+            (Type::Pawn, 0 | 7) => Piece {
+                r#type: Type::Queen,
+                color: piece.color,
+            },
+            _ => piece,
+        };
+
+        self.set(&end, piece_to_set);
 
         Box::new(move |board: &mut Board| {
             board.set(&start, piece);
@@ -466,6 +519,9 @@ impl Board {
     }
 
     pub fn display(&self) {
+        const BLACK_COLOR: &str = "\x1b[38;2;69;71;91m";
+        const RESET: &str = "\x1b[0m";
+
         let hline = "-------------------------------";
         let mut board = String::new();
 
@@ -478,13 +534,27 @@ impl Board {
                 } else {
                     format!("\t│{hline}│\n")
                 };
+
                 board = format!("{line}\t│ {}\n{}", row, board);
+
                 row = "".to_string();
             }
 
             let Piece { r#type, color } = self.get_piece(&i);
 
-            row.push(piece_to_icon(&color, &r#type));
+            let icon = piece_to_icon_colorblind(&r#type);
+
+            match color {
+                Color::Black => {
+                    row.push_str(BLACK_COLOR);
+                    row.push(icon);
+                    row.push_str(RESET);
+                }
+
+                _ => {
+                    row.push(icon);
+                }
+            }
 
             row.push(' ');
             row.push('│');
@@ -500,4 +570,39 @@ impl Board {
 
         println!("{}", board);
     }
+    // pub fn display(&self) {
+    //     let hline = "-------------------------------";
+    //     let mut board = String::new();
+    //
+    //     let mut row = "".to_string();
+    //
+    //     for i in 0..64 {
+    //         if i % 8 == 0 {
+    //             let line = if i == 0 {
+    //                 format!("\t {hline}\n")
+    //             } else {
+    //                 format!("\t│{hline}│\n")
+    //             };
+    //             board = format!("{line}\t│ {}\n{}", row, board);
+    //             row = "".to_string();
+    //         }
+    //
+    //         let Piece { r#type, color } = self.get_piece(&i);
+    //
+    //         row.push(piece_to_icon(&color, &r#type));
+    //
+    //         row.push(' ');
+    //         row.push('│');
+    //         row.push(' ');
+    //     }
+    //
+    //     board = format!("\t {hline}\n\t│ {}\n{}", row, board);
+    //
+    //     board.pop();
+    //     board.pop();
+    //     board.pop();
+    //     board.pop();
+    //
+    //     println!("{}", board);
+    // }
 }

@@ -27,6 +27,8 @@ fn main() {
     let mut turn = Color::White;
 
     loop {
+        print!("\x1B[2J");
+        print!("\x1B[1;1H");
         _board.display();
 
         let input = user_input();
