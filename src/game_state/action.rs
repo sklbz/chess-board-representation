@@ -1,7 +1,9 @@
 use super::bishop::BishopMove;
+use super::king::KingMove;
 use super::knight::KnightMove;
 use super::pawn::{PawnCapture, PawnCapturePattern, PawnMove};
 use super::piece::{PieceType, Promotable};
+use super::queen::QueenMove;
 use super::rook::RookMove;
 use super::square::ChessFile;
 
@@ -17,21 +19,22 @@ pub enum PieceMove {
     Knight(KnightMove),
     Bishop(BishopMove),
     Rook(RookMove),
-}
-pub struct PieceCapture {
-    base: PieceMove,
-    captured: PieceType,
+    Queen(QueenMove),
+    King(KingMove),
 }
 pub enum ChessAction {
     PawnMove(PawnMove),
     PawnCapture(PawnCapture),
     Move(PieceMove),
-    Capture(PieceCapture),
+    Capture {
+        base: PieceMove,
+        captured: PieceType,
+    },
     Castle {
         side: CastleSide,
         color: ChessColor,
     },
-    EnPassant {},
+    EnPassant(PawnCapturePattern),
     Promotion {
         file: ChessFile,
         color: ChessColor,
@@ -41,7 +44,6 @@ pub enum ChessAction {
         file: ChessFile,
         pattern: PawnCapturePattern,
         captured: PieceType,
-        color: ChessColor,
         promoted: Promotable,
     },
 }

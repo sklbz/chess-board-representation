@@ -12,7 +12,6 @@ mod utils;
 use crate::board::fen_handling::FenHandling;
 use crate::board::mask_handling::MaskHandler;
 use crate::game_state::action::ChessAction;
-use crate::game_state::action::PieceCapture;
 use crate::game_state::action::PieceMove;
 use crate::game_state::bishop::BishopMove;
 use crate::game_state::rook::RookMove;
@@ -29,7 +28,6 @@ fn main() {
     println!("PieceMove:   {}", std::mem::size_of::<PieceMove>());
     println!("BishopMove:  {}", std::mem::size_of::<BishopMove>());
     println!("RookMove:    {}", std::mem::size_of::<RookMove>());
-    println!("PieceCapture:{}", std::mem::size_of::<PieceCapture>());
 }
 
 fn not_main() {

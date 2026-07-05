@@ -1,10 +1,16 @@
 pub mod action;
+pub mod arithmetic;
 pub mod bishop;
 pub mod coord;
 pub mod direction;
+pub mod king;
 pub mod knight;
 pub mod pawn;
 pub mod piece;
+pub mod queen;
 pub mod rook;
 pub mod square;
 pub mod state;
+pub(super) use action::ChessColor;
+pub(super) use coord::*;
+pub(super) use square::ChessSquare;

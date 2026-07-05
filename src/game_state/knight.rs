@@ -1,7 +1,5 @@
-use super::{
-    action::ChessColor,
-    coord::{Coordinate2, Coordinate3, Coordinate4, Coordinate5, Coordinate6},
-};
+use super::ChessColor;
+use super::{Coordinate2, Coordinate3, Coordinate4, Coordinate5, Coordinate6, Coordinate8};
 
 pub enum KnightMove {
     Move2(KnightMove2),
@@ -37,5 +35,5 @@ pub struct KnightMove8 {
     color: ChessColor,
     quadrant: Coordinate4,
     from: Coordinate4,
-    to: Coordinate4,
+    to: Coordinate8,
 }

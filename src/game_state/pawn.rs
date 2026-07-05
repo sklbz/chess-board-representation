@@ -1,15 +1,14 @@
-use super::action::ChessColor;
-use super::coord::{Coordinate2, Coordinate5, Coordinate6};
-use super::square::ChessFile;
+use super::ChessColor;
+use super::{Coordinate2, Coordinate5, Coordinate6, Coordinate8};
 pub enum PawnMove {
     Simple {
         color: ChessColor,
-        file: ChessFile,
+        file: Coordinate8,
         from: Coordinate5,
     },
     Double {
         color: ChessColor,
-        file: ChessFile,
+        file: Coordinate8,
     },
 }
 pub enum PawnCapturePattern {
