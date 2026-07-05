@@ -1,5 +1,5 @@
 use crate::bitboard::{BitBoard, BitBoardGetter};
-use crate::board::board::Board;
+use crate::board::game_board::Board;
 use crate::legal_moves::misc::{Color, Move, Piece, Square, Type};
 use Type::*;
 

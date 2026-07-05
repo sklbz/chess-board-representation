@@ -1,6 +1,6 @@
 use crate::{
     bitboard::{BitBoard, BitBoardGetter},
-    board::board::Board,
+    board::game_board::Board,
     legal_moves::misc::ToBitBoard,
     r#move::king::king_move_mask,
 };

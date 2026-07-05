@@ -3,7 +3,7 @@ use crate::{
     legal_moves::misc::{Color, Piece, Type},
 };
 
-use super::board::Board;
+use super::game_board::Board;
 
 pub trait MaskHandler {
     fn from_mask(mask: BitBoard, piece: Piece) -> Self;

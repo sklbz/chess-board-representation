@@ -1,4 +1,4 @@
-use crate::board::board::Board;
+use crate::board::game_board::Board;
 use crate::board::special_moves::*;
 use crate::legal_moves::is_move_possible::*;
 use crate::legal_moves::misc::{Color, Move};
@@ -89,11 +89,11 @@ fn full_game_no_castling_no_en_passant_no_promotion() {
 fn magnus_carlsen() {
     let mut board = Board::init();
 
-    let game = "e2e4 g8f6 e4e5 f6d5 d2d4 d7d6 g1f3 d6e5 f3e5 c7c6 
-        f1d3 b8d7 e5f3 d7f6 h2h3 d5b4 d3e2 c8f5 b1a3 e7e6 c2c3 b4d5 a3c4 f8e7 
-        O-O O-O c4e5 c6c5 a2a3 h7h6 c3c4 d5b6 d4c5 e7c5 b2b4 c5e7 c1b2 d8c7 
-        d1b3 a7a5 a1d1 a5b4 a3b4 f8c8 b2d4 b6d7 c4c5 f6d5 e2c4 d7f6 f1e1 b7b6 
-        c5b6 d5b6 d4b6 c7b6 e5f7 g8f7 c4e6 f5e6 e1e6 c8c3 e6f6 f7f6 b3c3 f6f7 
+    let game = "e2e4 g8f6 e4e5 f6d5 d2d4 d7d6 g1f3 d6e5 f3e5 c7c6
+        f1d3 b8d7 e5f3 d7f6 h2h3 d5b4 d3e2 c8f5 b1a3 e7e6 c2c3 b4d5 a3c4 f8e7
+        O-O O-O c4e5 c6c5 a2a3 h7h6 c3c4 d5b6 d4c5 e7c5 b2b4 c5e7 c1b2 d8c7
+        d1b3 a7a5 a1d1 a5b4 a3b4 f8c8 b2d4 b6d7 c4c5 f6d5 e2c4 d7f6 f1e1 b7b6
+        c5b6 d5b6 d4b6 c7b6 e5f7 g8f7 c4e6 f5e6 e1e6 c8c3 e6f6 f7f6 b3c3 f6f7
         f3e5 f7g8 c3c4 g8h8 c4e4 a8e8 e5g6 h8g8 g6e7 g8f7 d1e1 b6d6";
 
     let mut turn = Color::White;

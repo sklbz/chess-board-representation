@@ -1,5 +1,5 @@
 use crate::bitboard::{BitBoard, Display};
-use crate::board::board::Board;
+use crate::board::game_board::Board;
 
 use super::{
     generate_possible_moves::generate_move_mask,

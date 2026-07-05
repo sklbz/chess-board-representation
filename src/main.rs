@@ -3,6 +3,7 @@ mod bitmask;
 mod board;
 mod debug;
 mod game;
+mod game_state;
 mod legal_moves;
 mod r#move;
 mod test;
@@ -10,15 +11,28 @@ mod utils;
 
 use crate::board::fen_handling::FenHandling;
 use crate::board::mask_handling::MaskHandler;
+use crate::game_state::action::ChessAction;
+use crate::game_state::action::PieceCapture;
+use crate::game_state::action::PieceMove;
+use crate::game_state::bishop::BishopMove;
+use crate::game_state::rook::RookMove;
 use crate::legal_moves::misc::Piece;
 use crate::legal_moves::misc::Type;
-use board::board::Board;
+use board::game_board::Board;
 use debug::divide::divide;
 use legal_moves::is_move_possible::is_possible;
 use legal_moves::misc::Color;
 use utils::{string_to_move, user_input};
 
 fn main() {
+    println!("ChessAction: {}", std::mem::size_of::<ChessAction>());
+    println!("PieceMove:   {}", std::mem::size_of::<PieceMove>());
+    println!("BishopMove:  {}", std::mem::size_of::<BishopMove>());
+    println!("RookMove:    {}", std::mem::size_of::<RookMove>());
+    println!("PieceCapture:{}", std::mem::size_of::<PieceCapture>());
+}
+
+fn not_main() {
     // let mut _board = Board::init();
     // let mut _board = Board::from_fen("r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq");
     // "r3k2r/p1ppqpb1/b3pnp1/3PN3/1pn1P3/2N2Q1p/PPPBBPPP/R4K1R w KQkq"

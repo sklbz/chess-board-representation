@@ -1,4 +1,4 @@
-use crate::board::board::Board;
+use crate::board::game_board::Board;
 use crate::board::mask_handling::MaskHandler;
 use crate::legal_moves::generate_possible_moves::generate_move_mask;
 use crate::legal_moves::is_move_possible::is_possible;

@@ -1,6 +1,6 @@
 use crate::{legal_moves::misc::Color, utils::string_to_move};
 
-use super::{board::Board, unmove::Unmove};
+use super::{game_board::Board, unmove::Unmove};
 
 pub trait Castle {
     fn castle(&mut self, code: &str, side: &Color) -> Unmove;

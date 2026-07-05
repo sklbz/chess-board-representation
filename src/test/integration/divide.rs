@@ -1,5 +1,5 @@
-use crate::board::board::Board;
 use crate::board::fen_handling::FenHandling;
+use crate::board::game_board::Board;
 use crate::{debug::divide::divide, legal_moves::misc::Color};
 
 #[test]

@@ -3,7 +3,7 @@ use crate::{
     utils::{piece_from_char, piece_to_char},
 };
 
-use super::board::Board;
+use super::game_board::Board;
 
 pub trait FenHandling {
     fn from_fen(fen: &str) -> Self;

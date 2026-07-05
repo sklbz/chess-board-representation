@@ -1,4 +1,4 @@
-use super::board::Board;
+use super::game_board::Board;
 use crate::{bitboard::BitBoardGetter, legal_moves::misc::Color};
 
 pub trait VectorOutput {

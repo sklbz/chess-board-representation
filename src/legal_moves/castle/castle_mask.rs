@@ -1,6 +1,6 @@
 use crate::{
     bitboard::{BitBoard, BitBoardGetter},
-    board::board::Board,
+    board::game_board::Board,
     legal_moves::{
         attack_mask::{generate_attack_mask, generate_attack_mask_single_square},
         misc::{Color, Square, Type},

@@ -1,4 +1,4 @@
-use crate::board::board::Board;
+use crate::board::game_board::Board;
 use crate::legal_moves::misc::Color;
 use crate::legal_moves::misc::Move;
 use crate::{

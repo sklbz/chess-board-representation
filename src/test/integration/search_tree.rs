@@ -1,7 +1,7 @@
 use rayon::iter::{IntoParallelRefIterator, ParallelIterator};
 
-use crate::board::board::Board;
 use crate::board::fen_handling::FenHandling;
+use crate::board::game_board::Board;
 use crate::debug::tree::*;
 use crate::legal_moves::misc::Color;
 use crate::utils::move_to_string;
