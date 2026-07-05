@@ -6,3 +6,9 @@ pub enum PieceType {
     Queen,
     King,
 }
+pub enum Promotable {
+    Knight,
+    Bishop,
+    Rook,
+    Queen,
+}

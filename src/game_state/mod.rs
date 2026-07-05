@@ -3,6 +3,7 @@ pub mod bishop;
 pub mod coord;
 pub mod direction;
 pub mod knight;
+pub mod pawn;
 pub mod piece;
 pub mod rook;
 pub mod square;
