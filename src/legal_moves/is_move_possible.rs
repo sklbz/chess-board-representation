@@ -1,4 +1,4 @@
-use crate::bitboard::{BitBoard, Display};
+use crate::bitboard::BitBoard;
 use crate::board::game_board::Board;
 
 use super::{
